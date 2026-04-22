@@ -78,66 +78,56 @@
         </select>
       </section>
 
-      <section class="daily-board" aria-labelledby="dailyBoardTitle">
+      <section class="record-panel" aria-labelledby="recordTitle">
         <div class="section-title">
           <div>
-            <p class="eyebrow">Earn</p>
-            <h2 id="dailyBoardTitle">Point boosters</h2>
+            <p class="eyebrow">Record</p>
+            <h2 id="recordTitle">Your learning record</h2>
           </div>
-          <span class="pill">Daily</span>
+          <span class="pill" id="dailyStatusPill">Today</span>
         </div>
-        <div class="booster-grid">
-          <button class="booster" data-points="10" data-key="checkin" type="button">
-            <strong>Daily check-in</strong>
-            <span>+10 pts</span>
-          </button>
-          <button class="booster" data-points="20" data-key="share" type="button">
-            <strong>Share a safety tip</strong>
-            <span>+20 pts</span>
-          </button>
-          <button class="booster" data-points="30" data-key="tool" type="button">
-            <strong>Use a tool</strong>
-            <span>+30 pts</span>
-          </button>
+        <div class="record-grid">
+          <article>
+            <strong id="recordName">Guest learner</strong>
+            <span>Profile</span>
+          </article>
+          <article>
+            <strong id="recordLevel">Level 1</strong>
+            <span>Rank</span>
+          </article>
+          <article>
+            <strong id="recordToday">Not done</strong>
+            <span>Daily task</span>
+          </article>
         </div>
       </section>
 
-      <section class="quest-panel" aria-labelledby="todayQuestTitle">
+      <section class="category-panel" aria-labelledby="categoryTitle">
         <div class="section-title">
           <div>
-            <p class="eyebrow">Today</p>
-            <h2 id="todayQuestTitle">Complete your daily quest</h2>
+            <p class="eyebrow">Explore</p>
+            <h2 id="categoryTitle">Choose a learning category</h2>
           </div>
-          <span class="pill">All ages</span>
+          <span class="pill" id="categoryPill">Safety</span>
         </div>
-
-        <div class="quest-card">
-          <div>
-            <p class="quest-label">Safety Quest</p>
-            <h3>Spot the fake reward promise</h3>
-            <p>
-              Learn why real apps should never promise free Pi without a clear,
-              approved utility or payment flow.
-            </p>
-          </div>
-          <button id="completeQuestButton" type="button">Finish quest</button>
-        </div>
+        <div class="category-grid" id="categoryGrid"></div>
       </section>
 
-      <section class="quiz-panel" aria-labelledby="quizTitle">
+      <section class="daily-learning-panel" aria-labelledby="dailyLearningTitle">
         <div class="section-title">
           <div>
-            <p class="eyebrow">Quick quiz</p>
-            <h2 id="quizTitle">What should a safe app avoid?</h2>
+            <p class="eyebrow">Daily</p>
+            <h2 id="dailyLearningTitle">Today’s learning quest</h2>
           </div>
-          <span class="pill">+15 pts</span>
+          <span class="pill" id="dailyRewardPill">+50 pts</span>
         </div>
-        <div class="answer-grid">
-          <button class="answer" data-correct="false" type="button">Asking users to share wallet passphrases</button>
-          <button class="answer" data-correct="true" type="button">Clear safety rules and no fake Pi promises</button>
-          <button class="answer" data-correct="false" type="button">Guaranteeing free Pi for every tap</button>
+        <div class="daily-card" id="dailyCard">
+          <p class="quest-label">Loading</p>
+          <h3>Preparing your daily task</h3>
+          <p>Questora gives one daily learning reward per day to keep progress fair.</p>
         </div>
-        <p class="quiz-feedback" id="quizFeedback">Pick the safest answer.</p>
+        <div class="answer-grid" id="dailyAnswerGrid"></div>
+        <p class="quiz-feedback" id="dailyFeedback">Answer today’s question to earn your daily reward.</p>
       </section>
 
       <section class="tabs" aria-label="Questora features">
@@ -158,11 +148,22 @@
         <div class="section-title">
           <div>
             <p class="eyebrow">Academy</p>
-            <h2 id="learningTitle">Learning paths</h2>
+            <h2 id="learningTitle">Category lessons</h2>
           </div>
-          <span class="pill">Earn points</span>
+          <span class="pill">Quizzes</span>
         </div>
         <div class="lesson-grid" id="lessonGrid"></div>
+      </section>
+
+      <section class="reward-panel" aria-labelledby="rewardTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Rewards</p>
+            <h2 id="rewardTitle">Reward styles</h2>
+          </div>
+          <span class="pill">Unlock</span>
+        </div>
+        <div class="reward-grid" id="rewardGrid"></div>
       </section>
 
       <section class="tool-panel" aria-labelledby="toolTitle">
@@ -174,6 +175,22 @@
           <span class="pill">Useful</span>
         </div>
         <div class="tool-grid" id="toolGrid"></div>
+      </section>
+
+      <section class="future-panel" aria-labelledby="futureTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Future</p>
+            <h2 id="futureTitle">Premium Pi utility vision</h2>
+          </div>
+          <span class="pill">Later</span>
+        </div>
+        <p>
+          Questora can later add optional Pi payments for premium lesson packs,
+          sponsor challenges, family bundles, creator tools, and verified reward
+          access. The free daily learning loop stays useful first, so users trust
+          the app before spending Pi.
+        </p>
       </section>
 
       <section class="mission-list" aria-labelledby="missionsTitle">

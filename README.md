@@ -37,7 +37,10 @@ http://localhost:3314
 - Pi safety quiz
 - Accessibility controls for bigger text and high contrast
 - Daily point boosters
-- Learning paths with claimable points
+- Category learning paths with styled lessons and questions
+- Daily learning task that can only be rewarded once per day
+- Local user record with daily completion history
+- Different reward styles and unlock progress
 - Pioneer toolkit with claimable points
 - All-age learning tabs
 - Starter mission list
