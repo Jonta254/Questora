@@ -135,9 +135,12 @@ h1 {
   font-size: 0.95rem;
 }
 
+.onboarding-panel,
 .quest-panel,
+.quiz-panel,
 .feature-panel,
-.mission-list {
+.mission-list,
+.leaderboard-panel {
   margin-top: 18px;
   padding: 20px;
   background: var(--surface);
@@ -169,6 +172,62 @@ h1 {
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.choice-grid,
+.answer-grid {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.choice-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.choice,
+.answer,
+select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.choice,
+.answer {
+  cursor: pointer;
+}
+
+.choice.active,
+.answer.correct {
+  color: #fff;
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.answer.wrong {
+  color: #fff;
+  background: #b93854;
+  border-color: #b93854;
+}
+
+.field-label {
+  display: block;
+  margin: 16px 0 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.quiz-feedback {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .quest-card {
@@ -249,6 +308,35 @@ h1 {
   font-weight: 800;
 }
 
+.leaderboard-list {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 16px 0 0;
+  list-style: none;
+}
+
+.leaderboard-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 12px;
+  background: #fbf8ff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.leaderboard-list span {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.leaderboard-list strong {
+  color: var(--purple);
+}
+
 @media (min-width: 620px) {
   .app-shell {
     padding-top: 34px;
@@ -257,5 +345,9 @@ h1 {
   .quest-card {
     grid-template-columns: 1fr auto;
     align-items: center;
+  }
+
+  .choice-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

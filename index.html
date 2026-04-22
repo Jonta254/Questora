@@ -39,6 +39,32 @@
         <p class="status-text" id="statusText">Sign in to save your progress.</p>
       </section>
 
+      <section class="onboarding-panel" aria-labelledby="onboardingTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Personalize</p>
+            <h2 id="onboardingTitle">Choose your quest path</h2>
+          </div>
+          <span class="pill" id="pathPill">Starter</span>
+        </div>
+
+        <div class="choice-grid" aria-label="Age group">
+          <button class="choice active" data-age="Kids" type="button">Kids</button>
+          <button class="choice" data-age="Teens" type="button">Teens</button>
+          <button class="choice" data-age="Adults" type="button">Adults</button>
+          <button class="choice" data-age="Family" type="button">Family</button>
+        </div>
+
+        <label class="field-label" for="goalSelect">Goal</label>
+        <select id="goalSelect">
+          <option value="Pi safety">Pi safety</option>
+          <option value="Daily learning">Daily learning</option>
+          <option value="Healthy habits">Healthy habits</option>
+          <option value="Money basics">Money basics</option>
+          <option value="Family growth">Family growth</option>
+        </select>
+      </section>
+
       <section class="quest-panel" aria-labelledby="todayQuestTitle">
         <div class="section-title">
           <div>
@@ -59,6 +85,22 @@
           </div>
           <button id="completeQuestButton" type="button">Finish quest</button>
         </div>
+      </section>
+
+      <section class="quiz-panel" aria-labelledby="quizTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Quick quiz</p>
+            <h2 id="quizTitle">What should a safe app avoid?</h2>
+          </div>
+          <span class="pill">+15 pts</span>
+        </div>
+        <div class="answer-grid">
+          <button class="answer" data-correct="false" type="button">Asking users to share wallet passphrases</button>
+          <button class="answer" data-correct="true" type="button">Clear safety rules and no fake Pi promises</button>
+          <button class="answer" data-correct="false" type="button">Guaranteeing free Pi for every tap</button>
+        </div>
+        <p class="quiz-feedback" id="quizFeedback">Pick the safest answer.</p>
       </section>
 
       <section class="tabs" aria-label="Questora features">
@@ -91,6 +133,21 @@
             <p>Earn a badge by completing three daily quests.</p>
           </li>
         </ul>
+      </section>
+
+      <section class="leaderboard-panel" aria-labelledby="leaderboardTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Global</p>
+            <h2 id="leaderboardTitle">Leaderboard preview</h2>
+          </div>
+          <span class="pill">Demo</span>
+        </div>
+        <ol class="leaderboard-list">
+          <li><span>Questora Kenya</span><strong>840</strong></li>
+          <li><span>Questora Global</span><strong>790</strong></li>
+          <li><span id="yourRankLabel">You</span><strong id="yourRankPoints">0</strong></li>
+        </ol>
       </section>
     </main>
 

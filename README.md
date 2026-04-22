@@ -33,5 +33,8 @@ http://localhost:3314
 - Pi login button
 - Daily quest
 - Points, streaks, and badges
+- Age and goal onboarding
+- Pi safety quiz
 - All-age learning tabs
 - Starter mission list
+- Leaderboard preview
