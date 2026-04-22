@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Questora</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div class="brand-row">
+          <div class="logo-mark" aria-hidden="true">Q</div>
+          <div>
+            <p class="eyebrow">Mainnet pioneer quests</p>
+            <h1>Questora</h1>
+          </div>
+        </div>
+
+        <div class="stats-grid" aria-label="Questora progress">
+          <article>
+            <span id="streakCount">0</span>
+            <p>Day streak</p>
+          </article>
+          <article>
+            <span id="pointCount">0</span>
+            <p>Points</p>
+          </article>
+          <article>
+            <span id="badgeCount">0</span>
+            <p>Badges</p>
+          </article>
+        </div>
+
+        <button class="primary-action" id="loginButton" type="button">
+          Connect with Pi
+        </button>
+        <p class="status-text" id="statusText">Sign in to save your progress.</p>
+      </section>
+
+      <section class="quest-panel" aria-labelledby="todayQuestTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Today</p>
+            <h2 id="todayQuestTitle">Complete your daily quest</h2>
+          </div>
+          <span class="pill">All ages</span>
+        </div>
+
+        <div class="quest-card">
+          <div>
+            <p class="quest-label">Safety Quest</p>
+            <h3>Spot the fake reward promise</h3>
+            <p>
+              Learn why real apps should never promise free Pi without a clear,
+              approved utility or payment flow.
+            </p>
+          </div>
+          <button id="completeQuestButton" type="button">Finish quest</button>
+        </div>
+      </section>
+
+      <section class="tabs" aria-label="Questora features">
+        <button class="tab active" data-tab="learn" type="button">Learn</button>
+        <button class="tab" data-tab="family" type="button">Family</button>
+        <button class="tab" data-tab="rank" type="button">Rank</button>
+      </section>
+
+      <section class="feature-panel" id="featurePanel">
+        <h2>Pi safety lessons</h2>
+        <p>
+          Short lessons teach users how to avoid scams, protect wallets, and use
+          ecosystem apps with confidence.
+        </p>
+      </section>
+
+      <section class="mission-list" aria-labelledby="missionsTitle">
+        <h2 id="missionsTitle">Starter missions</h2>
+        <ul>
+          <li>
+            <span>1</span>
+            <p>Read one safety tip and answer a quick quiz.</p>
+          </li>
+          <li>
+            <span>2</span>
+            <p>Invite a friend to learn safe Pi habits.</p>
+          </li>
+          <li>
+            <span>3</span>
+            <p>Earn a badge by completing three daily quests.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
