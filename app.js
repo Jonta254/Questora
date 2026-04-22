@@ -5,6 +5,9 @@ const state = {
   age: localStorage.getItem("questora-age") || "Kids",
   goal: localStorage.getItem("questora-goal") || "Pi safety",
   quizDone: localStorage.getItem("questora-quiz-done") === "true",
+  claimed: JSON.parse(localStorage.getItem("questora-claimed") || "{}"),
+  highContrast: localStorage.getItem("questora-high-contrast") === "true",
+  largeText: localStorage.getItem("questora-large-text") === "true",
   user: null,
 };
 
@@ -23,6 +26,66 @@ const quizFeedback = document.querySelector("#quizFeedback");
 const yourRankLabel = document.querySelector("#yourRankLabel");
 const yourRankPoints = document.querySelector("#yourRankPoints");
 const tabs = [...document.querySelectorAll(".tab")];
+const textSizeButton = document.querySelector("#textSizeButton");
+const contrastButton = document.querySelector("#contrastButton");
+const resetButton = document.querySelector("#resetButton");
+const boosterButtons = [...document.querySelectorAll(".booster")];
+const lessonGrid = document.querySelector("#lessonGrid");
+const toolGrid = document.querySelector("#toolGrid");
+
+const lessons = [
+  {
+    key: "wallet-safety",
+    title: "Wallet safety basics",
+    body: "Learn what never to share and how to protect your passphrase.",
+    points: 35,
+  },
+  {
+    key: "mainnet-ready",
+    title: "Mainnet readiness",
+    body: "Understand why real utility, trust, and clear rules matter.",
+    points: 30,
+  },
+  {
+    key: "family-digital",
+    title: "Family digital safety",
+    body: "Simple safety habits for kids, teens, parents, and guardians.",
+    points: 25,
+  },
+  {
+    key: "money-basics",
+    title: "Money basics",
+    body: "Practice saving goals, spending choices, and reward planning.",
+    points: 25,
+  },
+];
+
+const tools = [
+  {
+    key: "scam-checker",
+    title: "Scam checker",
+    body: "Review a claim and decide if it sounds safe, risky, or fake.",
+    points: 30,
+  },
+  {
+    key: "goal-planner",
+    title: "Goal planner",
+    body: "Pick one weekly learning goal and turn it into small quests.",
+    points: 25,
+  },
+  {
+    key: "streak-builder",
+    title: "Streak builder",
+    body: "Choose a simple daily action that helps you return tomorrow.",
+    points: 20,
+  },
+  {
+    key: "invite-builder",
+    title: "Invite builder",
+    body: "Create a friendly reason for someone to join Questora.",
+    points: 20,
+  },
+];
 
 const tabContent = {
   learn: {
@@ -55,6 +118,16 @@ function renderStats() {
   if (state.quizDone) {
     quizFeedback.textContent = "Quiz completed. Come back tomorrow for a new one.";
   }
+
+  document.documentElement.classList.toggle("high-contrast", state.highContrast);
+  document.documentElement.classList.toggle("large-text", state.largeText);
+
+  boosterButtons.forEach((button) => {
+    button.classList.toggle("claimed", Boolean(state.claimed[button.dataset.key]));
+  });
+
+  renderRewardCards(lessonGrid, lessons, "lesson");
+  renderRewardCards(toolGrid, tools, "tool");
 }
 
 function saveStats() {
@@ -64,6 +137,25 @@ function saveStats() {
   localStorage.setItem("questora-age", state.age);
   localStorage.setItem("questora-goal", state.goal);
   localStorage.setItem("questora-quiz-done", String(state.quizDone));
+  localStorage.setItem("questora-claimed", JSON.stringify(state.claimed));
+  localStorage.setItem("questora-high-contrast", String(state.highContrast));
+  localStorage.setItem("questora-large-text", String(state.largeText));
+}
+
+function renderRewardCards(container, items, type) {
+  container.innerHTML = items
+    .map((item) => {
+      const claimed = Boolean(state.claimed[item.key]);
+      const label = claimed ? "Completed" : `Earn +${item.points} pts`;
+      return `
+        <button class="${type}-card ${claimed ? "claimed" : ""}" data-reward="${item.key}" data-points="${item.points}" type="button">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+          <span>${label}</span>
+        </button>
+      `;
+    })
+    .join("");
 }
 
 function onIncompletePaymentFound(payment) {
@@ -121,6 +213,24 @@ function completeQuest() {
   statusText.textContent = "Nice work. Your daily progress was saved on this device.";
 }
 
+function claimReward(key, points, message) {
+  if (state.claimed[key]) {
+    statusText.textContent = "Already completed. Try another learning task.";
+    return;
+  }
+
+  state.claimed[key] = true;
+  state.points += points;
+
+  if (Object.keys(state.claimed).length === 4 || Object.keys(state.claimed).length === 8) {
+    state.badges += 1;
+  }
+
+  saveStats();
+  renderStats();
+  statusText.textContent = message;
+}
+
 function answerQuiz(button) {
   if (state.quizDone) {
     return;
@@ -150,8 +260,66 @@ function selectTab(selectedTab) {
   featurePanel.innerHTML = `<h2>${content.title}</h2><p>${content.body}</p>`;
 }
 
+function toggleLargeText() {
+  state.largeText = !state.largeText;
+  saveStats();
+  renderStats();
+  statusText.textContent = state.largeText ? "Bigger text is on." : "Bigger text is off.";
+}
+
+function toggleContrast() {
+  state.highContrast = !state.highContrast;
+  saveStats();
+  renderStats();
+  statusText.textContent = state.highContrast ? "High contrast is on." : "High contrast is off.";
+}
+
+function resetProgress() {
+  state.streak = 0;
+  state.points = 0;
+  state.badges = 0;
+  state.quizDone = false;
+  state.claimed = {};
+  answerButtons.forEach((button) => button.classList.remove("correct", "wrong"));
+  completeQuestButton.textContent = "Finish quest";
+  quizFeedback.textContent = "Pick the safest answer.";
+  saveStats();
+  renderStats();
+  statusText.textContent = "Progress reset for a fresh test.";
+}
+
 loginButton.addEventListener("click", connectWithPi);
 completeQuestButton.addEventListener("click", completeQuest);
+textSizeButton.addEventListener("click", toggleLargeText);
+contrastButton.addEventListener("click", toggleContrast);
+resetButton.addEventListener("click", resetProgress);
+boosterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    claimReward(
+      button.dataset.key,
+      Number(button.dataset.points),
+      `Point booster completed. You earned ${button.dataset.points} points.`,
+    );
+  });
+});
+lessonGrid.addEventListener("click", (event) => {
+  const card = event.target.closest("[data-reward]");
+  if (!card) return;
+  claimReward(
+    card.dataset.reward,
+    Number(card.dataset.points),
+    `Lesson completed. You earned ${card.dataset.points} points.`,
+  );
+});
+toolGrid.addEventListener("click", (event) => {
+  const card = event.target.closest("[data-reward]");
+  if (!card) return;
+  claimReward(
+    card.dataset.reward,
+    Number(card.dataset.points),
+    `Tool completed. You earned ${card.dataset.points} points.`,
+  );
+});
 choiceButtons.forEach((button) => {
   button.addEventListener("click", () => chooseAge(button.dataset.age));
 });

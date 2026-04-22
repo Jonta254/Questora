@@ -8,7 +8,20 @@
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#mainContent">Skip to app content</a>
     <main class="app-shell">
+      <section class="access-panel" aria-labelledby="accessTitle">
+        <div>
+          <p class="eyebrow">Access</p>
+          <h2 id="accessTitle">Comfort tools</h2>
+        </div>
+        <div class="access-actions">
+          <button class="small-tool" id="textSizeButton" type="button">Bigger text</button>
+          <button class="small-tool" id="contrastButton" type="button">High contrast</button>
+          <button class="small-tool" id="resetButton" type="button">Reset progress</button>
+        </div>
+      </section>
+
       <section class="hero">
         <div class="brand-row">
           <div class="logo-mark" aria-hidden="true">Q</div>
@@ -36,10 +49,10 @@
         <button class="primary-action" id="loginButton" type="button">
           Connect with Pi
         </button>
-        <p class="status-text" id="statusText">Sign in to save your progress.</p>
+        <p class="status-text" id="statusText" aria-live="polite">Sign in to save your progress.</p>
       </section>
 
-      <section class="onboarding-panel" aria-labelledby="onboardingTitle">
+      <section class="onboarding-panel" id="mainContent" aria-labelledby="onboardingTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Personalize</p>
@@ -63,6 +76,30 @@
           <option value="Money basics">Money basics</option>
           <option value="Family growth">Family growth</option>
         </select>
+      </section>
+
+      <section class="daily-board" aria-labelledby="dailyBoardTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Earn</p>
+            <h2 id="dailyBoardTitle">Point boosters</h2>
+          </div>
+          <span class="pill">Daily</span>
+        </div>
+        <div class="booster-grid">
+          <button class="booster" data-points="10" data-key="checkin" type="button">
+            <strong>Daily check-in</strong>
+            <span>+10 pts</span>
+          </button>
+          <button class="booster" data-points="20" data-key="share" type="button">
+            <strong>Share a safety tip</strong>
+            <span>+20 pts</span>
+          </button>
+          <button class="booster" data-points="30" data-key="tool" type="button">
+            <strong>Use a tool</strong>
+            <span>+30 pts</span>
+          </button>
+        </div>
       </section>
 
       <section class="quest-panel" aria-labelledby="todayQuestTitle">
@@ -115,6 +152,28 @@
           Short lessons teach users how to avoid scams, protect wallets, and use
           ecosystem apps with confidence.
         </p>
+      </section>
+
+      <section class="learning-panel" aria-labelledby="learningTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Academy</p>
+            <h2 id="learningTitle">Learning paths</h2>
+          </div>
+          <span class="pill">Earn points</span>
+        </div>
+        <div class="lesson-grid" id="lessonGrid"></div>
+      </section>
+
+      <section class="tool-panel" aria-labelledby="toolTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Tools</p>
+            <h2 id="toolTitle">Pioneer toolkit</h2>
+          </div>
+          <span class="pill">Useful</span>
+        </div>
+        <div class="tool-grid" id="toolGrid"></div>
       </section>
 
       <section class="mission-list" aria-labelledby="missionsTitle">

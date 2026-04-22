@@ -35,6 +35,10 @@ http://localhost:3314
 - Points, streaks, and badges
 - Age and goal onboarding
 - Pi safety quiz
+- Accessibility controls for bigger text and high contrast
+- Daily point boosters
+- Learning paths with claimable points
+- Pioneer toolkit with claimable points
 - All-age learning tabs
 - Starter mission list
 - Leaderboard preview

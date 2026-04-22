@@ -15,6 +15,22 @@
     sans-serif;
 }
 
+:root.high-contrast {
+  --ink: #08060d;
+  --muted: #2d2933;
+  --surface: #ffffff;
+  --line: #4f465a;
+  --purple: #3f1766;
+  --purple-dark: #24073b;
+  --gold: #ffd24a;
+  --green: #087a45;
+  --blue: #064da6;
+}
+
+:root.large-text {
+  font-size: 18px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -27,9 +43,33 @@ body {
     linear-gradient(180deg, #fbf7ff 0%, #f6fbff 45%, #ffffff 100%);
 }
 
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 10;
+  transform: translateY(-140%);
+  padding: 10px 12px;
+  color: #fff;
+  background: var(--purple-dark);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 button {
   border: 0;
   font: inherit;
+}
+
+button:focus-visible,
+select:focus-visible,
+.skip-link:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
 }
 
 .app-shell {
@@ -47,6 +87,39 @@ button {
   background: linear-gradient(135deg, var(--purple-dark), var(--purple));
   border-radius: 8px;
   box-shadow: var(--shadow);
+}
+
+.access-panel {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.access-panel h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.access-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.small-tool {
+  min-height: 42px;
+  padding: 0 10px;
+  color: var(--purple-dark);
+  background: #f2e7ff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .brand-row {
@@ -136,9 +209,12 @@ h1 {
 }
 
 .onboarding-panel,
+.daily-board,
 .quest-panel,
 .quiz-panel,
 .feature-panel,
+.learning-panel,
+.tool-panel,
 .mission-list,
 .leaderboard-panel {
   margin-top: 18px;
@@ -175,7 +251,10 @@ h1 {
 }
 
 .choice-grid,
-.answer-grid {
+.answer-grid,
+.booster-grid,
+.lesson-grid,
+.tool-grid {
   display: grid;
   gap: 8px;
   margin-top: 16px;
@@ -187,6 +266,9 @@ h1 {
 
 .choice,
 .answer,
+.booster,
+.lesson-card,
+.tool-card,
 select {
   width: 100%;
   min-height: 44px;
@@ -199,7 +281,10 @@ select {
 }
 
 .choice,
-.answer {
+.answer,
+.booster,
+.lesson-card,
+.tool-card {
   cursor: pointer;
 }
 
@@ -230,6 +315,37 @@ select {
   line-height: 1.45;
 }
 
+.booster,
+.lesson-card,
+.tool-card {
+  display: grid;
+  gap: 6px;
+  min-height: 82px;
+  padding: 14px;
+  text-align: left;
+}
+
+.booster span,
+.lesson-card span,
+.tool-card span {
+  color: var(--purple);
+  font-weight: 800;
+}
+
+.booster.claimed,
+.lesson-card.claimed,
+.tool-card.claimed {
+  color: #fff;
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.booster.claimed span,
+.lesson-card.claimed span,
+.tool-card.claimed span {
+  color: #fff;
+}
+
 .quest-card {
   display: grid;
   gap: 16px;
@@ -254,10 +370,16 @@ select {
 
 .quest-card p,
 .feature-panel p,
-.mission-list p {
+.mission-list p,
+.lesson-card p,
+.tool-card p {
   margin-bottom: 0;
   color: var(--muted);
   line-height: 1.55;
+}
+
+.claimed p {
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .tabs {
@@ -349,5 +471,10 @@ select {
 
   .choice-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lesson-grid,
+  .tool-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
