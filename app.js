@@ -225,6 +225,63 @@ const rewards = [
   { key: "premium", title: "Future Premium", need: 700, value: "Preview for optional Pi utility packs" },
 ];
 
+const visualTasks = [
+  {
+    key: "safe-link",
+    title: "What do you see?",
+    scene: "phone",
+    points: 35,
+    prompt: "A phone shows a message promising instant rewards from an unknown link.",
+    question: "What is the safest action?",
+    answers: ["Open quickly", "Check the source first", "Share your passphrase"],
+    correct: 1,
+    lesson: "Unknown reward links can be risky. Check the source before tapping.",
+  },
+  {
+    key: "family-plan",
+    title: "Family learning moment",
+    scene: "family",
+    points: 30,
+    prompt: "A family is planning device rules together at a table.",
+    question: "What can they learn?",
+    answers: ["Agree on safe rules", "Hide all problems", "Click every offer"],
+    correct: 0,
+    lesson: "Shared rules help kids, teens, and adults stay safer online.",
+  },
+  {
+    key: "market-choice",
+    title: "Marketplace decision",
+    scene: "market",
+    points: 35,
+    prompt: "A user compares two offers before spending points or future Pi.",
+    question: "What should the user check?",
+    answers: ["Only bright colors", "Value and clear terms", "Pressure words"],
+    correct: 1,
+    lesson: "Good choices come from value, clear terms, and no pressure.",
+  },
+];
+
+const ethicsStatements = [
+  {
+    key: "impact",
+    text: "Before launching an AI feature, possible harm to users should be considered.",
+  },
+  {
+    key: "early",
+    text: "Ethical analysis should happen from the early design stage, not only after launch.",
+  },
+  {
+    key: "approval",
+    text: "High-risk AI features should be reviewed before they are released.",
+  },
+  {
+    key: "community",
+    text: "People affected by an AI tool should have a way to give feedback.",
+  },
+];
+
+const ratingOptions = ["I don't know", "Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"];
+
 const state = {
   streak: Number(localStorage.getItem("questora-streak") || 0),
   points: Number(localStorage.getItem("questora-points") || 0),
@@ -236,6 +293,7 @@ const state = {
   record: JSON.parse(localStorage.getItem("questora-record") || "{}"),
   claimed: JSON.parse(localStorage.getItem("questora-claimed") || "{}"),
   answered: JSON.parse(localStorage.getItem("questora-answered") || "{}"),
+  ethics: JSON.parse(localStorage.getItem("questora-ethics") || "{}"),
   highContrast: localStorage.getItem("questora-high-contrast") === "true",
   largeText: localStorage.getItem("questora-large-text") === "true",
   user: null,
@@ -265,6 +323,8 @@ const dailyAnswerGrid = document.querySelector("#dailyAnswerGrid");
 const dailyFeedback = document.querySelector("#dailyFeedback");
 const lessonGrid = document.querySelector("#lessonGrid");
 const rewardGrid = document.querySelector("#rewardGrid");
+const visualGrid = document.querySelector("#visualGrid");
+const ethicsList = document.querySelector("#ethicsList");
 const toolGrid = document.querySelector("#toolGrid");
 const yourRankLabel = document.querySelector("#yourRankLabel");
 const yourRankPoints = document.querySelector("#yourRankPoints");
@@ -312,6 +372,7 @@ function saveState() {
   localStorage.setItem("questora-record", JSON.stringify(state.record));
   localStorage.setItem("questora-claimed", JSON.stringify(state.claimed));
   localStorage.setItem("questora-answered", JSON.stringify(state.answered));
+  localStorage.setItem("questora-ethics", JSON.stringify(state.ethics));
   localStorage.setItem("questora-high-contrast", String(state.highContrast));
   localStorage.setItem("questora-large-text", String(state.largeText));
 }
@@ -417,6 +478,53 @@ function render() {
     })
     .join("");
 
+  visualGrid.innerHTML = visualTasks
+    .map((task) => {
+      const key = `visual::${task.key}`;
+      const answered = state.answered[key];
+      return `
+        <article class="visual-card ${answered ? "claimed" : ""}">
+          ${renderScene(task.scene)}
+          <div class="visual-copy">
+            <strong>${task.title}</strong>
+            <p>${task.prompt}</p>
+            <span>${answered ? task.lesson : `Earn +${task.points} pts`}</span>
+          </div>
+          <div class="mini-question">
+            <p>${task.question}</p>
+            ${task.answers
+              .map(
+                (answer, index) => `
+                  <button class="mini-answer" data-visual="${task.key}" data-index="${index}" type="button" ${answered ? "disabled" : ""}>${answer}</button>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  ethicsList.innerHTML = ethicsStatements
+    .map((statement) => {
+      const saved = state.ethics[statement.key];
+      return `
+        <article class="ethics-card ${saved ? "answered" : ""}">
+          <p>${statement.text}</p>
+          <div class="rating-row">
+            ${ratingOptions
+              .map(
+                (option, index) => `
+                  <button class="rating-button ${saved === index ? "selected" : ""}" data-ethics="${statement.key}" data-value="${index}" type="button">${option}</button>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
   toolGrid.innerHTML = tools
     .map((tool) => {
       const claimed = state.claimed[tool.key];
@@ -429,6 +537,43 @@ function render() {
       `;
     })
     .join("");
+}
+
+function renderScene(scene) {
+  const scenes = {
+    phone: `
+      <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="Phone with a suspicious reward message">
+        <rect width="260" height="150" rx="8" fill="#f7f0ff" />
+        <rect x="86" y="18" width="88" height="114" rx="12" fill="#45215f" />
+        <rect x="96" y="34" width="68" height="78" rx="6" fill="#fff" />
+        <circle cx="130" cy="122" r="4" fill="#f5b83b" />
+        <path d="M109 56h42M109 73h32M109 90h48" stroke="#6b3a99" stroke-width="7" stroke-linecap="round" />
+        <path d="M187 42l13 13 27-29" fill="none" stroke="#24a86b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    `,
+    family: `
+      <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="Family planning safe digital habits">
+        <rect width="260" height="150" rx="8" fill="#eef7ff" />
+        <rect x="54" y="92" width="152" height="18" rx="8" fill="#f5b83b" />
+        <circle cx="82" cy="62" r="18" fill="#6b3a99" />
+        <circle cx="130" cy="52" r="20" fill="#24a86b" />
+        <circle cx="178" cy="64" r="17" fill="#2f74d0" />
+        <path d="M62 93c6-24 34-24 40 0M108 93c7-30 37-30 44 0M160 93c5-22 31-22 36 0" fill="#fff" opacity=".9" />
+        <path d="M92 30h76" stroke="#45215f" stroke-width="8" stroke-linecap="round" />
+      </svg>
+    `,
+    market: `
+      <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="User comparing marketplace offers">
+        <rect width="260" height="150" rx="8" fill="#f1fff7" />
+        <rect x="28" y="34" width="82" height="88" rx="8" fill="#fff" stroke="#24a86b" stroke-width="4" />
+        <rect x="150" y="34" width="82" height="88" rx="8" fill="#fff" stroke="#6b3a99" stroke-width="4" />
+        <path d="M47 58h44M47 78h30M47 98h48M169 58h44M169 78h30M169 98h48" stroke="#6f6878" stroke-width="6" stroke-linecap="round" />
+        <circle cx="130" cy="78" r="20" fill="#f5b83b" />
+        <path d="M122 78h16M130 70v16" stroke="#45215f" stroke-width="5" stroke-linecap="round" />
+      </svg>
+    `,
+  };
+  return scenes[scene] || scenes.phone;
 }
 
 function onIncompletePaymentFound(payment) {
@@ -502,6 +647,37 @@ function answerLesson(key, index) {
   addPoints(lesson.points, `${lesson.reward} unlocked. You earned ${lesson.points} points.`);
 }
 
+function answerVisual(taskKey, index) {
+  const task = visualTasks.find((item) => item.key === taskKey);
+  const answerKey = `visual::${taskKey}`;
+  if (!task || state.answered[answerKey]) {
+    statusText.textContent = "Visual task already completed.";
+    return;
+  }
+
+  if (index !== task.correct) {
+    statusText.textContent = "Look again and choose the safest learning answer.";
+    return;
+  }
+
+  state.answered[answerKey] = true;
+  addPoints(task.points, `${task.lesson} You earned ${task.points} points.`);
+}
+
+function rateEthics(statementKey, value) {
+  const firstAnswer = state.ethics[statementKey] === undefined;
+  state.ethics[statementKey] = value;
+
+  if (firstAnswer) {
+    addPoints(10, "Reflection saved. You earned 10 points for responsible thinking.");
+    return;
+  }
+
+  saveState();
+  render();
+  statusText.textContent = "Reflection updated.";
+}
+
 function claimTool(toolKey, points) {
   if (state.claimed[toolKey]) {
     statusText.textContent = "Tool already used. Try another one.";
@@ -557,6 +733,7 @@ function resetProgress() {
   state.record = {};
   state.claimed = {};
   state.answered = {};
+  state.ethics = {};
   saveState();
   render();
   statusText.textContent = "Progress reset for a fresh test.";
@@ -595,6 +772,16 @@ toolGrid.addEventListener("click", (event) => {
   const tool = event.target.closest("[data-tool]");
   if (!tool) return;
   claimTool(tool.dataset.tool, Number(tool.dataset.points));
+});
+visualGrid.addEventListener("click", (event) => {
+  const answer = event.target.closest("[data-visual]");
+  if (!answer) return;
+  answerVisual(answer.dataset.visual, Number(answer.dataset.index));
+});
+ethicsList.addEventListener("click", (event) => {
+  const answer = event.target.closest("[data-ethics]");
+  if (!answer) return;
+  rateEthics(answer.dataset.ethics, Number(answer.dataset.value));
 });
 
 userRecord();

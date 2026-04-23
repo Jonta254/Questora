@@ -39,6 +39,8 @@ http://localhost:3314
 - Daily point boosters
 - Category learning paths with styled lessons and questions
 - Daily learning task that can only be rewarded once per day
+- Image-based look and learn tasks
+- Responsible AI reflection ratings
 - Local user record with daily completion history
 - Different reward styles and unlock progress
 - Pioneer toolkit with claimable points

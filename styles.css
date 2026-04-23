@@ -219,6 +219,8 @@ h1 {
 .daily-learning-panel,
 .reward-panel,
 .tool-panel,
+.visual-panel,
+.ethics-panel,
 .future-panel,
 .mission-list,
 .leaderboard-panel {
@@ -262,6 +264,7 @@ h1 {
 .category-grid,
 .lesson-grid,
 .reward-grid,
+.visual-grid,
 .tool-grid {
   display: grid;
   gap: 8px;
@@ -277,6 +280,7 @@ h1 {
 .booster,
 .category-card,
 .lesson-card,
+.visual-card,
 .reward-card,
 .tool-card,
 select {
@@ -340,6 +344,7 @@ select {
 .booster span,
 .category-card span,
 .lesson-card span,
+.visual-card span,
 .reward-card span,
 .tool-card span {
   color: var(--purple);
@@ -389,9 +394,16 @@ select {
 .daily-card p,
 .category-card span,
 .reward-card p,
+.visual-card p,
 .lesson-card p,
 .tool-card p {
   margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.panel-copy {
+  margin: 12px 0 0;
   color: var(--muted);
   line-height: 1.55;
 }
@@ -503,6 +515,78 @@ select {
   border-radius: 8px;
   font-weight: 800;
   cursor: pointer;
+}
+
+.visual-card {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  background: #fbf8ff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.task-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.visual-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.visual-card.claimed {
+  border-color: rgba(36, 168, 107, 0.55);
+  background: linear-gradient(135deg, rgba(36, 168, 107, 0.16), #fff);
+}
+
+.ethics-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.ethics-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background: #fbf8ff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.ethics-card p {
+  margin-bottom: 0;
+  color: var(--ink);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.rating-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.rating-button {
+  min-height: 40px;
+  padding: 0 8px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.rating-button.selected {
+  color: #fff;
+  background: var(--purple);
+  border-color: var(--purple);
 }
 
 .answer:disabled,
@@ -619,7 +703,12 @@ select {
 
   .lesson-grid,
   .reward-grid,
+  .visual-grid,
   .tool-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rating-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
