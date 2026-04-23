@@ -10,7 +10,7 @@
   <body>
     <a class="skip-link" href="#mainContent">Skip to app content</a>
     <main class="app-shell">
-      <section class="access-panel" aria-labelledby="accessTitle">
+      <section class="access-panel" data-page="profile" aria-labelledby="accessTitle">
         <div>
           <p class="eyebrow">Access</p>
           <h2 id="accessTitle">Comfort tools</h2>
@@ -22,7 +22,7 @@
         </div>
       </section>
 
-      <section class="hero">
+      <section class="hero" data-page="home">
         <div class="brand-row">
           <div class="logo-mark" aria-hidden="true">Q</div>
           <div>
@@ -52,7 +52,15 @@
         <p class="status-text" id="statusText" aria-live="polite">Sign in to save your progress.</p>
       </section>
 
-      <section class="dashboard-panel" aria-labelledby="dashboardTitle">
+      <nav class="page-nav" aria-label="Questora pages">
+        <button class="page-tab active" data-page-target="home" type="button">Home</button>
+        <button class="page-tab" data-page-target="learn" type="button">Learn</button>
+        <button class="page-tab" data-page-target="rewards" type="button">Rewards</button>
+        <button class="page-tab" data-page-target="premium" type="button">Premium</button>
+        <button class="page-tab" data-page-target="profile" type="button">Profile</button>
+      </nav>
+
+      <section class="dashboard-panel" data-page="home" aria-labelledby="dashboardTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Dashboard</p>
@@ -98,7 +106,31 @@
         </div>
       </section>
 
-      <section class="onboarding-panel" id="mainContent" aria-labelledby="onboardingTitle">
+      <section class="home-strip" data-page="home" aria-labelledby="homeStripTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <h2 id="homeStripTitle">Quick actions</h2>
+          </div>
+          <span class="pill">Daily</span>
+        </div>
+        <div class="home-strip-grid">
+          <button class="shortcut-card" data-page-jump="learn" type="button">
+            <strong>Answer lessons</strong>
+            <span>Keep scrolling and earn points</span>
+          </button>
+          <button class="shortcut-card" data-page-jump="premium" type="button">
+            <strong>Open premium</strong>
+            <span>Preview `0.2 Pi` learning packs</span>
+          </button>
+          <button class="shortcut-card" data-page-jump="rewards" type="button">
+            <strong>See rewards</strong>
+            <span>Track unlocks and claims</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="onboarding-panel" data-page="home" id="mainContent" aria-labelledby="onboardingTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Personalize</p>
@@ -126,7 +158,7 @@
         </select>
       </section>
 
-      <section class="record-panel" aria-labelledby="recordTitle">
+      <section class="record-panel" data-page="profile" aria-labelledby="recordTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Record</p>
@@ -150,7 +182,7 @@
         </div>
       </section>
 
-      <section class="category-panel" aria-labelledby="categoryTitle">
+      <section class="category-panel" data-page="learn" aria-labelledby="categoryTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Explore</p>
@@ -162,7 +194,7 @@
         <div class="research-panel" id="researchPanel"></div>
       </section>
 
-      <section class="daily-learning-panel" aria-labelledby="dailyLearningTitle">
+      <section class="daily-learning-panel" data-page="home" aria-labelledby="dailyLearningTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Daily</p>
@@ -179,13 +211,13 @@
         <p class="quiz-feedback" id="dailyFeedback">Answer today’s question to earn your daily reward.</p>
       </section>
 
-      <section class="tabs" aria-label="Questora features">
+      <section class="tabs" data-page="learn" aria-label="Questora features">
         <button class="tab active" data-tab="learn" type="button">Learn</button>
         <button class="tab" data-tab="family" type="button">Family</button>
         <button class="tab" data-tab="rank" type="button">Rank</button>
       </section>
 
-      <section class="feature-panel" id="featurePanel">
+      <section class="feature-panel" data-page="learn" id="featurePanel">
         <h2>Pi safety lessons</h2>
         <p>
           Short lessons teach users how to avoid scams, protect wallets, and use
@@ -193,7 +225,7 @@
         </p>
       </section>
 
-      <section class="learning-panel" aria-labelledby="learningTitle">
+      <section class="learning-panel" data-page="learn" aria-labelledby="learningTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Academy</p>
@@ -204,7 +236,7 @@
         <div class="lesson-grid" id="lessonGrid"></div>
       </section>
 
-      <section class="reward-panel" aria-labelledby="rewardTitle">
+      <section class="reward-panel" data-page="rewards" aria-labelledby="rewardTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Rewards</p>
@@ -215,7 +247,7 @@
         <div class="reward-grid" id="rewardGrid"></div>
       </section>
 
-      <section class="visual-panel" aria-labelledby="visualTitle">
+      <section class="visual-panel" data-page="learn" aria-labelledby="visualTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Visual</p>
@@ -226,7 +258,7 @@
         <div class="visual-grid" id="visualGrid"></div>
       </section>
 
-      <section class="ethics-panel" aria-labelledby="ethicsTitle">
+      <section class="ethics-panel" data-page="learn" aria-labelledby="ethicsTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Ethics</p>
@@ -240,7 +272,7 @@
         <div class="ethics-list" id="ethicsList"></div>
       </section>
 
-      <section class="tool-panel" aria-labelledby="toolTitle">
+      <section class="tool-panel" data-page="learn" aria-labelledby="toolTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Tools</p>
@@ -251,7 +283,7 @@
         <div class="tool-grid" id="toolGrid"></div>
       </section>
 
-      <section class="future-panel" aria-labelledby="futureTitle">
+      <section class="future-panel" data-page="premium" aria-labelledby="futureTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Future</p>
@@ -267,7 +299,7 @@
         </p>
       </section>
 
-      <section class="premium-panel" aria-labelledby="premiumTitle">
+      <section class="premium-panel" data-page="premium" aria-labelledby="premiumTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Premium</p>
@@ -282,7 +314,7 @@
         <div class="premium-detail" id="premiumDetail"></div>
       </section>
 
-      <section class="mission-list" aria-labelledby="missionsTitle">
+      <section class="mission-list" data-page="rewards" aria-labelledby="missionsTitle">
         <h2 id="missionsTitle">Starter missions</h2>
         <ul>
           <li>
@@ -300,7 +332,7 @@
         </ul>
       </section>
 
-      <section class="leaderboard-panel" aria-labelledby="leaderboardTitle">
+      <section class="leaderboard-panel" data-page="rewards" aria-labelledby="leaderboardTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Global</p>
@@ -315,7 +347,7 @@
         </ol>
       </section>
 
-      <section class="wallet-panel" aria-labelledby="walletTitle">
+      <section class="wallet-panel" data-page="rewards" aria-labelledby="walletTitle">
         <div class="section-title">
           <div>
             <p class="eyebrow">Wallet</p>
@@ -331,6 +363,14 @@
           <button id="claimWalletButton" type="button">Create claim record</button>
         </div>
       </section>
+
+      <nav class="bottom-nav" aria-label="Questora bottom pages">
+        <button class="bottom-tab active" data-page-target="home" type="button">Home</button>
+        <button class="bottom-tab" data-page-target="learn" type="button">Learn</button>
+        <button class="bottom-tab" data-page-target="rewards" type="button">Rewards</button>
+        <button class="bottom-tab" data-page-target="premium" type="button">Premium</button>
+        <button class="bottom-tab" data-page-target="profile" type="button">Profile</button>
+      </nav>
     </main>
 
     <script src="app.js"></script>

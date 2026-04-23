@@ -724,6 +724,7 @@ const state = {
   ethics: JSON.parse(localStorage.getItem("questora-ethics") || "{}"),
   walletClaims: JSON.parse(localStorage.getItem("questora-wallet-claims") || "[]"),
   selectedPremium: localStorage.getItem("questora-selected-premium") || "deep-stem",
+  currentPage: localStorage.getItem("questora-current-page") || "home",
   highContrast: localStorage.getItem("questora-high-contrast") === "true",
   largeText: localStorage.getItem("questora-large-text") === "true",
   user: null,
@@ -773,6 +774,9 @@ const claimWalletButton = document.querySelector("#claimWalletButton");
 const walletPill = document.querySelector("#walletPill");
 const yourRankLabel = document.querySelector("#yourRankLabel");
 const yourRankPoints = document.querySelector("#yourRankPoints");
+const pageTabs = [...document.querySelectorAll("[data-page-target]")];
+const pageSections = [...document.querySelectorAll("[data-page]")];
+const pageJumpButtons = [...document.querySelectorAll("[data-page-jump]")];
 
 const tabContent = {
   learn: {
@@ -824,6 +828,7 @@ function saveState() {
   localStorage.setItem("questora-ethics", JSON.stringify(state.ethics));
   localStorage.setItem("questora-wallet-claims", JSON.stringify(state.walletClaims));
   localStorage.setItem("questora-selected-premium", state.selectedPremium);
+  localStorage.setItem("questora-current-page", state.currentPage);
   localStorage.setItem("questora-high-contrast", String(state.highContrast));
   localStorage.setItem("questora-large-text", String(state.largeText));
 }
@@ -867,6 +872,22 @@ function explain(reason, action) {
   reasonText.textContent = reason;
   actionText.textContent = action;
   statusText.textContent = `${reason} ${action}`;
+}
+
+function renderPages() {
+  pageSections.forEach((section) => {
+    section.hidden = section.dataset.page !== state.currentPage;
+  });
+  pageTabs.forEach((tab) => {
+    tab.classList.toggle("active", tab.dataset.pageTarget === state.currentPage);
+  });
+}
+
+function openPage(page) {
+  state.currentPage = page;
+  saveState();
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function render() {
@@ -1088,6 +1109,7 @@ function render() {
   walletClaimAmount.textContent = `${claimable} points ready`;
   walletPill.textContent = state.walletClaims.length ? `${state.walletClaims.length} claims` : "Preview";
   claimWalletButton.disabled = claimable < 100;
+  renderPages();
 }
 
 function currentDailyQuest(category) {
@@ -1409,6 +1431,12 @@ choiceButtons.forEach((button) => {
 goalSelect.addEventListener("change", () => chooseGoal(goalSelect.value));
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => selectTab(tab.dataset.tab));
+});
+pageTabs.forEach((tab) => {
+  tab.addEventListener("click", () => openPage(tab.dataset.pageTarget));
+});
+pageJumpButtons.forEach((button) => {
+  button.addEventListener("click", () => openPage(button.dataset.pageJump));
 });
 categoryGrid.addEventListener("click", (event) => {
   const card = event.target.closest("[data-category]");
