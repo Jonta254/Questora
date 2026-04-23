@@ -582,6 +582,19 @@ select {
   align-content: start;
   gap: 10px;
   background: linear-gradient(135deg, #fff8e8, #fbf8ff);
+  text-align: left;
+  cursor: pointer;
+}
+
+.premium-card.active {
+  color: #fff;
+  background: var(--purple);
+  border-color: var(--purple);
+}
+
+.premium-card.active p,
+.premium-card.active span {
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .premium-card p,
@@ -597,8 +610,47 @@ select {
   font-weight: 800;
 }
 
-.premium-card button,
 .wallet-card button {
+  min-height: 44px;
+  color: var(--purple-dark);
+  background: var(--gold);
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.premium-detail {
+  margin-top: 14px;
+}
+
+.premium-detail-card {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(107, 58, 153, 0.12), rgba(245, 184, 59, 0.12));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.premium-detail-card h3,
+.premium-detail-card p {
+  margin: 0;
+}
+
+.premium-detail-card p,
+.premium-detail-card li {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.premium-detail-card ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.premium-detail-card button {
   min-height: 44px;
   color: var(--purple-dark);
   background: var(--gold);

@@ -354,27 +354,47 @@ const rewards = [
 const premiumPacks = [
   {
     key: "deep-stem",
-    title: "Deep STEM Builder",
+    title: "STEM Lab Pro",
     price: "0.2 Pi",
     body: "Advanced science projects, coding logic, math puzzles, and builder guides.",
+    tips: [
+      "Start every project with one question you can test.",
+      "Write what you changed and what stayed the same.",
+      "Improve the design after each result, even if the test failed.",
+    ],
   },
   {
     key: "life-skills",
-    title: "Life Skills Mastery",
+    title: "Life Skills Pro",
     price: "0.2 Pi",
     body: "Money habits, safety decisions, study routines, confidence, and daily planning.",
+    tips: [
+      "Use one small action per day instead of a huge plan you cannot repeat.",
+      "Track decisions by goal: safety, money, health, learning, or family.",
+      "Review your wins weekly and choose the next useful habit.",
+    ],
   },
   {
     key: "pet-home",
-    title: "Pet & Home Care",
+    title: "Pet Care Pro",
     price: "0.2 Pi",
     body: "House pet ownership, care checklists, safe petting, hygiene, and family guidance.",
+    tips: [
+      "Check water, food, clean space, and mood every day.",
+      "Teach children to approach pets calmly and respect signals.",
+      "Record unusual appetite, energy, or behavior changes early.",
+    ],
   },
   {
     key: "pioneer-pro",
     title: "Pioneer Pro Tips",
     price: "0.2 Pi",
     body: "Pi safety, ecosystem trust checks, marketplace choices, and creator tips.",
+    tips: [
+      "Never trade trust for a fast reward promise.",
+      "Check terms, support, privacy, and app purpose before using a service.",
+      "Build or use Pi utility that solves a real problem first.",
+    ],
   },
 ];
 
@@ -581,6 +601,7 @@ const state = {
   answered: JSON.parse(localStorage.getItem("questora-answered") || "{}"),
   ethics: JSON.parse(localStorage.getItem("questora-ethics") || "{}"),
   walletClaims: JSON.parse(localStorage.getItem("questora-wallet-claims") || "[]"),
+  selectedPremium: localStorage.getItem("questora-selected-premium") || "deep-stem",
   highContrast: localStorage.getItem("questora-high-contrast") === "true",
   largeText: localStorage.getItem("questora-large-text") === "true",
   user: null,
@@ -620,6 +641,7 @@ const visualGrid = document.querySelector("#visualGrid");
 const ethicsList = document.querySelector("#ethicsList");
 const toolGrid = document.querySelector("#toolGrid");
 const premiumGrid = document.querySelector("#premiumGrid");
+const premiumDetail = document.querySelector("#premiumDetail");
 const walletClaimAmount = document.querySelector("#walletClaimAmount");
 const claimWalletButton = document.querySelector("#claimWalletButton");
 const walletPill = document.querySelector("#walletPill");
@@ -675,6 +697,7 @@ function saveState() {
   localStorage.setItem("questora-answered", JSON.stringify(state.answered));
   localStorage.setItem("questora-ethics", JSON.stringify(state.ethics));
   localStorage.setItem("questora-wallet-claims", JSON.stringify(state.walletClaims));
+  localStorage.setItem("questora-selected-premium", state.selectedPremium);
   localStorage.setItem("questora-high-contrast", String(state.highContrast));
   localStorage.setItem("questora-large-text", String(state.largeText));
 }
@@ -857,15 +880,27 @@ function render() {
   premiumGrid.innerHTML = premiumPacks
     .map(
       (pack) => `
-        <article class="premium-card">
+        <button class="premium-card ${state.selectedPremium === pack.key ? "active" : ""}" data-premium="${pack.key}" type="button">
           <strong>${pack.title}</strong>
           <p>${pack.body}</p>
           <span>${pack.price} example access</span>
-          <button data-premium="${pack.key}" type="button">Preview premium</button>
-        </article>
+        </button>
       `,
     )
     .join("");
+
+  const selectedPack = premiumPacks.find((pack) => pack.key === state.selectedPremium) || premiumPacks[0];
+  premiumDetail.innerHTML = `
+    <div class="premium-detail-card">
+      <p class="quest-label">Premium learning preview</p>
+      <h3>${selectedPack.title}</h3>
+      <p>${selectedPack.body}</p>
+      <ul>
+        ${selectedPack.tips.map((tip) => `<li>${tip}</li>`).join("")}
+      </ul>
+      <button type="button" id="premiumAccessButton">Preview ${selectedPack.price} access</button>
+    </div>
+  `;
 
   const claimable = Math.max(0, state.points - state.walletClaims.reduce((sum, claim) => sum + claim.points, 0));
   walletClaimAmount.textContent = `${claimable} points ready`;
@@ -1165,9 +1200,16 @@ ethicsList.addEventListener("click", (event) => {
   rateEthics(answer.dataset.ethics, Number(answer.dataset.value));
 });
 premiumGrid.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-premium]");
-  if (!button) return;
-  statusText.textContent = "Premium preview selected. Real 0.2 Pi access needs backend payment verification before launch.";
+  const card = event.target.closest("[data-premium]");
+  if (!card) return;
+  state.selectedPremium = card.dataset.premium;
+  saveState();
+  render();
+  statusText.textContent = "Premium learning area opened. Real 0.2 Pi access needs backend payment verification before launch.";
+});
+premiumDetail.addEventListener("click", (event) => {
+  if (!event.target.closest("#premiumAccessButton")) return;
+  statusText.textContent = "Premium access preview only. Live Pi payment should be added with approved backend verification.";
 });
 claimWalletButton.addEventListener("click", () => {
   const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
