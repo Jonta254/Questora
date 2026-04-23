@@ -209,6 +209,7 @@ h1 {
 }
 
 .onboarding-panel,
+.dashboard-panel,
 .record-panel,
 .daily-board,
 .quest-panel,
@@ -262,6 +263,7 @@ h1 {
 .answer-grid,
 .booster-grid,
 .record-grid,
+.dashboard-grid,
 .category-grid,
 .lesson-grid,
 .reward-grid,
@@ -305,13 +307,15 @@ select {
 }
 
 .choice.active,
-.answer.correct {
+.answer.correct,
+.mini-answer.correct {
   color: #fff;
   background: var(--green);
   border-color: var(--green);
 }
 
-.answer.wrong {
+.answer.wrong,
+.mini-answer.wrong {
   color: #fff;
   background: #b93854;
   border-color: #b93854;
@@ -411,6 +415,31 @@ select {
 
 .record-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-grid article {
+  display: grid;
+  gap: 5px;
+  min-height: 76px;
+  padding: 14px;
+  background: linear-gradient(135deg, #fbf8ff, #f7fbff);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.dashboard-grid span {
+  color: var(--purple);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.dashboard-grid strong {
+  color: var(--muted);
+  font-size: 0.84rem;
 }
 
 .record-grid article,
@@ -736,6 +765,10 @@ select {
 
   .choice-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lesson-grid,

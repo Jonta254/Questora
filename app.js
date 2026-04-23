@@ -488,6 +488,12 @@ const tabs = [...document.querySelectorAll(".tab")];
 const textSizeButton = document.querySelector("#textSizeButton");
 const contrastButton = document.querySelector("#contrastButton");
 const resetButton = document.querySelector("#resetButton");
+const dashUser = document.querySelector("#dashUser");
+const dashLevel = document.querySelector("#dashLevel");
+const dashRewards = document.querySelector("#dashRewards");
+const dashLessons = document.querySelector("#dashLessons");
+const dashHealth = document.querySelector("#dashHealth");
+const dashNext = document.querySelector("#dashNext");
 const recordName = document.querySelector("#recordName");
 const recordLevel = document.querySelector("#recordLevel");
 const recordToday = document.querySelector("#recordToday");
@@ -578,6 +584,13 @@ function render() {
   const healthDone = record.lastHealthDate === todayKey;
   const healthDay = Math.min(record.completedHealthDays + (healthDone ? 0 : 1), 500);
   const healthTask = buildHealthTask(Math.max(1, healthDay));
+  const level = Math.max(1, Math.floor(state.points / 150) + 1);
+  const unlockedRewards = rewards.filter((reward) => state.points >= reward.need).length;
+  const lessonKeys = categories.flatMap((item) =>
+    item.lessons.map((lesson) => `${item.key}::${lesson.key}`),
+  );
+  const completedLessons = lessonKeys.filter((key) => state.answered[key]).length;
+  const nextReward = rewards.find((reward) => state.points < reward.need);
 
   streakCount.textContent = state.streak;
   pointCount.textContent = state.points;
@@ -585,7 +598,13 @@ function render() {
   pathPill.textContent = state.age;
   goalSelect.value = state.goal;
   recordName.textContent = state.userName || "Guest learner";
-  recordLevel.textContent = `Level ${Math.max(1, Math.floor(state.points / 150) + 1)}`;
+  dashUser.textContent = state.userName || "Guest";
+  dashLevel.textContent = `Level ${level}`;
+  dashRewards.textContent = unlockedRewards;
+  dashLessons.textContent = completedLessons;
+  dashHealth.textContent = `${record.completedHealthDays}/500`;
+  dashNext.textContent = nextReward ? `${nextReward.need - state.points} pts` : "All open";
+  recordLevel.textContent = `Level ${level}`;
   recordToday.textContent = dailyDone ? "Done" : "Waiting";
   healthDayPill.textContent = healthDone ? `Day ${record.completedHealthDays}` : `Day ${healthDay}`;
   completeHealthButton.disabled = healthDone || record.completedHealthDays >= 500;
@@ -636,7 +655,7 @@ function render() {
   dailyAnswerGrid.innerHTML = category.daily.answers
     .map(
       (answer, index) => `
-        <button class="answer" data-daily-answer="${index}" type="button" ${dailyDone ? "disabled" : ""}>${answer}</button>
+        <button class="answer ${dailyDone && index === category.daily.correct ? "correct" : ""}" data-daily-answer="${index}" type="button" ${dailyDone ? "disabled" : ""}>${answer}</button>
       `,
     )
     .join("");
@@ -658,7 +677,7 @@ function render() {
             ${lesson.answers
               .map(
                 (answer, index) => `
-                  <button class="mini-answer" data-lesson="${key}" data-index="${index}" type="button" ${answered ? "disabled" : ""}>${answer}</button>
+                  <button class="mini-answer ${answered && index === lesson.correct ? "correct" : ""}" data-lesson="${key}" data-index="${index}" type="button" ${answered ? "disabled" : ""}>${answer}</button>
                 `,
               )
               .join("")}
@@ -698,7 +717,7 @@ function render() {
             ${task.answers
               .map(
                 (answer, index) => `
-                  <button class="mini-answer" data-visual="${task.key}" data-index="${index}" type="button" ${answered ? "disabled" : ""}>${answer}</button>
+                  <button class="mini-answer ${answered && index === task.correct ? "correct" : ""}" data-visual="${task.key}" data-index="${index}" type="button" ${answered ? "disabled" : ""}>${answer}</button>
                 `,
               )
               .join("")}
@@ -856,10 +875,12 @@ function answerDaily(index) {
   }
 
   if (index !== category.daily.correct) {
+    markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, category.daily.correct);
     dailyFeedback.textContent = "Not yet. Read the lesson and choose the safest answer.";
     return;
   }
 
+  markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, category.daily.correct);
   record.lastDailyDate = todayKey;
   record.completedDays += 1;
   state.streak += 1;
@@ -878,10 +899,12 @@ function answerLesson(key, index) {
   if (!lesson) return;
 
   if (index !== lesson.correct) {
+    markAnswerState(lessonGrid, `[data-lesson="${key}"]`, index, lesson.correct);
     statusText.textContent = "Good try. Read the card and answer again.";
     return;
   }
 
+  markAnswerState(lessonGrid, `[data-lesson="${key}"]`, index, lesson.correct);
   state.answered[key] = true;
   const record = userRecord();
   record.completedLessons.push(key);
@@ -897,12 +920,23 @@ function answerVisual(taskKey, index) {
   }
 
   if (index !== task.correct) {
+    markAnswerState(visualGrid, `[data-visual="${taskKey}"]`, index, task.correct);
     statusText.textContent = "Look again and choose the safest learning answer.";
     return;
   }
 
+  markAnswerState(visualGrid, `[data-visual="${taskKey}"]`, index, task.correct);
   state.answered[answerKey] = true;
   addPoints(task.points, `${task.lesson} You earned ${task.points} points.`);
+}
+
+function markAnswerState(container, selector, pickedIndex, correctIndex) {
+  container.querySelectorAll(selector).forEach((button) => {
+    const buttonIndex = Number(button.dataset.index ?? button.dataset.dailyAnswer);
+    button.classList.remove("correct", "wrong");
+    if (buttonIndex === correctIndex) button.classList.add("correct");
+    if (buttonIndex === pickedIndex && pickedIndex !== correctIndex) button.classList.add("wrong");
+  });
 }
 
 function rateEthics(statementKey, value) {
