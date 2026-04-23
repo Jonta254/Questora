@@ -1,4 +1,12 @@
 const todayKey = new Date().toISOString().slice(0, 10);
+const PI_SANDBOX = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const PI_PAYMENTS_ENABLED = false;
+const BACKEND_ENDPOINTS = {
+  signin: "/api/signin",
+  approve: "/api/approve",
+  complete: "/api/complete",
+  incomplete: "/api/incomplete",
+};
 
 const categories = [
   {
@@ -605,6 +613,7 @@ const state = {
   highContrast: localStorage.getItem("questora-high-contrast") === "true",
   largeText: localStorage.getItem("questora-large-text") === "true",
   user: null,
+  accessToken: "",
 };
 
 const streakCount = document.querySelector("#streakCount");
@@ -700,6 +709,31 @@ function saveState() {
   localStorage.setItem("questora-selected-premium", state.selectedPremium);
   localStorage.setItem("questora-high-contrast", String(state.highContrast));
   localStorage.setItem("questora-large-text", String(state.largeText));
+}
+
+function initPiSdk() {
+  if (!window.Pi) return false;
+  try {
+    window.Pi.init({ version: "2.0", sandbox: PI_SANDBOX });
+    return true;
+  } catch (error) {
+    console.warn("Pi SDK init skipped", error);
+    return true;
+  }
+}
+
+async function postToBackend(endpoint, body) {
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return response.ok;
+  } catch (error) {
+    console.info("Backend endpoint not ready yet", endpoint, error);
+    return false;
+  }
 }
 
 function addPoints(points, reason) {
@@ -977,32 +1011,83 @@ function renderScene(scene) {
 
 function onIncompletePaymentFound(payment) {
   console.info("Incomplete Pi payment found", payment);
+  postToBackend(BACKEND_ENDPOINTS.incomplete, { payment });
 }
 
 async function connectWithPi() {
-  if (!window.Pi) {
+  if (!initPiSdk()) {
     statusText.textContent =
       "Pi SDK is not available. Open this app from the Pi Browser sandbox.";
     return;
   }
 
   try {
-    window.Pi.init({ version: "2.0", sandbox: true });
     const authResult = await window.Pi.authenticate(
-      ["username"],
+      ["username", "payments"],
       onIncompletePaymentFound,
     );
     state.user = authResult.user;
+    state.accessToken = authResult.accessToken;
     state.userName = state.user.username;
     userRecord();
+    const verified = await postToBackend(BACKEND_ENDPOINTS.signin, { authResult });
     saveState();
     render();
     loginButton.textContent = "Connected";
-    statusText.textContent = `Connected as ${state.userName}. Your learning record is saved.`;
+    statusText.textContent = verified
+      ? `Connected and backend verified as ${state.userName}.`
+      : `Connected as ${state.userName}. Backend /v2/me verification is the next required step.`;
   } catch (error) {
     console.error(error);
     statusText.textContent = "Pi login was not completed. Try again in Pi Browser.";
   }
+}
+
+function paymentCallbacks(pack) {
+  return {
+    onReadyForServerApproval: (paymentId) => {
+      statusText.textContent = "Payment created. Waiting for server approval.";
+      postToBackend(BACKEND_ENDPOINTS.approve, { paymentId, packKey: pack.key });
+    },
+    onReadyForServerCompletion: (paymentId, txid) => {
+      statusText.textContent = "Payment submitted. Waiting for server completion.";
+      postToBackend(BACKEND_ENDPOINTS.complete, { paymentId, txid, packKey: pack.key });
+    },
+    onCancel: (paymentId) => {
+      statusText.textContent = `Payment cancelled: ${paymentId}`;
+    },
+    onError: (error, payment) => {
+      console.error("Pi payment error", error, payment);
+      statusText.textContent = "Pi payment could not be completed. Check backend setup.";
+    },
+  };
+}
+
+async function requestPremiumPayment(pack) {
+  if (!initPiSdk()) {
+    statusText.textContent = "Open Questora inside Pi Browser to use Pi payments.";
+    return;
+  }
+
+  if (!state.user) {
+    statusText.textContent = "Connect with Pi first, then open premium access.";
+    return;
+  }
+
+  if (!PI_PAYMENTS_ENABLED) {
+    statusText.textContent =
+      "Premium is paired with Pi payment callbacks, but live payment is disabled until backend approve/complete endpoints are deployed.";
+    return;
+  }
+
+  await window.Pi.createPayment(
+    {
+      amount: Number(pack.price.replace(" Pi", "")),
+      memo: `Questora premium: ${pack.title}`,
+      metadata: { packKey: pack.key, type: "premium-learning" },
+    },
+    paymentCallbacks(pack),
+  );
 }
 
 function answerDaily(index) {
@@ -1209,7 +1294,8 @@ premiumGrid.addEventListener("click", (event) => {
 });
 premiumDetail.addEventListener("click", (event) => {
   if (!event.target.closest("#premiumAccessButton")) return;
-  statusText.textContent = "Premium access preview only. Live Pi payment should be added with approved backend verification.";
+  const pack = premiumPacks.find((item) => item.key === state.selectedPremium) || premiumPacks[0];
+  requestPremiumPayment(pack);
 });
 claimWalletButton.addEventListener("click", () => {
   const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);

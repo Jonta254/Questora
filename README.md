@@ -27,6 +27,7 @@ http://localhost:3314
 - Open the Development URL through the Pi Browser sandbox.
 - Keep the Pi API key private and only use it on a backend server.
 - The current version is a frontend starter. Backend verification and payments should be added before real Mainnet payment features.
+- See `PI_BACKEND_FLOW.md` for the Pi authentication and payment pairing flow.
 
 ## First Features
 
