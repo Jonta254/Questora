@@ -189,6 +189,118 @@ const categories = [
       },
     ],
   },
+  {
+    key: "stem",
+    title: "STEM Lab",
+    style: "blue",
+    summary: "Science, technology, engineering, and math for curious learners.",
+    daily: {
+      title: "Think like a scientist",
+      body: "Observe one thing, ask why it happens, and choose a simple test.",
+      points: 55,
+      question: "What comes first in a good STEM investigation?",
+      answers: ["Observation", "Guessing forever", "Ignoring evidence"],
+      correct: 0,
+    },
+    lessons: [
+      {
+        key: "science-method",
+        title: "Scientific method",
+        body: "Observe, ask, predict, test, and learn from the result.",
+        reward: "Lab Badge",
+        points: 45,
+        question: "A fair test changes...",
+        answers: ["One thing at a time", "Everything at once", "Nothing ever"],
+        correct: 0,
+      },
+      {
+        key: "coding-logic",
+        title: "Coding logic",
+        body: "Code is a set of clear steps. Good steps are small and testable.",
+        reward: "Code Spark",
+        points: 45,
+        question: "A program is built from...",
+        answers: ["Clear steps", "Random taps", "Secret passwords"],
+        correct: 0,
+      },
+      {
+        key: "math-patterns",
+        title: "Math patterns",
+        body: "Patterns help us predict, compare, count, and solve problems.",
+        reward: "Pattern Star",
+        points: 40,
+        question: "A pattern helps you...",
+        answers: ["Predict what comes next", "Forget the rule", "Hide the answer"],
+        correct: 0,
+      },
+      {
+        key: "engineering-design",
+        title: "Engineering design",
+        body: "Engineers define a problem, build a solution, test it, and improve it.",
+        reward: "Builder Badge",
+        points: 45,
+        question: "After testing a design, you should...",
+        answers: ["Improve it", "Never change it", "Throw away learning"],
+        correct: 0,
+      },
+    ],
+  },
+  {
+    key: "pet",
+    title: "Pet Care",
+    style: "green",
+    summary: "House pet ownership, daily care, kindness, hygiene, and safety.",
+    daily: {
+      title: "Check a pet's basic needs",
+      body: "A pet needs clean water, safe food, a clean space, movement, and gentle attention.",
+      points: 50,
+      question: "What is part of responsible pet care?",
+      answers: ["Clean water daily", "Ignoring behavior changes", "Unsafe punishment"],
+      correct: 0,
+    },
+    lessons: [
+      {
+        key: "daily-feeding",
+        title: "Daily feeding guide",
+        body: "Use pet-safe food, regular times, clean bowls, and portions that match age and size.",
+        reward: "Feeding Badge",
+        points: 40,
+        question: "A healthy feeding habit is...",
+        answers: ["Clean bowl and safe food", "Any human snack", "No water check"],
+        correct: 0,
+      },
+      {
+        key: "pet-health",
+        title: "Health watch",
+        body: "Notice appetite, energy, breathing, coat, bathroom habits, and unusual behavior.",
+        reward: "Care Watch",
+        points: 45,
+        question: "A sudden behavior change means...",
+        answers: ["Pay attention", "Always ignore it", "Punish first"],
+        correct: 0,
+      },
+      {
+        key: "safe-petting",
+        title: "Safe petting",
+        body: "Approach calmly, avoid hurting ears or tails, and stop when the pet wants space.",
+        reward: "Gentle Hands",
+        points: 35,
+        question: "Safe petting means...",
+        answers: ["Respect signals", "Force attention", "Pull tails"],
+        correct: 0,
+      },
+      {
+        key: "clean-home",
+        title: "Clean home routine",
+        body: "Clean sleeping areas, litter spaces, cages, and feeding spots to protect the whole family.",
+        reward: "Clean Habitat",
+        points: 40,
+        question: "A clean pet area helps...",
+        answers: ["Pet and family health", "Spread germs", "Hide problems"],
+        correct: 0,
+      },
+    ],
+  },
 ];
 
 const tools = [
@@ -216,13 +328,27 @@ const tools = [
     body: "Create one family rule for devices, wallets, or links.",
     points: 25,
   },
+  {
+    key: "stem-solver",
+    title: "STEM solver",
+    body: "Turn a problem into observe, test, measure, and improve.",
+    points: 30,
+  },
+  {
+    key: "pet-care-check",
+    title: "Pet care checklist",
+    body: "Review water, food, cleanliness, movement, and mood for a house pet.",
+    points: 30,
+  },
 ];
 
 const rewards = [
   { key: "starter", title: "Starter Chest", need: 100, value: "Unlocks beginner tips" },
   { key: "safety", title: "Safety Shield", need: 250, value: "Unlocks safety checklist" },
   { key: "family", title: "Family Pack", need: 400, value: "Unlocks family quest ideas" },
-  { key: "premium", title: "Future Premium", need: 700, value: "Preview for optional Pi utility packs" },
+  { key: "stem", title: "STEM Kit", need: 550, value: "Unlocks science and builder challenges" },
+  { key: "pet", title: "Pet Care Kit", need: 650, value: "Unlocks daily care guide ideas" },
+  { key: "premium", title: "Future Premium", need: 900, value: "Preview for optional Pi utility packs" },
 ];
 
 const visualTasks = [
@@ -258,6 +384,56 @@ const visualTasks = [
     answers: ["Only bright colors", "Value and clear terms", "Pressure words"],
     correct: 1,
     lesson: "Good choices come from value, clear terms, and no pressure.",
+  },
+  {
+    key: "stem-lab",
+    title: "What is happening?",
+    scene: "lab",
+    points: 40,
+    prompt: "A learner tests a plant near light and records what changes.",
+    question: "What STEM skill are they using?",
+    answers: ["Observation and testing", "Guessing without looking", "Copying a secret"],
+    correct: 0,
+    lesson: "STEM grows when you observe, test, record, and improve.",
+  },
+  {
+    key: "pet-care",
+    title: "Pet care check",
+    scene: "pet",
+    points: 40,
+    prompt: "A house pet sits near a bowl, clean space, and care checklist.",
+    question: "What should the owner check every day?",
+    answers: ["Water, food, space, mood", "Only decorations", "Nothing until problems grow"],
+    correct: 0,
+    lesson: "Daily care helps pets stay safer, calmer, and healthier.",
+  },
+];
+
+const healthJourneyAreas = [
+  {
+    title: "Hydration and meals",
+    action: "Drink clean water and choose one balanced meal with a fruit, vegetable, grain, or protein when available.",
+    why: "Small food and water checks support energy for learning.",
+  },
+  {
+    title: "Movement",
+    action: "Move your body for 5 to 20 minutes: walk, stretch, dance, tidy, or do gentle exercise.",
+    why: "Movement supports focus, mood, and long-term health.",
+  },
+  {
+    title: "Rest and recovery",
+    action: "Plan a better sleep step: reduce noise, lower screen time, or rest your mind before bed.",
+    why: "Rest helps memory, patience, and decision making.",
+  },
+  {
+    title: "Mind and kindness",
+    action: "Do one calm action: breathe slowly, write gratitude, help someone, or speak kindly.",
+    why: "Mental wellbeing grows through repeatable small care.",
+  },
+  {
+    title: "Home and hygiene",
+    action: "Clean one small area, wash hands, check clothing, or improve your home safety today.",
+    why: "Clean spaces and hygiene protect individuals, families, and pets.",
   },
 ];
 
@@ -315,6 +491,10 @@ const resetButton = document.querySelector("#resetButton");
 const recordName = document.querySelector("#recordName");
 const recordLevel = document.querySelector("#recordLevel");
 const recordToday = document.querySelector("#recordToday");
+const healthDayPill = document.querySelector("#healthDayPill");
+const healthJourneyCard = document.querySelector("#healthJourneyCard");
+const completeHealthButton = document.querySelector("#completeHealthButton");
+const healthFeedback = document.querySelector("#healthFeedback");
 const dailyStatusPill = document.querySelector("#dailyStatusPill");
 const categoryPill = document.querySelector("#categoryPill");
 const categoryGrid = document.querySelector("#categoryGrid");
@@ -356,8 +536,12 @@ function userRecord() {
     completedDays: 0,
     completedLessons: [],
     completedTools: [],
+    completedHealthDays: 0,
+    lastHealthDate: "",
     unlockedRewards: [],
   };
+  state.record[id].completedHealthDays ||= 0;
+  state.record[id].lastHealthDate ||= "";
   return state.record[id];
 }
 
@@ -391,6 +575,9 @@ function render() {
   const category = currentCategory();
   const record = userRecord();
   const dailyDone = record.lastDailyDate === todayKey;
+  const healthDone = record.lastHealthDate === todayKey;
+  const healthDay = Math.min(record.completedHealthDays + (healthDone ? 0 : 1), 500);
+  const healthTask = buildHealthTask(Math.max(1, healthDay));
 
   streakCount.textContent = state.streak;
   pointCount.textContent = state.points;
@@ -400,6 +587,22 @@ function render() {
   recordName.textContent = state.userName || "Guest learner";
   recordLevel.textContent = `Level ${Math.max(1, Math.floor(state.points / 150) + 1)}`;
   recordToday.textContent = dailyDone ? "Done" : "Waiting";
+  healthDayPill.textContent = healthDone ? `Day ${record.completedHealthDays}` : `Day ${healthDay}`;
+  completeHealthButton.disabled = healthDone || record.completedHealthDays >= 500;
+  completeHealthButton.textContent = healthDone
+    ? "Health follow-up done"
+    : record.completedHealthDays >= 500
+      ? "500-day journey complete"
+      : "Complete health follow-up";
+  healthJourneyCard.innerHTML = `
+    <p class="quest-label">${healthTask.area}</p>
+    <h3>Day ${healthTask.day}: ${healthTask.title}</h3>
+    <p>${healthTask.action}</p>
+    <span>${healthTask.why}</span>
+  `;
+  healthFeedback.textContent = healthDone
+    ? "Today's health follow-up is already saved. Come back tomorrow for the next serving."
+    : "Complete this balanced daily serving to continue your 500-day journey.";
   dailyStatusPill.textContent = dailyDone ? "Completed" : "Available";
   categoryPill.textContent = category.title;
   yourRankPoints.textContent = state.points;
@@ -539,6 +742,20 @@ function render() {
     .join("");
 }
 
+function buildHealthTask(day) {
+  const cappedDay = Math.min(Math.max(day, 1), 500);
+  const area = healthJourneyAreas[(cappedDay - 1) % healthJourneyAreas.length];
+  const cycle = Math.floor((cappedDay - 1) / healthJourneyAreas.length) + 1;
+  const minutes = 5 + ((cappedDay - 1) % 4) * 5;
+  return {
+    day: cappedDay,
+    area: area.title,
+    title: `Balanced serving ${cycle}`,
+    action: `${area.action} Aim for about ${minutes} minutes if it is safe for you.`,
+    why: area.why,
+  };
+}
+
 function renderScene(scene) {
   const scenes = {
     phone: `
@@ -570,6 +787,30 @@ function renderScene(scene) {
         <path d="M47 58h44M47 78h30M47 98h48M169 58h44M169 78h30M169 98h48" stroke="#6f6878" stroke-width="6" stroke-linecap="round" />
         <circle cx="130" cy="78" r="20" fill="#f5b83b" />
         <path d="M122 78h16M130 70v16" stroke="#45215f" stroke-width="5" stroke-linecap="round" />
+      </svg>
+    `,
+    lab: `
+      <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="STEM lab with plant observation">
+        <rect width="260" height="150" rx="8" fill="#eef7ff" />
+        <circle cx="58" cy="42" r="22" fill="#f5b83b" />
+        <rect x="132" y="36" width="72" height="82" rx="8" fill="#fff" stroke="#2f74d0" stroke-width="4" />
+        <path d="M154 98c0-22 20-34 34-48" stroke="#24a86b" stroke-width="6" fill="none" stroke-linecap="round" />
+        <path d="M154 73c-16-7-22-16-24-26M169 70c14-10 25-12 38-9" stroke="#24a86b" stroke-width="6" fill="none" stroke-linecap="round" />
+        <path d="M45 106h72M55 86h48" stroke="#45215f" stroke-width="8" stroke-linecap="round" />
+        <circle cx="84" cy="62" r="12" fill="#6b3a99" />
+      </svg>
+    `,
+    pet: `
+      <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="House pet care checklist">
+        <rect width="260" height="150" rx="8" fill="#f1fff7" />
+        <circle cx="89" cy="68" r="30" fill="#6b3a99" />
+        <circle cx="70" cy="39" r="12" fill="#6b3a99" />
+        <circle cx="108" cy="39" r="12" fill="#6b3a99" />
+        <circle cx="78" cy="66" r="4" fill="#fff" />
+        <circle cx="100" cy="66" r="4" fill="#fff" />
+        <path d="M82 82c8 7 16 7 24 0" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" />
+        <rect x="146" y="38" width="72" height="76" rx="8" fill="#fff" stroke="#24a86b" stroke-width="4" />
+        <path d="M160 60h38M160 78h32M160 96h42" stroke="#6f6878" stroke-width="6" stroke-linecap="round" />
       </svg>
     `,
   };
@@ -678,6 +919,23 @@ function rateEthics(statementKey, value) {
   statusText.textContent = "Reflection updated.";
 }
 
+function completeHealthFollowUp() {
+  const record = userRecord();
+  if (record.lastHealthDate === todayKey) {
+    statusText.textContent = "Today's health follow-up is already complete.";
+    return;
+  }
+
+  if (record.completedHealthDays >= 500) {
+    statusText.textContent = "The 500-day health journey is complete.";
+    return;
+  }
+
+  record.completedHealthDays += 1;
+  record.lastHealthDate = todayKey;
+  addPoints(20, `Health day ${record.completedHealthDays} saved. You earned 20 points.`);
+}
+
 function claimTool(toolKey, points) {
   if (state.claimed[toolKey]) {
     statusText.textContent = "Tool already used. Try another one.";
@@ -743,6 +1001,7 @@ loginButton.addEventListener("click", connectWithPi);
 textSizeButton.addEventListener("click", toggleLargeText);
 contrastButton.addEventListener("click", toggleContrast);
 resetButton.addEventListener("click", resetProgress);
+completeHealthButton.addEventListener("click", completeHealthFollowUp);
 choiceButtons.forEach((button) => {
   button.addEventListener("click", () => chooseAge(button.dataset.age));
 });

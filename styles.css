@@ -221,6 +221,7 @@ h1 {
 .tool-panel,
 .visual-panel,
 .ethics-panel,
+.health-journey-panel,
 .future-panel,
 .mission-list,
 .leaderboard-panel {
@@ -456,6 +457,42 @@ select {
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 8px;
+}
+
+.journey-card {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(47, 116, 208, 0.16), rgba(36, 168, 107, 0.12));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.journey-card h3 {
+  margin-bottom: 0;
+}
+
+.journey-card span {
+  color: var(--purple);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.journey-action {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+  color: var(--purple-dark);
+  background: var(--gold);
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.journey-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
 }
 
 .daily-card h3 {

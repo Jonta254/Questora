@@ -38,6 +38,9 @@ http://localhost:3314
 - Accessibility controls for bigger text and high contrast
 - Daily point boosters
 - Category learning paths with styled lessons and questions
+- STEM Lab category with science, coding, math, and engineering lessons
+- Pet Care category with house pet ownership and daily care guidance
+- 500-day daily health follow-up journey
 - Daily learning task that can only be rewarded once per day
 - Image-based look and learn tasks
 - Responsible AI reflection ratings
