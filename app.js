@@ -750,18 +750,22 @@ const dashRewards = document.querySelector("#dashRewards");
 const dashLessons = document.querySelector("#dashLessons");
 const dashDaily = document.querySelector("#dashDaily");
 const dashNext = document.querySelector("#dashNext");
+const dashboardPill = document.querySelector("#dashboardPill");
 const reasonText = document.querySelector("#reasonText");
 const actionText = document.querySelector("#actionText");
 const recordName = document.querySelector("#recordName");
 const recordLevel = document.querySelector("#recordLevel");
 const recordToday = document.querySelector("#recordToday");
 const dailyStatusPill = document.querySelector("#dailyStatusPill");
+const dailyRewardPill = document.querySelector("#dailyRewardPill");
 const categoryPill = document.querySelector("#categoryPill");
 const categoryGrid = document.querySelector("#categoryGrid");
 const researchPanel = document.querySelector("#researchPanel");
 const dailyCard = document.querySelector("#dailyCard");
 const dailyAnswerGrid = document.querySelector("#dailyAnswerGrid");
 const dailyFeedback = document.querySelector("#dailyFeedback");
+const surpriseGrid = document.querySelector("#surpriseGrid");
+const surprisePill = document.querySelector("#surprisePill");
 const lessonGrid = document.querySelector("#lessonGrid");
 const rewardGrid = document.querySelector("#rewardGrid");
 const visualGrid = document.querySelector("#visualGrid");
@@ -792,6 +796,43 @@ const tabContent = {
     body: "Leaderboards can later compare countries, categories, and streaks after backend accounts are connected.",
   },
 };
+
+function homeSpotlights(category, dailyQuest, level, nextReward, claimable, record) {
+  return [
+    {
+      title: "Daily brief",
+      body: `${dailyQuest.title} is live now. A correct answer turns green and earns +${dailyQuest.points} pts.`,
+      cta: "Open today's question",
+      page: "home",
+    },
+    {
+      title: "Category sprint",
+      body: `${category.title} is active with ${category.lessons.length} lessons, clear rewards, and short answer tasks that keep the scroll useful.`,
+      cta: "Open lessons",
+      page: "learn",
+    },
+    {
+      title: "Reward runway",
+      body: nextReward
+        ? `${nextReward.need - state.points} more pts unlocks ${nextReward.title}.`
+        : "Every current reward tier is unlocked. Keep learning to build more claim records.",
+      cta: "See rewards",
+      page: "rewards",
+    },
+    {
+      title: "Premium preview",
+      body: `Level ${level} learners can preview deeper guides, research, and tips. Example access stays paired to the 0.2 Pi payment flow.`,
+      cta: "See premium",
+      page: "premium",
+    },
+    {
+      title: "Consistency matters",
+      body: `${record.completedDays} daily wins saved and ${claimable} pts currently ready for a claim record preview.`,
+      cta: "Open profile",
+      page: "profile",
+    },
+  ];
+}
 
 function currentCategory() {
   return categories.find((category) => category.key === state.category) || categories[0];
@@ -902,6 +943,8 @@ function render() {
   );
   const completedLessons = lessonKeys.filter((key) => state.answered[key]).length;
   const nextReward = rewards.find((reward) => state.points < reward.need);
+  const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
+  const claimable = Math.max(0, state.points - alreadyClaimed);
 
   streakCount.textContent = state.streak;
   pointCount.textContent = state.points;
@@ -915,10 +958,13 @@ function render() {
   dashLessons.textContent = completedLessons;
   dashDaily.textContent = record.completedDays;
   dashNext.textContent = nextReward ? `${nextReward.need - state.points} pts` : "All open";
+  dashboardPill.textContent = state.userName ? "Connected" : "Guest mode";
   recordLevel.textContent = `Level ${level}`;
   recordToday.textContent = dailyDone ? "Done" : "Waiting";
   dailyStatusPill.textContent = dailyDone ? "Completed" : "Available";
+  dailyRewardPill.textContent = `+${dailyQuest.points} pts`;
   categoryPill.textContent = category.title;
+  surprisePill.textContent = category.title;
   yourRankPoints.textContent = state.points;
   yourRankLabel.textContent = state.userName || "You";
 
@@ -965,11 +1011,31 @@ function render() {
     </div>
   `;
 
+  surpriseGrid.innerHTML = homeSpotlights(
+    category,
+    dailyQuest,
+    level,
+    nextReward,
+    claimable,
+    record,
+  )
+    .map(
+      (item) => `
+        <button class="spotlight-card" data-open-page="${item.page}" type="button">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+          <span>${item.cta}</span>
+        </button>
+      `,
+    )
+    .join("");
+
   dailyCard.className = `daily-card ${category.style}`;
   dailyCard.innerHTML = `
     <p class="quest-label">${category.title}</p>
     <h3>${dailyQuest.title}</h3>
     <p>${dailyQuest.body}</p>
+    <strong class="reward-note">Correct answer earns +${dailyQuest.points} pts and saves today's win.</strong>
   `;
 
   dailyAnswerGrid.innerHTML = dailyQuest.answers
@@ -994,6 +1060,7 @@ function render() {
           <span>${lesson.reward} • +${lesson.points} pts</span>
           <div class="mini-question">
             <p>${lesson.question}</p>
+            <small>${answered ? "Completed and saved." : "Pick one answer. Right turns green and wrong turns red."}</small>
             ${lesson.answers
               .map(
                 (answer, index) => `
@@ -1034,6 +1101,7 @@ function render() {
           </div>
           <div class="mini-question">
             <p>${task.question}</p>
+            <small>${answered ? "Visual lesson completed." : "Select the clearest answer from what the image is teaching."}</small>
             ${task.answers
               .map(
                 (answer, index) => `
@@ -1105,7 +1173,6 @@ function render() {
     </div>
   `;
 
-  const claimable = Math.max(0, state.points - state.walletClaims.reduce((sum, claim) => sum + claim.points, 0));
   walletClaimAmount.textContent = `${claimable} points ready`;
   walletPill.textContent = state.walletClaims.length ? `${state.walletClaims.length} claims` : "Preview";
   claimWalletButton.disabled = claimable < 100;
@@ -1437,6 +1504,11 @@ pageTabs.forEach((tab) => {
 });
 pageJumpButtons.forEach((button) => {
   button.addEventListener("click", () => openPage(button.dataset.pageJump));
+});
+surpriseGrid.addEventListener("click", (event) => {
+  const card = event.target.closest("[data-open-page]");
+  if (!card) return;
+  openPage(card.dataset.openPage);
 });
 categoryGrid.addEventListener("click", (event) => {
   const card = event.target.closest("[data-category]");

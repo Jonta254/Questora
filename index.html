@@ -28,7 +28,18 @@
           <div>
             <p class="eyebrow">Mainnet pioneer quests</p>
             <h1>Questora</h1>
+            <p class="hero-copy">
+              A polished daily learning mini app for Pioneers with clear questions,
+              instant feedback, strong rewards, and deeper premium learning when users are ready.
+            </p>
           </div>
+        </div>
+
+        <div class="hero-badges" aria-label="Questora highlights">
+          <span>Daily wins</span>
+          <span>Clear rewards</span>
+          <span>Premium learning</span>
+          <span>Pi paired flow</span>
         </div>
 
         <div class="stats-grid" aria-label="Questora progress">
@@ -50,6 +61,10 @@
           Connect with Pi
         </button>
         <p class="status-text" id="statusText" aria-live="polite">Sign in to save your progress.</p>
+        <div class="hero-actions">
+          <button class="secondary-action" data-page-jump="learn" type="button">Start learning</button>
+          <button class="secondary-action" data-page-jump="premium" type="button">See premium</button>
+        </div>
       </section>
 
       <nav class="page-nav" aria-label="Questora pages">
@@ -128,6 +143,17 @@
             <span>Track unlocks and claims</span>
           </button>
         </div>
+      </section>
+
+      <section class="surprise-panel" data-page="home" aria-labelledby="surpriseTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Spotlight</p>
+            <h2 id="surpriseTitle">Why people keep returning</h2>
+          </div>
+          <span class="pill" id="surprisePill">Fresh today</span>
+        </div>
+        <div class="surprise-grid" id="surpriseGrid"></div>
       </section>
 
       <section class="onboarding-panel" data-page="home" id="mainContent" aria-labelledby="onboardingTitle">
