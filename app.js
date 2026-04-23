@@ -251,6 +251,16 @@ const categories = [
         answers: ["Improve it", "Never change it", "Throw away learning"],
         correct: 0,
       },
+      {
+        key: "electrical-engineering",
+        title: "Electrical engineering basics",
+        body: "Electrical engineering studies circuits, power, signals, sensors, motors, and safe energy systems.",
+        reward: "Circuit Badge",
+        points: 50,
+        question: "What does electrical engineering often work with?",
+        answers: ["Circuits and power", "Unsafe wiring", "Guessing current"],
+        correct: 0,
+      },
     ],
   },
   {
@@ -405,6 +415,110 @@ const premiumPacks = [
     ],
   },
 ];
+
+const researchLibrary = {
+  safety: {
+    count: 5988,
+    quote: "Trust grows when every reward has clear rules.",
+    pages: [
+      {
+        title: "Account protection research",
+        hint: "Did you know a passphrase should never be typed into random links?",
+        action: "This is how to stay safer: pause, check the app source, and never share private wallet words.",
+      },
+      {
+        title: "Scam pressure signals",
+        hint: "Did you know urgency is often used to stop people from thinking?",
+        action: "This is how to respond: slow down, compare details, and ask whether the offer has real utility.",
+      },
+    ],
+  },
+  money: {
+    count: 5988,
+    quote: "Small money choices become powerful when they are repeated.",
+    pages: [
+      {
+        title: "Saving behavior",
+        hint: "Did you know tracking one purchase can reveal a spending pattern?",
+        action: "This is how to begin: write one need, one want, and one saving goal.",
+      },
+      {
+        title: "Value thinking",
+        hint: "Did you know a cheap item can still be wasteful if it solves no problem?",
+        action: "This is how to decide: ask whether the item helps your goal after one week.",
+      },
+    ],
+  },
+  health: {
+    count: 5988,
+    quote: "Health improves when care becomes simple enough to repeat.",
+    pages: [
+      {
+        title: "Tiny habit research",
+        hint: "Did you know short movement can reset attention?",
+        action: "This is how to use it: stretch, walk, or tidy for a few safe minutes before learning.",
+      },
+      {
+        title: "Rest and memory",
+        hint: "Did you know rest helps your brain keep what you learned?",
+        action: "This is how to support it: reduce late distractions and choose a calm sleep routine.",
+      },
+    ],
+  },
+  growth: {
+    count: 5988,
+    quote: "Skill grows when learning turns into one visible action.",
+    pages: [
+      {
+        title: "Confidence practice",
+        hint: "Did you know confidence often follows proof, not motivation?",
+        action: "This is how to build it: finish one small task and record the result.",
+      },
+      {
+        title: "Digital fluency",
+        hint: "Did you know safe searching is a global work skill?",
+        action: "This is how to practice: search, compare sources, and summarize what changed your mind.",
+      },
+    ],
+  },
+  stem: {
+    count: 5988,
+    quote: "STEM is curiosity organized into tests, tools, and evidence.",
+    pages: [
+      {
+        title: "Electrical engineering",
+        hint: "Did you know a circuit needs a path for current to flow?",
+        action: "This is how to learn it: compare battery, wire, switch, and load, then ask what happens when the path opens.",
+      },
+      {
+        title: "Signals and sensors",
+        hint: "Did you know phones, solar systems, radios, and motors all depend on electrical engineering?",
+        action: "This is how to explore it: identify one device at home and name its power source, control, and output.",
+      },
+      {
+        title: "Engineering safety",
+        hint: "Did you know electricity should be learned with safe low-power examples first?",
+        action: "This is how to stay safe: avoid mains wiring, use supervised kits, and learn symbols before touching circuits.",
+      },
+    ],
+  },
+  pet: {
+    count: 5988,
+    quote: "A pet is not decoration; it is daily responsibility.",
+    pages: [
+      {
+        title: "Daily care routine",
+        hint: "Did you know pets communicate through appetite, energy, and behavior?",
+        action: "This is how to care: check water, food, space, mood, and cleanliness every day.",
+      },
+      {
+        title: "Safe petting",
+        hint: "Did you know gentle handling protects both children and pets?",
+        action: "This is how to pet safely: approach calmly, avoid tails and ears, and stop when the pet moves away.",
+      },
+    ],
+  },
+};
 
 const dailyRotation = {
   safety: [
@@ -643,6 +757,7 @@ const recordToday = document.querySelector("#recordToday");
 const dailyStatusPill = document.querySelector("#dailyStatusPill");
 const categoryPill = document.querySelector("#categoryPill");
 const categoryGrid = document.querySelector("#categoryGrid");
+const researchPanel = document.querySelector("#researchPanel");
 const dailyCard = document.querySelector("#dailyCard");
 const dailyAnswerGrid = document.querySelector("#dailyAnswerGrid");
 const dailyFeedback = document.querySelector("#dailyFeedback");
@@ -803,6 +918,31 @@ function render() {
       `,
     )
     .join("");
+
+  const research = researchLibrary[category.key];
+  researchPanel.innerHTML = `
+    <div class="research-header">
+      <div>
+        <p class="eyebrow">Permanent Research</p>
+        <h3>${category.title} library</h3>
+      </div>
+      <span>${research.count.toLocaleString()} pages</span>
+    </div>
+    <blockquote>${research.quote}</blockquote>
+    <div class="research-pages">
+      ${research.pages
+        .map(
+          (page, index) => `
+            <article class="research-page">
+              <strong>Page ${index + 1}: ${page.title}</strong>
+              <p>${page.hint}</p>
+              <span>${page.action}</span>
+            </article>
+          `,
+        )
+        .join("")}
+    </div>
+  `;
 
   dailyCard.className = `daily-card ${category.style}`;
   dailyCard.innerHTML = `
