@@ -635,6 +635,8 @@ const dashRewards = document.querySelector("#dashRewards");
 const dashLessons = document.querySelector("#dashLessons");
 const dashDaily = document.querySelector("#dashDaily");
 const dashNext = document.querySelector("#dashNext");
+const reasonText = document.querySelector("#reasonText");
+const actionText = document.querySelector("#actionText");
 const recordName = document.querySelector("#recordName");
 const recordLevel = document.querySelector("#recordLevel");
 const recordToday = document.querySelector("#recordToday");
@@ -744,6 +746,12 @@ function addPoints(points, reason) {
   saveState();
   render();
   statusText.textContent = reason;
+}
+
+function explain(reason, action) {
+  reasonText.textContent = reason;
+  actionText.textContent = action;
+  statusText.textContent = `${reason} ${action}`;
 }
 
 function render() {
@@ -1016,8 +1024,10 @@ function onIncompletePaymentFound(payment) {
 
 async function connectWithPi() {
   if (!initPiSdk()) {
-    statusText.textContent =
-      "Pi SDK is not available. Open this app from the Pi Browser sandbox.";
+    explain(
+      "Pi SDK is not available here.",
+      "Open Questora from Pi Browser sandbox so authentication and payments can pair with Pi.",
+    );
     return;
   }
 
@@ -1034,49 +1044,56 @@ async function connectWithPi() {
     saveState();
     render();
     loginButton.textContent = "Connected";
-    statusText.textContent = verified
-      ? `Connected and backend verified as ${state.userName}.`
-      : `Connected as ${state.userName}. Backend /v2/me verification is the next required step.`;
+    explain(
+      verified
+        ? `Connected and backend verified as ${state.userName}.`
+        : `Connected as ${state.userName}, but backend verification is still needed.`,
+      verified
+        ? "Continue learning and claiming app-point rewards."
+        : "Add /api/signin to verify the access token with Pi Platform API /v2/me.",
+    );
   } catch (error) {
     console.error(error);
-    statusText.textContent = "Pi login was not completed. Try again in Pi Browser.";
+    explain("Pi login was not completed.", "Try again inside Pi Browser.");
   }
 }
 
 function paymentCallbacks(pack) {
   return {
     onReadyForServerApproval: (paymentId) => {
-      statusText.textContent = "Payment created. Waiting for server approval.";
+      explain("Payment created.", "Backend must approve it with Pi server approval.");
       postToBackend(BACKEND_ENDPOINTS.approve, { paymentId, packKey: pack.key });
     },
     onReadyForServerCompletion: (paymentId, txid) => {
-      statusText.textContent = "Payment submitted. Waiting for server completion.";
+      explain("Payment submitted to blockchain.", "Backend must complete it with Pi server completion.");
       postToBackend(BACKEND_ENDPOINTS.complete, { paymentId, txid, packKey: pack.key });
     },
     onCancel: (paymentId) => {
-      statusText.textContent = `Payment cancelled: ${paymentId}`;
+      explain(`Payment cancelled: ${paymentId}.`, "No premium access should unlock from a cancelled payment.");
     },
     onError: (error, payment) => {
       console.error("Pi payment error", error, payment);
-      statusText.textContent = "Pi payment could not be completed. Check backend setup.";
+      explain("Pi payment could not be completed.", "Check backend approval, completion, and incomplete-payment handling.");
     },
   };
 }
 
 async function requestPremiumPayment(pack) {
   if (!initPiSdk()) {
-    statusText.textContent = "Open Questora inside Pi Browser to use Pi payments.";
+    explain("Pi payments need Pi Browser.", "Open Questora inside Pi Browser before using premium access.");
     return;
   }
 
   if (!state.user) {
-    statusText.textContent = "Connect with Pi first, then open premium access.";
+    explain("Premium access needs a connected Pi user.", "Connect with Pi first, then open premium access.");
     return;
   }
 
   if (!PI_PAYMENTS_ENABLED) {
-    statusText.textContent =
-      "Premium is paired with Pi payment callbacks, but live payment is disabled until backend approve/complete endpoints are deployed.";
+    explain(
+      "Premium is paired with Pi payment callbacks, but live payment is disabled.",
+      "Deploy backend approve and complete endpoints before enabling real 0.2 Pi access.",
+    );
     return;
   }
 
@@ -1095,13 +1112,14 @@ function answerDaily(index) {
   const dailyQuest = currentDailyQuest(category);
   const record = userRecord();
   if (record.lastDailyDate === todayKey) {
-    statusText.textContent = "You already earned today's daily learning reward.";
+    explain("Today's daily learning reward is already saved.", "Keep scrolling to complete lessons, visual tasks, tools, and reflections.");
     return;
   }
 
   if (index !== dailyQuest.correct) {
     markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, dailyQuest.correct);
     dailyFeedback.textContent = "Not yet. Read the lesson and choose the safest answer.";
+    explain("That answer is wrong because it does not match the lesson.", "Review the brief topic and choose the green safe answer.");
     return;
   }
 
@@ -1114,7 +1132,7 @@ function answerDaily(index) {
 
 function answerLesson(key, index) {
   if (state.answered[key]) {
-    statusText.textContent = "Lesson already completed.";
+    explain("This lesson reward is already complete.", "Choose another lesson or scroll to visual tasks.");
     return;
   }
 
@@ -1125,7 +1143,7 @@ function answerLesson(key, index) {
 
   if (index !== lesson.correct) {
     markAnswerState(lessonGrid, `[data-lesson="${key}"]`, index, lesson.correct);
-    statusText.textContent = "Good try. Read the card and answer again.";
+    explain("That answer is wrong for this lesson.", "Read the lesson reason again and select the green answer.");
     return;
   }
 
@@ -1140,13 +1158,13 @@ function answerVisual(taskKey, index) {
   const task = visualTasks.find((item) => item.key === taskKey);
   const answerKey = `visual::${taskKey}`;
   if (!task || state.answered[answerKey]) {
-    statusText.textContent = "Visual task already completed.";
+    explain("This visual task is already complete.", "Continue scrolling to another image or premium learning.");
     return;
   }
 
   if (index !== task.correct) {
     markAnswerState(visualGrid, `[data-visual="${taskKey}"]`, index, task.correct);
-    statusText.textContent = "Look again and choose the safest learning answer.";
+    explain("That visual answer is wrong.", "Look at the image again and pick what the scene is teaching.");
     return;
   }
 
@@ -1170,17 +1188,18 @@ function rateEthics(statementKey, value) {
 
   if (firstAnswer) {
     addPoints(10, "Reflection saved. You earned 10 points for responsible thinking.");
+    explain("Reflection saved because responsible thinking matters.", "Use the rating to compare your belief with safer AI practice.");
     return;
   }
 
   saveState();
   render();
-  statusText.textContent = "Reflection updated.";
+  explain("Reflection updated.", "Keep reviewing AI safety from design to launch.");
 }
 
 function claimTool(toolKey, points) {
   if (state.claimed[toolKey]) {
-    statusText.textContent = "Tool already used. Try another one.";
+    explain("This tool reward is already claimed.", "Try another tool to keep earning.");
     return;
   }
 
@@ -1193,14 +1212,14 @@ function chooseAge(age) {
   state.age = age;
   saveState();
   render();
-  statusText.textContent = `${state.age} path selected for ${state.goal}.`;
+  explain(`${state.age} path selected.`, "Questora will keep lessons family-friendly and matched to this path.");
 }
 
 function chooseGoal(goal) {
   state.goal = goal;
   saveState();
   render();
-  statusText.textContent = `${state.goal} is now your main goal.`;
+  explain(`${state.goal} is now your main goal.`, "Use categories and daily questions that support this interest.");
 }
 
 function selectTab(selectedTab) {
@@ -1216,14 +1235,14 @@ function toggleLargeText() {
   state.largeText = !state.largeText;
   saveState();
   render();
-  statusText.textContent = state.largeText ? "Bigger text is on." : "Bigger text is off.";
+  explain(state.largeText ? "Bigger text is on." : "Bigger text is off.", "Use the setting that makes scrolling and learning easier.");
 }
 
 function toggleContrast() {
   state.highContrast = !state.highContrast;
   saveState();
   render();
-  statusText.textContent = state.highContrast ? "High contrast is on." : "High contrast is off.";
+  explain(state.highContrast ? "High contrast is on." : "High contrast is off.", "Use the setting that makes answers and sections clearer.");
 }
 
 function resetProgress() {
@@ -1237,7 +1256,7 @@ function resetProgress() {
   state.walletClaims = [];
   saveState();
   render();
-  statusText.textContent = "Progress reset for a fresh test.";
+  explain("Progress reset for a fresh test.", "Start again with a category and daily question.");
 }
 
 loginButton.addEventListener("click", connectWithPi);
@@ -1257,7 +1276,7 @@ categoryGrid.addEventListener("click", (event) => {
   state.category = card.dataset.category;
   saveState();
   render();
-  statusText.textContent = `${currentCategory().title} lessons loaded.`;
+  explain(`${currentCategory().title} lessons loaded.`, "Answer the daily brief first, then scroll through lessons in this category.");
 });
 dailyAnswerGrid.addEventListener("click", (event) => {
   const answer = event.target.closest("[data-daily-answer]");
@@ -1290,7 +1309,7 @@ premiumGrid.addEventListener("click", (event) => {
   state.selectedPremium = card.dataset.premium;
   saveState();
   render();
-  statusText.textContent = "Premium learning area opened. Real 0.2 Pi access needs backend payment verification before launch.";
+  explain("Premium learning area opened.", "Read the tips now; real 0.2 Pi access needs backend payment verification before launch.");
 });
 premiumDetail.addEventListener("click", (event) => {
   if (!event.target.closest("#premiumAccessButton")) return;
@@ -1301,13 +1320,13 @@ claimWalletButton.addEventListener("click", () => {
   const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
   const claimable = Math.max(0, state.points - alreadyClaimed);
   if (claimable < 100) {
-    statusText.textContent = "Earn at least 100 new points before creating a claim record.";
+    explain("Not enough new points for a claim record.", "Earn at least 100 new points by answering lessons and tasks.");
     return;
   }
   state.walletClaims.push({ points: claimable, date: todayKey });
   saveState();
   render();
-  statusText.textContent = "Reward claim record created. Real wallet transfer needs approved Pi backend payments.";
+  explain("Reward claim record created.", "Real wallet transfer needs approved Pi backend payments and clear reward rules.");
 });
 
 userRecord();
