@@ -351,6 +351,144 @@ const rewards = [
   { key: "premium", title: "Future Premium", need: 900, value: "Preview for optional Pi utility packs" },
 ];
 
+const premiumPacks = [
+  {
+    key: "deep-stem",
+    title: "Deep STEM Builder",
+    price: "0.2 Pi",
+    body: "Advanced science projects, coding logic, math puzzles, and builder guides.",
+  },
+  {
+    key: "life-skills",
+    title: "Life Skills Mastery",
+    price: "0.2 Pi",
+    body: "Money habits, safety decisions, study routines, confidence, and daily planning.",
+  },
+  {
+    key: "pet-home",
+    title: "Pet & Home Care",
+    price: "0.2 Pi",
+    body: "House pet ownership, care checklists, safe petting, hygiene, and family guidance.",
+  },
+  {
+    key: "pioneer-pro",
+    title: "Pioneer Pro Tips",
+    price: "0.2 Pi",
+    body: "Pi safety, ecosystem trust checks, marketplace choices, and creator tips.",
+  },
+];
+
+const dailyRotation = {
+  safety: [
+    {
+      title: "Check before you tap",
+      body: "A safe Pioneer checks the source, app name, and rules before trusting a reward.",
+      points: 50,
+      question: "What should you check first?",
+      answers: ["The source", "A random promise", "A passphrase request"],
+      correct: 0,
+    },
+    {
+      title: "Private means private",
+      body: "Your passphrase should stay with you. No support helper should ask for it.",
+      points: 50,
+      question: "Who should receive your passphrase?",
+      answers: ["Nobody else", "Any admin", "A stranger"],
+      correct: 0,
+    },
+  ],
+  money: [
+    {
+      title: "One useful saving move",
+      body: "Track one spend today and ask if it supports your goal.",
+      points: 45,
+      question: "What helps money choices?",
+      answers: ["Tracking spending", "Buying fast", "No plan"],
+      correct: 0,
+    },
+    {
+      title: "Value before reward",
+      body: "A good offer explains value clearly before asking for attention or payment.",
+      points: 45,
+      question: "A good offer should have...",
+      answers: ["Clear value", "Pressure only", "Hidden terms"],
+      correct: 0,
+    },
+  ],
+  health: [
+    {
+      title: "Small health win",
+      body: "Pick one safe action: water, movement, rest, hygiene, or kindness.",
+      points: 40,
+      question: "A strong daily habit is...",
+      answers: ["Small and repeatable", "Risky", "Impossible"],
+      correct: 0,
+    },
+    {
+      title: "Reset your focus",
+      body: "A short stretch or walk can reset attention before another lesson.",
+      points: 40,
+      question: "What can reset focus?",
+      answers: ["Gentle movement", "Skipping sleep", "Ignoring stress"],
+      correct: 0,
+    },
+  ],
+  growth: [
+    {
+      title: "One skill today",
+      body: "Learn one idea, answer one question, and turn it into action.",
+      points: 50,
+      question: "What makes learning real?",
+      answers: ["Action", "Only scrolling", "Guessing"],
+      correct: 0,
+    },
+    {
+      title: "Confidence proof",
+      body: "Confidence grows when you complete small tasks and see progress.",
+      points: 50,
+      question: "Confidence grows through...",
+      answers: ["Completed tasks", "Avoiding everything", "Random luck"],
+      correct: 0,
+    },
+  ],
+  stem: [
+    {
+      title: "Observe and test",
+      body: "STEM starts when you observe, ask a question, test, and improve.",
+      points: 55,
+      question: "What starts a STEM task?",
+      answers: ["Observation", "Ignoring evidence", "Copying blindly"],
+      correct: 0,
+    },
+    {
+      title: "Build then improve",
+      body: "Engineering means making a solution better after testing it.",
+      points: 55,
+      question: "After a test, you should...",
+      answers: ["Improve the design", "Hide results", "Stop learning"],
+      correct: 0,
+    },
+  ],
+  pet: [
+    {
+      title: "Daily pet check",
+      body: "Check water, food, clean space, movement, and mood.",
+      points: 50,
+      question: "What should pet owners check?",
+      answers: ["Water, food, space, mood", "Only decorations", "Nothing"],
+      correct: 0,
+    },
+    {
+      title: "Gentle petting",
+      body: "Petting should be calm, safe, and respectful of the pet's signals.",
+      points: 50,
+      question: "Safe petting means...",
+      answers: ["Respect signals", "Force contact", "Pull tails"],
+      correct: 0,
+    },
+  ],
+};
+
 const visualTasks = [
   {
     key: "safe-link",
@@ -409,34 +547,6 @@ const visualTasks = [
   },
 ];
 
-const healthJourneyAreas = [
-  {
-    title: "Hydration and meals",
-    action: "Drink clean water and choose one balanced meal with a fruit, vegetable, grain, or protein when available.",
-    why: "Small food and water checks support energy for learning.",
-  },
-  {
-    title: "Movement",
-    action: "Move your body for 5 to 20 minutes: walk, stretch, dance, tidy, or do gentle exercise.",
-    why: "Movement supports focus, mood, and long-term health.",
-  },
-  {
-    title: "Rest and recovery",
-    action: "Plan a better sleep step: reduce noise, lower screen time, or rest your mind before bed.",
-    why: "Rest helps memory, patience, and decision making.",
-  },
-  {
-    title: "Mind and kindness",
-    action: "Do one calm action: breathe slowly, write gratitude, help someone, or speak kindly.",
-    why: "Mental wellbeing grows through repeatable small care.",
-  },
-  {
-    title: "Home and hygiene",
-    action: "Clean one small area, wash hands, check clothing, or improve your home safety today.",
-    why: "Clean spaces and hygiene protect individuals, families, and pets.",
-  },
-];
-
 const ethicsStatements = [
   {
     key: "impact",
@@ -470,6 +580,7 @@ const state = {
   claimed: JSON.parse(localStorage.getItem("questora-claimed") || "{}"),
   answered: JSON.parse(localStorage.getItem("questora-answered") || "{}"),
   ethics: JSON.parse(localStorage.getItem("questora-ethics") || "{}"),
+  walletClaims: JSON.parse(localStorage.getItem("questora-wallet-claims") || "[]"),
   highContrast: localStorage.getItem("questora-high-contrast") === "true",
   largeText: localStorage.getItem("questora-large-text") === "true",
   user: null,
@@ -492,15 +603,11 @@ const dashUser = document.querySelector("#dashUser");
 const dashLevel = document.querySelector("#dashLevel");
 const dashRewards = document.querySelector("#dashRewards");
 const dashLessons = document.querySelector("#dashLessons");
-const dashHealth = document.querySelector("#dashHealth");
+const dashDaily = document.querySelector("#dashDaily");
 const dashNext = document.querySelector("#dashNext");
 const recordName = document.querySelector("#recordName");
 const recordLevel = document.querySelector("#recordLevel");
 const recordToday = document.querySelector("#recordToday");
-const healthDayPill = document.querySelector("#healthDayPill");
-const healthJourneyCard = document.querySelector("#healthJourneyCard");
-const completeHealthButton = document.querySelector("#completeHealthButton");
-const healthFeedback = document.querySelector("#healthFeedback");
 const dailyStatusPill = document.querySelector("#dailyStatusPill");
 const categoryPill = document.querySelector("#categoryPill");
 const categoryGrid = document.querySelector("#categoryGrid");
@@ -512,6 +619,10 @@ const rewardGrid = document.querySelector("#rewardGrid");
 const visualGrid = document.querySelector("#visualGrid");
 const ethicsList = document.querySelector("#ethicsList");
 const toolGrid = document.querySelector("#toolGrid");
+const premiumGrid = document.querySelector("#premiumGrid");
+const walletClaimAmount = document.querySelector("#walletClaimAmount");
+const claimWalletButton = document.querySelector("#claimWalletButton");
+const walletPill = document.querySelector("#walletPill");
 const yourRankLabel = document.querySelector("#yourRankLabel");
 const yourRankPoints = document.querySelector("#yourRankPoints");
 
@@ -563,6 +674,7 @@ function saveState() {
   localStorage.setItem("questora-claimed", JSON.stringify(state.claimed));
   localStorage.setItem("questora-answered", JSON.stringify(state.answered));
   localStorage.setItem("questora-ethics", JSON.stringify(state.ethics));
+  localStorage.setItem("questora-wallet-claims", JSON.stringify(state.walletClaims));
   localStorage.setItem("questora-high-contrast", String(state.highContrast));
   localStorage.setItem("questora-large-text", String(state.largeText));
 }
@@ -579,11 +691,9 @@ function addPoints(points, reason) {
 
 function render() {
   const category = currentCategory();
+  const dailyQuest = currentDailyQuest(category);
   const record = userRecord();
   const dailyDone = record.lastDailyDate === todayKey;
-  const healthDone = record.lastHealthDate === todayKey;
-  const healthDay = Math.min(record.completedHealthDays + (healthDone ? 0 : 1), 500);
-  const healthTask = buildHealthTask(Math.max(1, healthDay));
   const level = Math.max(1, Math.floor(state.points / 150) + 1);
   const unlockedRewards = rewards.filter((reward) => state.points >= reward.need).length;
   const lessonKeys = categories.flatMap((item) =>
@@ -602,26 +712,10 @@ function render() {
   dashLevel.textContent = `Level ${level}`;
   dashRewards.textContent = unlockedRewards;
   dashLessons.textContent = completedLessons;
-  dashHealth.textContent = `${record.completedHealthDays}/500`;
+  dashDaily.textContent = record.completedDays;
   dashNext.textContent = nextReward ? `${nextReward.need - state.points} pts` : "All open";
   recordLevel.textContent = `Level ${level}`;
   recordToday.textContent = dailyDone ? "Done" : "Waiting";
-  healthDayPill.textContent = healthDone ? `Day ${record.completedHealthDays}` : `Day ${healthDay}`;
-  completeHealthButton.disabled = healthDone || record.completedHealthDays >= 500;
-  completeHealthButton.textContent = healthDone
-    ? "Health follow-up done"
-    : record.completedHealthDays >= 500
-      ? "500-day journey complete"
-      : "Complete health follow-up";
-  healthJourneyCard.innerHTML = `
-    <p class="quest-label">${healthTask.area}</p>
-    <h3>Day ${healthTask.day}: ${healthTask.title}</h3>
-    <p>${healthTask.action}</p>
-    <span>${healthTask.why}</span>
-  `;
-  healthFeedback.textContent = healthDone
-    ? "Today's health follow-up is already saved. Come back tomorrow for the next serving."
-    : "Complete this balanced daily serving to continue your 500-day journey.";
   dailyStatusPill.textContent = dailyDone ? "Completed" : "Available";
   categoryPill.textContent = category.title;
   yourRankPoints.textContent = state.points;
@@ -648,20 +742,20 @@ function render() {
   dailyCard.className = `daily-card ${category.style}`;
   dailyCard.innerHTML = `
     <p class="quest-label">${category.title}</p>
-    <h3>${category.daily.title}</h3>
-    <p>${category.daily.body}</p>
+    <h3>${dailyQuest.title}</h3>
+    <p>${dailyQuest.body}</p>
   `;
 
-  dailyAnswerGrid.innerHTML = category.daily.answers
+  dailyAnswerGrid.innerHTML = dailyQuest.answers
     .map(
       (answer, index) => `
-        <button class="answer ${dailyDone && index === category.daily.correct ? "correct" : ""}" data-daily-answer="${index}" type="button" ${dailyDone ? "disabled" : ""}>${answer}</button>
+        <button class="answer ${dailyDone && index === dailyQuest.correct ? "correct" : ""}" data-daily-answer="${index}" type="button" ${dailyDone ? "disabled" : ""}>${answer}</button>
       `,
     )
     .join("");
   dailyFeedback.textContent = dailyDone
     ? "Daily learning completed. Come back tomorrow for a new reward."
-    : category.daily.question;
+    : dailyQuest.question;
 
   lessonGrid.innerHTML = category.lessons
     .map((lesson) => {
@@ -759,20 +853,30 @@ function render() {
       `;
     })
     .join("");
+
+  premiumGrid.innerHTML = premiumPacks
+    .map(
+      (pack) => `
+        <article class="premium-card">
+          <strong>${pack.title}</strong>
+          <p>${pack.body}</p>
+          <span>${pack.price} example access</span>
+          <button data-premium="${pack.key}" type="button">Preview premium</button>
+        </article>
+      `,
+    )
+    .join("");
+
+  const claimable = Math.max(0, state.points - state.walletClaims.reduce((sum, claim) => sum + claim.points, 0));
+  walletClaimAmount.textContent = `${claimable} points ready`;
+  walletPill.textContent = state.walletClaims.length ? `${state.walletClaims.length} claims` : "Preview";
+  claimWalletButton.disabled = claimable < 100;
 }
 
-function buildHealthTask(day) {
-  const cappedDay = Math.min(Math.max(day, 1), 500);
-  const area = healthJourneyAreas[(cappedDay - 1) % healthJourneyAreas.length];
-  const cycle = Math.floor((cappedDay - 1) / healthJourneyAreas.length) + 1;
-  const minutes = 5 + ((cappedDay - 1) % 4) * 5;
-  return {
-    day: cappedDay,
-    area: area.title,
-    title: `Balanced serving ${cycle}`,
-    action: `${area.action} Aim for about ${minutes} minutes if it is safe for you.`,
-    why: area.why,
-  };
+function currentDailyQuest(category) {
+  const options = dailyRotation[category.key] || [category.daily];
+  const dayNumber = Math.floor(new Date(todayKey).getTime() / 86400000);
+  return options[dayNumber % options.length];
 }
 
 function renderScene(scene) {
@@ -868,23 +972,24 @@ async function connectWithPi() {
 
 function answerDaily(index) {
   const category = currentCategory();
+  const dailyQuest = currentDailyQuest(category);
   const record = userRecord();
   if (record.lastDailyDate === todayKey) {
     statusText.textContent = "You already earned today's daily learning reward.";
     return;
   }
 
-  if (index !== category.daily.correct) {
-    markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, category.daily.correct);
+  if (index !== dailyQuest.correct) {
+    markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, dailyQuest.correct);
     dailyFeedback.textContent = "Not yet. Read the lesson and choose the safest answer.";
     return;
   }
 
-  markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, category.daily.correct);
+  markAnswerState(dailyAnswerGrid, "[data-daily-answer]", index, dailyQuest.correct);
   record.lastDailyDate = todayKey;
   record.completedDays += 1;
   state.streak += 1;
-  addPoints(category.daily.points, `Daily learning completed. You earned ${category.daily.points} points.`);
+  addPoints(dailyQuest.points, `Daily learning completed. You earned ${dailyQuest.points} points.`);
 }
 
 function answerLesson(key, index) {
@@ -953,23 +1058,6 @@ function rateEthics(statementKey, value) {
   statusText.textContent = "Reflection updated.";
 }
 
-function completeHealthFollowUp() {
-  const record = userRecord();
-  if (record.lastHealthDate === todayKey) {
-    statusText.textContent = "Today's health follow-up is already complete.";
-    return;
-  }
-
-  if (record.completedHealthDays >= 500) {
-    statusText.textContent = "The 500-day health journey is complete.";
-    return;
-  }
-
-  record.completedHealthDays += 1;
-  record.lastHealthDate = todayKey;
-  addPoints(20, `Health day ${record.completedHealthDays} saved. You earned 20 points.`);
-}
-
 function claimTool(toolKey, points) {
   if (state.claimed[toolKey]) {
     statusText.textContent = "Tool already used. Try another one.";
@@ -1026,6 +1114,7 @@ function resetProgress() {
   state.claimed = {};
   state.answered = {};
   state.ethics = {};
+  state.walletClaims = [];
   saveState();
   render();
   statusText.textContent = "Progress reset for a fresh test.";
@@ -1035,7 +1124,6 @@ loginButton.addEventListener("click", connectWithPi);
 textSizeButton.addEventListener("click", toggleLargeText);
 contrastButton.addEventListener("click", toggleContrast);
 resetButton.addEventListener("click", resetProgress);
-completeHealthButton.addEventListener("click", completeHealthFollowUp);
 choiceButtons.forEach((button) => {
   button.addEventListener("click", () => chooseAge(button.dataset.age));
 });
@@ -1075,6 +1163,23 @@ ethicsList.addEventListener("click", (event) => {
   const answer = event.target.closest("[data-ethics]");
   if (!answer) return;
   rateEthics(answer.dataset.ethics, Number(answer.dataset.value));
+});
+premiumGrid.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-premium]");
+  if (!button) return;
+  statusText.textContent = "Premium preview selected. Real 0.2 Pi access needs backend payment verification before launch.";
+});
+claimWalletButton.addEventListener("click", () => {
+  const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
+  const claimable = Math.max(0, state.points - alreadyClaimed);
+  if (claimable < 100) {
+    statusText.textContent = "Earn at least 100 new points before creating a claim record.";
+    return;
+  }
+  state.walletClaims.push({ points: claimable, date: todayKey });
+  saveState();
+  render();
+  statusText.textContent = "Reward claim record created. Real wallet transfer needs approved Pi backend payments.";
 });
 
 userRecord();

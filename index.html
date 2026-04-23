@@ -78,8 +78,8 @@
             <strong>Lessons</strong>
           </article>
           <article>
-            <span id="dashHealth">0/500</span>
-            <strong>Health</strong>
+            <span id="dashDaily">0</span>
+            <strong>Daily wins</strong>
           </article>
           <article>
             <span id="dashNext">100 pts</span>
@@ -138,27 +138,6 @@
             <span>Daily task</span>
           </article>
         </div>
-      </section>
-
-      <section class="health-journey-panel" aria-labelledby="healthJourneyTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">500 Days</p>
-            <h2 id="healthJourneyTitle">Daily health follow-up</h2>
-          </div>
-          <span class="pill" id="healthDayPill">Day 1</span>
-        </div>
-        <div class="journey-card" id="healthJourneyCard">
-          <p class="quest-label">Balanced serving</p>
-          <h3>Preparing your health task</h3>
-          <p>Questora gives one daily health follow-up to build a long habit.</p>
-        </div>
-        <button class="journey-action" id="completeHealthButton" type="button">
-          Complete health follow-up
-        </button>
-        <p class="quiz-feedback" id="healthFeedback">
-          One health follow-up can be completed each day, from day 1 to day 500.
-        </p>
       </section>
 
       <section class="category-panel" aria-labelledby="categoryTitle">
@@ -277,6 +256,20 @@
         </p>
       </section>
 
+      <section class="premium-panel" aria-labelledby="premiumTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Premium</p>
+            <h2 id="premiumTitle">Pure learning packs</h2>
+          </div>
+          <span class="pill">0.2 Pi example</span>
+        </div>
+        <p class="panel-copy">
+          Premium can later unlock deeper lessons, tips, guides, and advanced learning paths through Pi payments after backend payment verification is added.
+        </p>
+        <div class="premium-grid" id="premiumGrid"></div>
+      </section>
+
       <section class="mission-list" aria-labelledby="missionsTitle">
         <h2 id="missionsTitle">Starter missions</h2>
         <ul>
@@ -308,6 +301,23 @@
           <li><span>Questora Global</span><strong>790</strong></li>
           <li><span id="yourRankLabel">You</span><strong id="yourRankPoints">0</strong></li>
         </ol>
+      </section>
+
+      <section class="wallet-panel" aria-labelledby="walletTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Wallet</p>
+            <h2 id="walletTitle">Claim reward record</h2>
+          </div>
+          <span class="pill" id="walletPill">Preview</span>
+        </div>
+        <div class="wallet-card">
+          <strong id="walletClaimAmount">0 points ready</strong>
+          <p>
+            This prepares a reward claim record. Real Pi wallet rewards need approved Pi payment flow, backend verification, and clear rules.
+          </p>
+          <button id="claimWalletButton" type="button">Create claim record</button>
+        </div>
       </section>
     </main>
 
