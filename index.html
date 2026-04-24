@@ -75,6 +75,37 @@
         <button class="page-tab" data-page-target="profile" type="button">Profile</button>
       </nav>
 
+      <section class="daily-learning-panel home-priority" data-page="home" aria-labelledby="dailyLearningTitleTop">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Daily First</p>
+            <h2 id="dailyLearningTitleTop">Today's learning quest</h2>
+          </div>
+          <span class="pill" id="dailyRewardPillTop">+50 pts</span>
+        </div>
+        <div class="daily-card" id="dailyCardTop">
+          <p class="quest-label">Loading</p>
+          <h3>Preparing your daily task</h3>
+          <p>Questora gives one daily learning reward per day to keep progress fair.</p>
+        </div>
+        <div class="answer-grid" id="dailyAnswerGridTop"></div>
+        <p class="quiz-feedback" id="dailyFeedbackTop">Answer today's question to earn your daily reward.</p>
+      </section>
+
+      <section class="mission-panel" data-page="home" aria-labelledby="missionTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Today</p>
+            <h2 id="missionTitle">Your Questora flow</h2>
+          </div>
+          <span class="pill" id="missionPill">Step 1</span>
+        </div>
+        <p class="panel-copy" id="missionCopy">
+          Start with today's question, then keep moving through lessons, rewards, and premium previews.
+        </p>
+        <div class="mission-rail" id="missionRail"></div>
+      </section>
+
       <section class="dashboard-panel" data-page="home" aria-labelledby="dashboardTitle">
         <div class="section-title">
           <div>
@@ -121,6 +152,31 @@
         </div>
       </section>
 
+      <section class="next-panel" data-page="home" aria-labelledby="nextTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Next</p>
+            <h2 id="nextTitle">What unlocks from here</h2>
+          </div>
+          <span class="pill" id="nextPill">On track</span>
+        </div>
+        <div class="next-grid" id="nextGrid"></div>
+      </section>
+
+      <section class="purpose-panel" data-page="home" aria-labelledby="purposeTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Purpose</p>
+            <h2 id="purposeTitle">Why Questora exists</h2>
+          </div>
+          <span class="pill" id="purposePill">Useful daily</span>
+        </div>
+        <p class="panel-copy" id="purposeCopy">
+          Questora helps Pioneers build trust, practical knowledge, and visible progress through short daily learning.
+        </p>
+        <div class="purpose-grid" id="purposeGrid"></div>
+      </section>
+
       <section class="home-strip" data-page="home" aria-labelledby="homeStripTitle">
         <div class="section-title">
           <div>
@@ -130,6 +186,10 @@
           <span class="pill">Daily</span>
         </div>
         <div class="home-strip-grid">
+          <button class="shortcut-card" data-page-jump="home" type="button">
+            <strong>Do daily task</strong>
+            <span>Start with today's reward first</span>
+          </button>
           <button class="shortcut-card" data-page-jump="learn" type="button">
             <strong>Answer lessons</strong>
             <span>Keep scrolling and earn points</span>
@@ -137,10 +197,6 @@
           <button class="shortcut-card" data-page-jump="premium" type="button">
             <strong>Open premium</strong>
             <span>Preview `0.2 Pi` learning packs</span>
-          </button>
-          <button class="shortcut-card" data-page-jump="rewards" type="button">
-            <strong>See rewards</strong>
-            <span>Track unlocks and claims</span>
           </button>
         </div>
       </section>
@@ -182,6 +238,42 @@
           <option value="Pet care">Pet care</option>
           <option value="Family growth">Family growth</option>
         </select>
+
+        <div class="field-grid">
+          <div>
+            <label class="field-label" for="countrySelect">Country</label>
+            <select id="countrySelect">
+              <option value="Kenya">Kenya</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="India">India</option>
+              <option value="Brazil">Brazil</option>
+              <option value="Philippines">Philippines</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Global">Global</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="languageSelect">Language</label>
+            <select id="languageSelect">
+              <option value="English">English</option>
+              <option value="Swahili">Swahili</option>
+              <option value="French">French</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Portuguese">Portuguese</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="global-panel" data-page="home" aria-labelledby="globalTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Global</p>
+            <h2 id="globalTitle">Questora around the world</h2>
+          </div>
+          <span class="pill" id="globalPill">Worldwide</span>
+        </div>
+        <div class="global-grid" id="globalGrid"></div>
       </section>
 
       <section class="record-panel" data-page="profile" aria-labelledby="recordTitle">
@@ -218,6 +310,31 @@
         </div>
         <div class="category-grid" id="categoryGrid"></div>
         <div class="research-panel" id="researchPanel"></div>
+      </section>
+
+      <section class="learn-journey-panel" data-page="learn" aria-labelledby="learnJourneyTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Journey</p>
+            <h2 id="learnJourneyTitle">How to learn in this category</h2>
+          </div>
+          <span class="pill" id="learnJourneyPill">Start here</span>
+        </div>
+        <p class="panel-copy" id="learnJourneyCopy">
+          Pick the brief, answer the lessons, then reinforce the topic with visual tasks and tools.
+        </p>
+        <div class="learn-journey-grid" id="learnJourneyGrid"></div>
+      </section>
+
+      <section class="featured-lesson-panel" data-page="learn" aria-labelledby="featuredLessonTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Featured</p>
+            <h2 id="featuredLessonTitle">Best next lesson</h2>
+          </div>
+          <span class="pill" id="featuredLessonPill">Ready</span>
+        </div>
+        <div class="featured-lesson-card" id="featuredLessonCard"></div>
       </section>
 
       <section class="daily-learning-panel" data-page="home" aria-labelledby="dailyLearningTitle">
@@ -273,6 +390,20 @@
         <div class="reward-grid" id="rewardGrid"></div>
       </section>
 
+      <section class="reward-journey-panel" data-page="rewards" aria-labelledby="rewardJourneyTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Journey</p>
+            <h2 id="rewardJourneyTitle">How rewards build up</h2>
+          </div>
+          <span class="pill" id="rewardJourneyPill">Progressing</span>
+        </div>
+        <p class="panel-copy" id="rewardJourneyCopy">
+          Daily answers, lessons, tools, and visual tasks all move the user toward the next unlock.
+        </p>
+        <div class="reward-journey-grid" id="rewardJourneyGrid"></div>
+      </section>
+
       <section class="visual-panel" data-page="learn" aria-labelledby="visualTitle">
         <div class="section-title">
           <div>
@@ -323,6 +454,20 @@
           access. The free daily learning loop stays useful first, so users trust
           the app before spending Pi.
         </p>
+      </section>
+
+      <section class="premium-guide-panel" data-page="premium" aria-labelledby="premiumGuideTitle">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Guide</p>
+            <h2 id="premiumGuideTitle">When premium makes sense</h2>
+          </div>
+          <span class="pill" id="premiumGuidePill">Value first</span>
+        </div>
+        <p class="panel-copy" id="premiumGuideCopy">
+          Premium should feel like a deeper version of something already useful, not a wall in front of learning.
+        </p>
+        <div class="premium-guide-grid" id="premiumGuideGrid"></div>
       </section>
 
       <section class="premium-panel" data-page="premium" aria-labelledby="premiumTitle">

@@ -283,8 +283,16 @@ h1 {
 
 .onboarding-panel,
 .dashboard-panel,
+.purpose-panel,
+.mission-panel,
 .home-strip,
 .surprise-panel,
+.global-panel,
+.next-panel,
+.learn-journey-panel,
+.featured-lesson-panel,
+.reward-journey-panel,
+.premium-guide-panel,
 .record-panel,
 .daily-board,
 .quest-panel,
@@ -339,6 +347,13 @@ h1 {
 .answer-grid,
 .booster-grid,
 .home-strip-grid,
+.field-grid,
+.global-grid,
+.purpose-grid,
+.next-grid,
+.learn-journey-grid,
+.reward-journey-grid,
+.premium-guide-grid,
 .record-grid,
 .dashboard-grid,
 .category-grid,
@@ -406,6 +421,11 @@ select {
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 800;
+}
+
+.field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .quiz-feedback {
@@ -565,6 +585,37 @@ select {
   margin-top: 16px;
 }
 
+.global-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.purpose-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.next-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.learn-journey-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.reward-journey-grid,
+.premium-guide-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 .spotlight-card {
   display: grid;
   gap: 8px;
@@ -586,6 +637,172 @@ select {
 .spotlight-card span {
   color: var(--purple);
   font-weight: 800;
+}
+
+.global-card {
+  display: grid;
+  gap: 8px;
+  min-height: 128px;
+  padding: 16px;
+  background: linear-gradient(135deg, #fff9ee, #f7fbff);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.global-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.global-card span {
+  color: var(--purple);
+  font-weight: 800;
+}
+
+.purpose-card {
+  display: grid;
+  gap: 8px;
+  min-height: 120px;
+  padding: 16px;
+  background: linear-gradient(135deg, #fbf8ff, #f8fbff);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.purpose-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.mission-rail {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mission-step,
+.next-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff, #f9fbff);
+}
+
+.mission-step {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.mission-step span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--purple-dark);
+  background: #f5ebff;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.mission-step p,
+.next-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.mission-step.active {
+  border-color: rgba(107, 58, 153, 0.35);
+  background: linear-gradient(135deg, #fbf8ff, #f7fbff);
+}
+
+.mission-step.done span {
+  color: #fff;
+  background: var(--green);
+}
+
+.learn-journey-step,
+.featured-lesson-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff, #f9fbff);
+}
+
+.learn-journey-step {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.learn-journey-step span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--purple-dark);
+  background: #f5ebff;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.learn-journey-step.done span {
+  color: #fff;
+  background: var(--green);
+}
+
+.learn-journey-step p,
+.featured-lesson-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.featured-question {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.featured-action {
+  min-height: 44px;
+  padding: 0 14px;
+  color: var(--purple-dark);
+  background: var(--gold);
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.reward-journey-card,
+.premium-guide-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff, #f9fbff);
+}
+
+.reward-journey-card p,
+.premium-guide-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.reward-journey-card.done,
+.premium-guide-card.strong {
+  border-color: rgba(107, 58, 153, 0.35);
+  background: linear-gradient(135deg, #fbf8ff, #f7fbff);
+}
+
+.reward-journey-card.active {
+  border-color: rgba(36, 168, 107, 0.4);
 }
 
 .research-panel {
@@ -1061,11 +1278,29 @@ select {
   .visual-grid,
   .premium-grid,
   .tool-grid,
-  .surprise-grid {
+  .surprise-grid,
+  .global-grid,
+  .purpose-grid,
+  .next-grid,
+  .learn-journey-grid,
+  .reward-journey-grid,
+  .premium-guide-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .rating-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 619px) {
+  .field-grid,
+  .global-grid,
+  .purpose-grid,
+  .next-grid,
+  .learn-journey-grid,
+  .reward-journey-grid,
+  .premium-guide-grid {
+    grid-template-columns: 1fr;
   }
 }

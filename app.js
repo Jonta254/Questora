@@ -716,6 +716,8 @@ const state = {
   badges: Number(localStorage.getItem("questora-badges") || 0),
   age: localStorage.getItem("questora-age") || "Kids",
   goal: localStorage.getItem("questora-goal") || "Pi safety",
+  country: localStorage.getItem("questora-country") || "Kenya",
+  language: localStorage.getItem("questora-language") || "English",
   category: localStorage.getItem("questora-category") || "safety",
   userName: localStorage.getItem("questora-user-name") || "",
   record: JSON.parse(localStorage.getItem("questora-record") || "{}"),
@@ -739,6 +741,8 @@ const loginButton = document.querySelector("#loginButton");
 const featurePanel = document.querySelector("#featurePanel");
 const choiceButtons = [...document.querySelectorAll(".choice")];
 const goalSelect = document.querySelector("#goalSelect");
+const countrySelect = document.querySelector("#countrySelect");
+const languageSelect = document.querySelector("#languageSelect");
 const pathPill = document.querySelector("#pathPill");
 const tabs = [...document.querySelectorAll(".tab")];
 const textSizeButton = document.querySelector("#textSizeButton");
@@ -761,18 +765,43 @@ const dailyRewardPill = document.querySelector("#dailyRewardPill");
 const categoryPill = document.querySelector("#categoryPill");
 const categoryGrid = document.querySelector("#categoryGrid");
 const researchPanel = document.querySelector("#researchPanel");
+const learnJourneyGrid = document.querySelector("#learnJourneyGrid");
+const learnJourneyCopy = document.querySelector("#learnJourneyCopy");
+const learnJourneyPill = document.querySelector("#learnJourneyPill");
+const featuredLessonCard = document.querySelector("#featuredLessonCard");
+const featuredLessonPill = document.querySelector("#featuredLessonPill");
 const dailyCard = document.querySelector("#dailyCard");
 const dailyAnswerGrid = document.querySelector("#dailyAnswerGrid");
 const dailyFeedback = document.querySelector("#dailyFeedback");
+const dailyCardTop = document.querySelector("#dailyCardTop");
+const dailyAnswerGridTop = document.querySelector("#dailyAnswerGridTop");
+const dailyFeedbackTop = document.querySelector("#dailyFeedbackTop");
+const dailyRewardPillTop = document.querySelector("#dailyRewardPillTop");
+const missionRail = document.querySelector("#missionRail");
+const missionCopy = document.querySelector("#missionCopy");
+const missionPill = document.querySelector("#missionPill");
 const surpriseGrid = document.querySelector("#surpriseGrid");
 const surprisePill = document.querySelector("#surprisePill");
+const globalGrid = document.querySelector("#globalGrid");
+const globalPill = document.querySelector("#globalPill");
+const purposeGrid = document.querySelector("#purposeGrid");
+const purposeCopy = document.querySelector("#purposeCopy");
+const purposePill = document.querySelector("#purposePill");
+const nextGrid = document.querySelector("#nextGrid");
+const nextPill = document.querySelector("#nextPill");
 const lessonGrid = document.querySelector("#lessonGrid");
 const rewardGrid = document.querySelector("#rewardGrid");
+const rewardJourneyGrid = document.querySelector("#rewardJourneyGrid");
+const rewardJourneyCopy = document.querySelector("#rewardJourneyCopy");
+const rewardJourneyPill = document.querySelector("#rewardJourneyPill");
 const visualGrid = document.querySelector("#visualGrid");
 const ethicsList = document.querySelector("#ethicsList");
 const toolGrid = document.querySelector("#toolGrid");
 const premiumGrid = document.querySelector("#premiumGrid");
 const premiumDetail = document.querySelector("#premiumDetail");
+const premiumGuideGrid = document.querySelector("#premiumGuideGrid");
+const premiumGuideCopy = document.querySelector("#premiumGuideCopy");
+const premiumGuidePill = document.querySelector("#premiumGuidePill");
 const walletClaimAmount = document.querySelector("#walletClaimAmount");
 const claimWalletButton = document.querySelector("#claimWalletButton");
 const walletPill = document.querySelector("#walletPill");
@@ -781,6 +810,7 @@ const yourRankPoints = document.querySelector("#yourRankPoints");
 const pageTabs = [...document.querySelectorAll("[data-page-target]")];
 const pageSections = [...document.querySelectorAll("[data-page]")];
 const pageJumpButtons = [...document.querySelectorAll("[data-page-jump]")];
+const dailyPanels = [...document.querySelectorAll(".daily-learning-panel")];
 
 const tabContent = {
   learn: {
@@ -796,6 +826,263 @@ const tabContent = {
     body: "Leaderboards can later compare countries, categories, and streaks after backend accounts are connected.",
   },
 };
+
+const globalStories = {
+  Kenya: [
+    "Learners in Kenya often use Questora for safety, budgeting, and digital confidence.",
+    "Short tasks work well when mobile data and time both matter.",
+    "Strong trust signals matter before users try a premium pack.",
+  ],
+  Nigeria: [
+    "Pioneers in Nigeria benefit from scam spotting, practical savings, and skill-building paths.",
+    "Fast, clear questions help keep daily learning consistent.",
+    "Community credibility matters more than hype.",
+  ],
+  India: [
+    "Questora fits learners who want short daily progress across STEM, money basics, and family growth.",
+    "Compact lessons help users return even on busy days.",
+    "Premium works best when value is obvious before payment.",
+  ],
+  Brazil: [
+    "Daily streaks, visual tasks, and practical tips make learning more social and more memorable.",
+    "A good mini app keeps the first screen useful, not noisy.",
+    "Users stay longer when free learning already feels rich.",
+  ],
+  Philippines: [
+    "Family-safe learning and repeatable daily questions help Questora feel welcoming and practical.",
+    "Friendly language and clear rewards improve trust.",
+    "A light, fast experience is part of the product value.",
+  ],
+  "South Africa": [
+    "Questora supports learners who want practical growth, not just novelty.",
+    "Short lessons and visible progress are strong return triggers.",
+    "Reliable reward logic helps users believe in the app.",
+  ],
+  Global: [
+    "A global Pioneer app should feel useful in the first minute, not only after a long setup.",
+    "The strongest mini apps teach, reward, and guide the next step clearly.",
+    "Questora wins when every section answers: why this, why now, what next.",
+  ],
+};
+
+const purposeProfiles = {
+  "Pi safety": {
+    title: "Trust first",
+    copy: "Questora helps Pioneers spot risk, protect accounts, and learn what a trustworthy app should feel like.",
+    cards: [
+      { title: "Protect", body: "Learn safer choices before tapping links, sharing details, or trusting rewards." },
+      { title: "Understand", body: "Turn short lessons into habits that make Pi app use more confident and more informed." },
+      { title: "Return", body: "Come back for a daily question that improves judgment, not just activity." },
+    ],
+  },
+  "Daily learning": {
+    title: "Grow every day",
+    copy: "Questora exists to turn small daily learning into visible progress, stronger habits, and a reason to return tomorrow.",
+    cards: [
+      { title: "Learn", body: "Short, useful topics make progress possible even on busy days." },
+      { title: "Answer", body: "Clear questions turn learning into proof instead of passive scrolling." },
+      { title: "Earn", body: "Points and rewards show that useful effort is being saved and recognized." },
+    ],
+  },
+  "Healthy habits": {
+    title: "Stay balanced",
+    copy: "Questora supports daily wellbeing with tiny steps that improve focus, consistency, and home life.",
+    cards: [
+      { title: "Reset", body: "Use small actions to recover energy and stay ready for learning." },
+      { title: "Repeat", body: "Simple routines matter because they can be done again tomorrow." },
+      { title: "Share", body: "Healthy habits become stronger when they support family and community too." },
+    ],
+  },
+  "Money basics": {
+    title: "Choose value",
+    copy: "Questora helps users think more clearly about spending, saving, and long-term value before making decisions.",
+    cards: [
+      { title: "Notice", body: "Small choices reveal patterns that can change bigger outcomes." },
+      { title: "Compare", body: "Clear value beats pressure, hype, and impulse." },
+      { title: "Plan", body: "Visible goals make money habits feel purposeful instead of strict." },
+    ],
+  },
+  "STEM learning": {
+    title: "Build curiosity",
+    copy: "Questora gives STEM learners a daily reason to observe, test, and improve ideas in simple steps.",
+    cards: [
+      { title: "Observe", body: "Start with real questions and what you can actually notice." },
+      { title: "Test", body: "Short challenges turn curiosity into evidence and learning." },
+      { title: "Improve", body: "Progress matters more when each lesson leads to the next better idea." },
+    ],
+  },
+  "Pet care": {
+    title: "Care well",
+    copy: "Questora helps house pet owners build kinder, safer, and more consistent care routines every day.",
+    cards: [
+      { title: "Check", body: "Water, food, mood, and space should be part of regular care." },
+      { title: "Notice", body: "Small behavior changes often matter before bigger problems appear." },
+      { title: "Protect", body: "Daily care supports the pet, the home, and the family too." },
+    ],
+  },
+  "Family growth": {
+    title: "Grow together",
+    copy: "Questora helps families create shared rules, shared learning, and shared progress that feels safe and practical.",
+    cards: [
+      { title: "Talk", body: "Family-safe questions make it easier to agree on better habits." },
+      { title: "Guide", body: "Small lessons can improve device use, trust, and everyday choices." },
+      { title: "Build", body: "Consistent family learning creates stronger routines over time." },
+    ],
+  },
+};
+
+function globalMoments() {
+  const stories = globalStories[state.country] || globalStories.Global;
+  return [
+    {
+      title: `${state.country} focus`,
+      body: stories[0],
+      badge: state.language,
+    },
+    {
+      title: "Why Questora feels different",
+      body: stories[1],
+      badge: "Daily use",
+    },
+    {
+      title: "Trust before payment",
+      body: stories[2],
+      badge: "Pi ready",
+    },
+  ];
+}
+
+function purposeProfile() {
+  return purposeProfiles[state.goal] || purposeProfiles["Daily learning"];
+}
+
+function missionSteps(dailyDone, completedLessons, unlockedRewards, claimable) {
+  return [
+    {
+      title: "Answer daily",
+      body: dailyDone ? "Today's main question is already complete." : "Complete today's question first to lock in your daily win.",
+      done: dailyDone,
+    },
+    {
+      title: "Finish lessons",
+      body: completedLessons ? `${completedLessons} lesson rewards already saved.` : "Move into category lessons to build more points.",
+      done: completedLessons > 0,
+    },
+    {
+      title: "Open rewards",
+      body: unlockedRewards ? `${unlockedRewards} reward tier${unlockedRewards > 1 ? "s" : ""} unlocked so far.` : "Keep earning to unlock your first reward tier.",
+      done: unlockedRewards > 0,
+    },
+    {
+      title: "Preview premium",
+      body: claimable >= 100 ? "You now have enough point activity to meaningfully compare free and premium value." : "Premium stays visible, but free learning should prove value first.",
+      done: claimable >= 100,
+    },
+  ];
+}
+
+function nextUnlockCards(nextReward, claimable, unlockedRewards) {
+  return [
+    {
+      title: nextReward ? nextReward.title : "All rewards open",
+      body: nextReward
+        ? `${nextReward.need - state.points} more pts to unlock ${nextReward.value}.`
+        : "You have reached the current reward ceiling. More learning still builds your record.",
+      label: "Reward path",
+    },
+    {
+      title: claimable >= 100 ? "Claim record ready" : "Build claim record",
+      body:
+        claimable >= 100
+          ? `${claimable} pts are ready for a claim preview record in Rewards.`
+          : `Reach 100 fresh pts to create a new claim preview. You currently have ${claimable} pts.`,
+      label: "Wallet preview",
+    },
+    {
+      title: unlockedRewards ? "Premium has context" : "Premium should wait",
+      body:
+        unlockedRewards
+          ? "The user has already seen free value, so premium previews make more sense now."
+          : "Keep the user in free learning until the reward system feels credible.",
+      label: "Trust path",
+    },
+  ];
+}
+
+function learnJourney(category, completedLessons) {
+  return [
+    {
+      title: "Read the brief",
+      body: `${category.title} starts with a short daily idea that explains what to notice first.`,
+      done: true,
+    },
+    {
+      title: "Answer category lessons",
+      body: completedLessons ? `${completedLessons} lesson reward${completedLessons > 1 ? "s" : ""} already saved in this learning path.` : "Move through the lesson cards and answer one question at a time.",
+      done: completedLessons > 0,
+    },
+    {
+      title: "Use images and tools",
+      body: "Reinforce the topic with visual tasks, reflections, and practical tools so the learning feels real.",
+      done: false,
+    },
+  ];
+}
+
+function rewardJourney(unlockedRewards, claimable, nextReward) {
+  return [
+    {
+      title: "Earn from action",
+      body: "Daily answers, lessons, visuals, ethics, and tools all contribute to progress.",
+      state: "live",
+    },
+    {
+      title: unlockedRewards ? "Unlock reached" : "Next unlock ahead",
+      body: unlockedRewards
+        ? `${unlockedRewards} reward tier${unlockedRewards > 1 ? "s are" : " is"} already open for this learner.`
+        : "The first reward tier is still ahead, which keeps the loop motivating.",
+      state: unlockedRewards ? "done" : "active",
+    },
+    {
+      title: claimable >= 100 ? "Claim preview available" : "Build claim preview",
+      body: claimable >= 100
+        ? `${claimable} pts are available for a reward claim record preview.`
+        : "Keep going until there are 100 fresh points ready for a claim record.",
+      state: claimable >= 100 ? "done" : "active",
+    },
+    {
+      title: "Next reward target",
+      body: nextReward
+        ? `${nextReward.need - state.points} more pts unlock ${nextReward.title}.`
+        : "Current reward tiers are fully open, so the user can focus on record and premium value.",
+      state: "live",
+    },
+  ];
+}
+
+function premiumGuide(unlockedRewards, claimable) {
+  return [
+    {
+      title: "Free value first",
+      body: "Users should trust the free learning loop before even thinking about spending Pi.",
+      tone: "base",
+    },
+    {
+      title: unlockedRewards ? "Premium now has context" : "Premium should stay a preview",
+      body: unlockedRewards
+        ? "The user already sees real value, so deeper paid learning feels more reasonable."
+        : "Until rewards and lessons feel solid, premium should remain informative rather than urgent.",
+      tone: unlockedRewards ? "strong" : "base",
+    },
+    {
+      title: claimable >= 100 ? "User is engaged enough" : "Keep building interest",
+      body: claimable >= 100
+        ? "This learner has enough activity to compare premium as an upgrade, not a shortcut."
+        : "More earned progress will make premium feel more credible and more interesting later.",
+      tone: claimable >= 100 ? "strong" : "base",
+    },
+  ];
+}
 
 function homeSpotlights(category, dailyQuest, level, nextReward, claimable, record) {
   return [
@@ -831,6 +1118,12 @@ function homeSpotlights(category, dailyQuest, level, nextReward, claimable, reco
       cta: "Open profile",
       page: "profile",
     },
+    {
+      title: `${state.country} Pioneer mode`,
+      body: `${state.language} is selected, ${state.goal} is active, and Questora is shaping the flow around clear daily progress.`,
+      cta: "Tune profile",
+      page: "home",
+    },
   ];
 }
 
@@ -861,6 +1154,8 @@ function saveState() {
   localStorage.setItem("questora-badges", String(state.badges));
   localStorage.setItem("questora-age", state.age);
   localStorage.setItem("questora-goal", state.goal);
+  localStorage.setItem("questora-country", state.country);
+  localStorage.setItem("questora-language", state.language);
   localStorage.setItem("questora-category", state.category);
   localStorage.setItem("questora-user-name", state.userName);
   localStorage.setItem("questora-record", JSON.stringify(state.record));
@@ -905,7 +1200,7 @@ function addPoints(points, reason) {
   if (state.points >= 500 && state.badges < 2) state.badges = 2;
   if (state.points >= 900 && state.badges < 3) state.badges = 3;
   saveState();
-  render();
+  renderInPlace();
   statusText.textContent = reason;
 }
 
@@ -919,8 +1214,23 @@ function renderPages() {
   pageSections.forEach((section) => {
     section.hidden = section.dataset.page !== state.currentPage;
   });
+  if (dailyPanels.length > 1 && dailyCardTop) {
+    dailyPanels.slice(1).forEach((panel) => {
+      panel.hidden = true;
+    });
+  }
   pageTabs.forEach((tab) => {
     tab.classList.toggle("active", tab.dataset.pageTarget === state.currentPage);
+  });
+}
+
+function renderInPlace() {
+  const scrollTop = window.scrollY;
+  const activePage = state.currentPage;
+  render();
+  state.currentPage = activePage;
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: scrollTop, behavior: "auto" });
   });
 }
 
@@ -945,12 +1255,24 @@ function render() {
   const nextReward = rewards.find((reward) => state.points < reward.need);
   const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
   const claimable = Math.max(0, state.points - alreadyClaimed);
+  const purpose = purposeProfile();
+  const categoryLessonKeys = category.lessons.map((lesson) => `${category.key}::${lesson.key}`);
+  const completedCategoryLessons = categoryLessonKeys.filter((key) => state.answered[key]).length;
+  const firstOpenLesson = category.lessons.find((lesson) => !state.answered[`${category.key}::${lesson.key}`]) || category.lessons[0];
+  const journey = learnJourney(category, completedCategoryLessons);
+  const steps = missionSteps(dailyDone, completedLessons, unlockedRewards, claimable);
+  const rewardFlow = rewardJourney(unlockedRewards, claimable, nextReward);
+  const premiumFlow = premiumGuide(unlockedRewards, claimable);
+  const currentStep = steps.findIndex((step) => !step.done);
+  const activeStep = currentStep === -1 ? steps.length : currentStep + 1;
 
   streakCount.textContent = state.streak;
   pointCount.textContent = state.points;
   badgeCount.textContent = state.badges;
   pathPill.textContent = state.age;
   goalSelect.value = state.goal;
+  countrySelect.value = state.country;
+  languageSelect.value = state.language;
   recordName.textContent = state.userName || "Guest learner";
   dashUser.textContent = state.userName || "Guest";
   dashLevel.textContent = `Level ${level}`;
@@ -959,14 +1281,34 @@ function render() {
   dashDaily.textContent = record.completedDays;
   dashNext.textContent = nextReward ? `${nextReward.need - state.points} pts` : "All open";
   dashboardPill.textContent = state.userName ? "Connected" : "Guest mode";
+  purposePill.textContent = purpose.title;
+  missionPill.textContent = `Step ${activeStep}`;
   recordLevel.textContent = `Level ${level}`;
   recordToday.textContent = dailyDone ? "Done" : "Waiting";
   dailyStatusPill.textContent = dailyDone ? "Completed" : "Available";
   dailyRewardPill.textContent = `+${dailyQuest.points} pts`;
+  if (dailyRewardPillTop) dailyRewardPillTop.textContent = `+${dailyQuest.points} pts`;
   categoryPill.textContent = category.title;
+  learnJourneyPill.textContent = `${completedCategoryLessons}/${category.lessons.length} done`;
+  featuredLessonPill.textContent = state.answered[`${category.key}::${firstOpenLesson.key}`] ? "Review" : "Best next";
   surprisePill.textContent = category.title;
+  globalPill.textContent = `${state.country} • ${state.language}`;
+  rewardJourneyPill.textContent = unlockedRewards ? `${unlockedRewards} unlocked` : "Building";
+  premiumGuidePill.textContent = unlockedRewards ? "Ready to compare" : "Value first";
   yourRankPoints.textContent = state.points;
   yourRankLabel.textContent = state.userName || "You";
+  purposeCopy.textContent = purpose.copy;
+  learnJourneyCopy.textContent = `${category.title} works best when the user moves from the brief to lesson questions, then to visual practice and tools.`;
+  rewardJourneyCopy.textContent = nextReward
+    ? `Every point now pushes toward ${nextReward.title}, while claim records stay tied to real activity.`
+    : "All current reward tiers are open, so the focus shifts to record quality and future value.";
+  premiumGuideCopy.textContent = unlockedRewards
+    ? "Premium now feels like a deeper layer of something the user already trusts."
+    : "Premium stays visible, but Questora should still prove itself through free learning first.";
+  nextPill.textContent = nextReward ? `${nextReward.need - state.points} pts left` : "All unlocked";
+  missionCopy.textContent = dailyDone
+    ? "Today's question is complete. Keep the flow moving through lessons, rewards, and premium previews."
+    : "Start with today's question, then keep moving through lessons, rewards, and premium previews.";
 
   document.documentElement.classList.toggle("high-contrast", state.highContrast);
   document.documentElement.classList.toggle("large-text", state.largeText);
@@ -1011,6 +1353,31 @@ function render() {
     </div>
   `;
 
+  learnJourneyGrid.innerHTML = journey
+    .map(
+      (item, index) => `
+        <article class="learn-journey-step ${item.done ? "done" : ""}">
+          <span>${index + 1}</span>
+          <div>
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+
+  featuredLessonCard.innerHTML = `
+    <p class="quest-label">${category.title}</p>
+    <h3>${firstOpenLesson.title}</h3>
+    <p>${firstOpenLesson.body}</p>
+    <strong>${firstOpenLesson.reward} - +${firstOpenLesson.points} pts</strong>
+    <p class="featured-question">${firstOpenLesson.question}</p>
+    <button class="featured-action" data-open-featured="${category.key}::${firstOpenLesson.key}" type="button">
+      ${state.answered[`${category.key}::${firstOpenLesson.key}`] ? "Review lesson below" : "Answer this lesson below"}
+    </button>
+  `;
+
   surpriseGrid.innerHTML = homeSpotlights(
     category,
     dailyQuest,
@@ -1030,6 +1397,55 @@ function render() {
     )
     .join("");
 
+  globalGrid.innerHTML = globalMoments()
+    .map(
+      (item) => `
+        <article class="global-card">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+          <span>${item.badge}</span>
+        </article>
+      `,
+    )
+    .join("");
+
+  purposeGrid.innerHTML = purpose.cards
+    .map(
+      (item) => `
+        <article class="purpose-card">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+        </article>
+      `,
+    )
+    .join("");
+
+  missionRail.innerHTML = steps
+    .map(
+      (step, index) => `
+        <article class="mission-step ${step.done ? "done" : ""} ${index + 1 === activeStep ? "active" : ""}">
+          <span>${index + 1}</span>
+          <div>
+            <strong>${step.title}</strong>
+            <p>${step.body}</p>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+
+  nextGrid.innerHTML = nextUnlockCards(nextReward, claimable, unlockedRewards)
+    .map(
+      (card) => `
+        <article class="next-card">
+          <p class="eyebrow">${card.label}</p>
+          <strong>${card.title}</strong>
+          <p>${card.body}</p>
+        </article>
+      `,
+    )
+    .join("");
+
   dailyCard.className = `daily-card ${category.style}`;
   dailyCard.innerHTML = `
     <p class="quest-label">${category.title}</p>
@@ -1037,17 +1453,29 @@ function render() {
     <p>${dailyQuest.body}</p>
     <strong class="reward-note">Correct answer earns +${dailyQuest.points} pts and saves today's win.</strong>
   `;
+  if (dailyCardTop) {
+    dailyCardTop.className = `daily-card ${category.style}`;
+    dailyCardTop.innerHTML = `
+      <p class="quest-label">${category.title}</p>
+      <h3>${dailyQuest.title}</h3>
+      <p>${dailyQuest.body}</p>
+      <strong class="reward-note">Correct answer earns +${dailyQuest.points} pts and saves today's win.</strong>
+    `;
+  }
 
-  dailyAnswerGrid.innerHTML = dailyQuest.answers
+  const dailyAnswerMarkup = dailyQuest.answers
     .map(
       (answer, index) => `
         <button class="answer ${dailyDone && index === dailyQuest.correct ? "correct" : ""}" data-daily-answer="${index}" type="button" ${dailyDone ? "disabled" : ""}>${answer}</button>
       `,
-    )
-    .join("");
-  dailyFeedback.textContent = dailyDone
+    ).join("");
+  dailyAnswerGrid.innerHTML = dailyAnswerMarkup;
+  if (dailyAnswerGridTop) dailyAnswerGridTop.innerHTML = dailyAnswerMarkup;
+  const dailyFeedbackText = dailyDone
     ? "Daily learning completed. Come back tomorrow for a new reward."
     : dailyQuest.question;
+  dailyFeedback.textContent = dailyFeedbackText;
+  if (dailyFeedbackTop) dailyFeedbackTop.textContent = dailyFeedbackText;
 
   lessonGrid.innerHTML = category.lessons
     .map((lesson) => {
@@ -1085,6 +1513,17 @@ function render() {
         </article>
       `;
     })
+    .join("");
+
+  rewardJourneyGrid.innerHTML = rewardFlow
+    .map(
+      (item) => `
+        <article class="reward-journey-card ${item.state}">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+        </article>
+      `,
+    )
     .join("");
 
   visualGrid.innerHTML = visualTasks
@@ -1161,6 +1600,16 @@ function render() {
     .join("");
 
   const selectedPack = premiumPacks.find((pack) => pack.key === state.selectedPremium) || premiumPacks[0];
+  premiumGuideGrid.innerHTML = premiumFlow
+    .map(
+      (item) => `
+        <article class="premium-guide-card ${item.tone}">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+        </article>
+      `,
+    )
+    .join("");
   premiumDetail.innerHTML = `
     <div class="premium-detail-card">
       <p class="quest-label">Premium learning preview</p>
@@ -1422,7 +1871,7 @@ function rateEthics(statementKey, value) {
   }
 
   saveState();
-  render();
+  renderInPlace();
   explain("Reflection updated.", "Keep reviewing AI safety from design to launch.");
 }
 
@@ -1440,15 +1889,29 @@ function claimTool(toolKey, points) {
 function chooseAge(age) {
   state.age = age;
   saveState();
-  render();
+  renderInPlace();
   explain(`${state.age} path selected.`, "Questora will keep lessons family-friendly and matched to this path.");
 }
 
 function chooseGoal(goal) {
   state.goal = goal;
   saveState();
-  render();
+  renderInPlace();
   explain(`${state.goal} is now your main goal.`, "Use categories and daily questions that support this interest.");
+}
+
+function chooseCountry(country) {
+  state.country = country;
+  saveState();
+  renderInPlace();
+  explain(`${state.country} is now your region focus.`, "Questora will keep the home flow feeling more local while staying global.");
+}
+
+function chooseLanguage(language) {
+  state.language = language;
+  saveState();
+  renderInPlace();
+  explain(`${state.language} is selected for your experience.`, "This helps shape the global identity of your Questora profile.");
 }
 
 function selectTab(selectedTab) {
@@ -1463,14 +1926,14 @@ function selectTab(selectedTab) {
 function toggleLargeText() {
   state.largeText = !state.largeText;
   saveState();
-  render();
+  renderInPlace();
   explain(state.largeText ? "Bigger text is on." : "Bigger text is off.", "Use the setting that makes scrolling and learning easier.");
 }
 
 function toggleContrast() {
   state.highContrast = !state.highContrast;
   saveState();
-  render();
+  renderInPlace();
   explain(state.highContrast ? "High contrast is on." : "High contrast is off.", "Use the setting that makes answers and sections clearer.");
 }
 
@@ -1496,6 +1959,8 @@ choiceButtons.forEach((button) => {
   button.addEventListener("click", () => chooseAge(button.dataset.age));
 });
 goalSelect.addEventListener("change", () => chooseGoal(goalSelect.value));
+countrySelect.addEventListener("change", () => chooseCountry(countrySelect.value));
+languageSelect.addEventListener("change", () => chooseLanguage(languageSelect.value));
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => selectTab(tab.dataset.tab));
 });
@@ -1523,6 +1988,13 @@ dailyAnswerGrid.addEventListener("click", (event) => {
   if (!answer) return;
   answerDaily(Number(answer.dataset.dailyAnswer));
 });
+if (dailyAnswerGridTop) {
+  dailyAnswerGridTop.addEventListener("click", (event) => {
+    const answer = event.target.closest("[data-daily-answer]");
+    if (!answer) return;
+    answerDaily(Number(answer.dataset.dailyAnswer));
+  });
+}
 lessonGrid.addEventListener("click", (event) => {
   const answer = event.target.closest("[data-lesson]");
   if (!answer) return;
@@ -1555,6 +2027,15 @@ premiumDetail.addEventListener("click", (event) => {
   if (!event.target.closest("#premiumAccessButton")) return;
   const pack = premiumPacks.find((item) => item.key === state.selectedPremium) || premiumPacks[0];
   requestPremiumPayment(pack);
+});
+featuredLessonCard.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-open-featured]");
+  if (!button) return;
+  const key = button.dataset.openFeatured;
+  const target = lessonGrid.querySelector(`[data-lesson="${key}"]`);
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  explain("Featured lesson selected.", "Answer the highlighted lesson below to keep your learning flow moving.");
 });
 claimWalletButton.addEventListener("click", () => {
   const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
