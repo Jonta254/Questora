@@ -1207,6 +1207,11 @@ const missionCopy = document.querySelector("#missionCopy");
 const missionPill = document.querySelector("#missionPill");
 const surpriseGrid = document.querySelector("#surpriseGrid");
 const surprisePill = document.querySelector("#surprisePill");
+const pulseGrid = document.querySelector("#pulseGrid");
+const pulsePill = document.querySelector("#pulsePill");
+const pulseCopy = document.querySelector("#pulseCopy");
+const challengeCard = document.querySelector("#challengeCard");
+const challengePill = document.querySelector("#challengePill");
 const globalGrid = document.querySelector("#globalGrid");
 const globalPill = document.querySelector("#globalPill");
 const purposeGrid = document.querySelector("#purposeGrid");
@@ -1560,6 +1565,64 @@ function homeSpotlights(category, dailyQuest, level, nextReward, claimable, reco
   ];
 }
 
+function homePulse(category, dailyQuest, todaysVisuals, nextReward, claimable, level) {
+  const firstVisual = todaysVisuals[0];
+  return [
+    {
+      label: "Hot today",
+      title: dailyQuest.title,
+      body: `Start here: a right answer turns green and saves +${dailyQuest.points} pts immediately.`,
+      tone: category.style,
+      page: "home",
+    },
+    {
+      label: "Fresh art",
+      title: firstVisual ? firstVisual.title : "Visual learning",
+      body: firstVisual
+        ? `${firstVisual.artLabel} is in today's art drop with +${firstVisual.points} pts waiting.`
+        : "Today's visual feed is preparing your next learning card.",
+      tone: "blue",
+      page: "learn",
+    },
+    {
+      label: "Near unlock",
+      title: nextReward ? nextReward.title : "Reward ceiling reached",
+      body: nextReward
+        ? `${Math.max(0, nextReward.need - state.points)} pts left before the next reward tier opens.`
+        : "Every current reward is open, so now the app can focus on richer discovery and progression.",
+      tone: "green",
+      page: "rewards",
+    },
+    {
+      label: "Upgrade mood",
+      title: `Level ${level} momentum`,
+      body: claimable >= 100
+        ? "You already have enough activity for premium to feel like a real upgrade instead of noise."
+        : "Questora is still proving value through free learning first, which makes premium feel more trustworthy later.",
+      tone: "purple",
+      page: "premium",
+    },
+  ];
+}
+
+function dailySurpriseChallenge(category, dailyQuest, todaysVisuals) {
+  const visual = todaysVisuals[1] || todaysVisuals[0];
+  const totalPoints = dailyQuest.points + (visual ? Math.round(visual.points / 2) : 20);
+  return {
+    title: `${category.title} combo challenge`,
+    body: visual
+      ? `Complete the daily brief, then finish "${visual.title}" from today's visual feed to turn one visit into a fuller learning win.`
+      : "Complete the daily brief, then add one more lesson so today's visit feels complete instead of shallow.",
+    reward: `Visible progress worth up to +${totalPoints} pts today`,
+    reason: visual
+      ? "Reason: pairing a quick text answer with a visual card makes the topic stick better."
+      : "Reason: a second useful action makes the daily visit feel more rewarding.",
+    action: visual
+      ? `Action: answer today's question first, then open Learn and finish the visual task.`
+      : "Action: answer today's question first, then open Learn for your next lesson.",
+  };
+}
+
 function currentCategory() {
   return categories.find((category) => category.key === state.category) || categories[0];
 }
@@ -1697,6 +1760,8 @@ function render() {
   const steps = missionSteps(dailyDone, completedLessons, unlockedRewards, claimable);
   const rewardFlow = rewardJourney(unlockedRewards, claimable, nextReward);
   const premiumFlow = premiumGuide(unlockedRewards, claimable);
+  const pulseCards = homePulse(category, dailyQuest, todaysVisuals, nextReward, claimable, level);
+  const surpriseChallenge = dailySurpriseChallenge(category, dailyQuest, todaysVisuals);
   const currentStep = steps.findIndex((step) => !step.done);
   const activeStep = currentStep === -1 ? steps.length : currentStep + 1;
 
@@ -1726,6 +1791,8 @@ function render() {
   learnJourneyPill.textContent = `${completedCategoryLessons}/${category.lessons.length} done`;
   featuredLessonPill.textContent = state.answered[`${category.key}::${firstOpenLesson.key}`] ? "Review" : "Best next";
   surprisePill.textContent = category.title;
+  pulsePill.textContent = `${todaysVisuals.length} live now`;
+  challengePill.textContent = dailyDone ? "Continue" : "Do this";
   globalPill.textContent = `${state.country} • ${state.language}`;
   rewardJourneyPill.textContent = unlockedRewards ? `${unlockedRewards} unlocked` : "Building";
   premiumGuidePill.textContent = unlockedRewards ? "Ready to compare" : "Value first";
@@ -1741,6 +1808,7 @@ function render() {
     : "Premium stays visible, but Questora should still prove itself through free learning first.";
   visualPill.textContent = `${aiArtLibrary.length.toLocaleString()} art scenes`;
   visualCopy.textContent = `${todaysVisuals.length} rotating visual tasks are live today for ${category.title}. Questora now pulls from a large AI-art library so users keep seeing new lesson moments.`;
+  pulseCopy.textContent = `${state.country}, ${state.language}, ${state.goal}, and ${category.title} are shaping today's feed so Questora feels more alive and less repetitive.`;
   nextPill.textContent = nextReward ? `${nextReward.need - state.points} pts left` : "All unlocked";
   missionCopy.textContent = dailyDone
     ? "Today's question is complete. Keep the flow moving through lessons, rewards, and premium previews."
@@ -1832,6 +1900,27 @@ function render() {
       `,
     )
     .join("");
+
+  pulseGrid.innerHTML = pulseCards
+    .map(
+      (item) => `
+        <button class="pulse-card ${item.tone}" data-open-page="${item.page}" type="button">
+          <p class="eyebrow">${item.label}</p>
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+        </button>
+      `,
+    )
+    .join("");
+
+  challengeCard.innerHTML = `
+    <p class="quest-label">Bonus flow</p>
+    <h3>${surpriseChallenge.title}</h3>
+    <p>${surpriseChallenge.body}</p>
+    <strong>${surpriseChallenge.reward}</strong>
+    <p class="challenge-note">${surpriseChallenge.reason}</p>
+    <p class="challenge-note">${surpriseChallenge.action}</p>
+  `;
 
   globalGrid.innerHTML = globalMoments()
     .map(
