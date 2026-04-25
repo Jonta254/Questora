@@ -1004,6 +1004,16 @@ select {
   gap: 6px;
 }
 
+.visual-copy span {
+  color: var(--purple);
+  font-weight: 800;
+}
+
+.visual-copy b {
+  color: var(--ink);
+  line-height: 1.45;
+}
+
 .visual-card.claimed {
   border-color: rgba(36, 168, 107, 0.55);
   background: linear-gradient(135deg, rgba(36, 168, 107, 0.16), #fff);

@@ -631,63 +631,488 @@ const dailyRotation = {
   ],
 };
 
-const visualTasks = [
-  {
-    key: "safe-link",
-    title: "What do you see?",
-    scene: "phone",
-    points: 35,
-    prompt: "A phone shows a message promising instant rewards from an unknown link.",
-    question: "What is the safest action?",
-    answers: ["Open quickly", "Check the source first", "Share your passphrase"],
-    correct: 1,
-    lesson: "Unknown reward links can be risky. Check the source before tapping.",
-  },
-  {
-    key: "family-plan",
-    title: "Family learning moment",
-    scene: "family",
-    points: 30,
-    prompt: "A family is planning device rules together at a table.",
-    question: "What can they learn?",
-    answers: ["Agree on safe rules", "Hide all problems", "Click every offer"],
-    correct: 0,
-    lesson: "Shared rules help kids, teens, and adults stay safer online.",
-  },
-  {
-    key: "market-choice",
-    title: "Marketplace decision",
-    scene: "market",
-    points: 35,
-    prompt: "A user compares two offers before spending points or future Pi.",
-    question: "What should the user check?",
-    answers: ["Only bright colors", "Value and clear terms", "Pressure words"],
-    correct: 1,
-    lesson: "Good choices come from value, clear terms, and no pressure.",
-  },
-  {
-    key: "stem-lab",
-    title: "What is happening?",
-    scene: "lab",
-    points: 40,
-    prompt: "A learner tests a plant near light and records what changes.",
-    question: "What STEM skill are they using?",
-    answers: ["Observation and testing", "Guessing without looking", "Copying a secret"],
-    correct: 0,
-    lesson: "STEM grows when you observe, test, record, and improve.",
-  },
-  {
-    key: "pet-care",
-    title: "Pet care check",
-    scene: "pet",
-    points: 40,
-    prompt: "A house pet sits near a bowl, clean space, and care checklist.",
-    question: "What should the owner check every day?",
-    answers: ["Water, food, space, mood", "Only decorations", "Nothing until problems grow"],
-    correct: 0,
-    lesson: "Daily care helps pets stay safer, calmer, and healthier.",
-  },
+const artStyles = [
+  { key: "poster", label: "AI poster style" },
+  { key: "story", label: "storybook style" },
+  { key: "clean", label: "clean icon style" },
+  { key: "future", label: "future learning style" },
+  { key: "soft", label: "soft classroom style" },
+  { key: "bold", label: "bold explorer style" },
 ];
+
+const artFrames = [
+  { key: "focus", label: "focus frame" },
+  { key: "lesson", label: "lesson frame" },
+  { key: "compare", label: "compare frame" },
+  { key: "field", label: "field frame" },
+  { key: "guide", label: "guide frame" },
+  { key: "lab", label: "lab frame" },
+];
+
+const artPalettes = [
+  { key: "gold", background: "#fff7e5", accent: "#f5b83b", support: "#6b3a99", extra: "#24a86b" },
+  { key: "mint", background: "#eefcf6", accent: "#24a86b", support: "#2f74d0", extra: "#f5b83b" },
+  { key: "sky", background: "#edf6ff", accent: "#2f74d0", support: "#6b3a99", extra: "#24a86b" },
+  { key: "violet", background: "#f5efff", accent: "#6b3a99", support: "#f5b83b", extra: "#2f74d0" },
+  { key: "sun", background: "#fff4ea", accent: "#f5b83b", support: "#24a86b", extra: "#6b3a99" },
+  { key: "calm", background: "#f1fbfa", accent: "#24a86b", support: "#6f6878", extra: "#f5b83b" },
+];
+
+const artBlueprints = {
+  safety: [
+    {
+      key: "safe-link",
+      scene: "phone",
+      title: "Suspicious reward message",
+      prompt: "A phone shows a message promising instant rewards from an unknown link.",
+      question: "What is the safest action?",
+      answers: ["Open quickly", "Check the source first", "Share your passphrase"],
+      correct: 1,
+      lesson: "Unknown reward links can be risky. Check the source before tapping.",
+      points: 35,
+    },
+    {
+      key: "wallet-warning",
+      scene: "phone",
+      title: "Wallet alert check",
+      prompt: "A learner sees a warning asking for a wallet secret before a reward unlock.",
+      question: "What should the learner protect?",
+      answers: ["Their passphrase", "A stranger's link", "A fake bonus claim"],
+      correct: 0,
+      lesson: "No safe app should ask for a wallet passphrase inside a reward screen.",
+      points: 40,
+    },
+    {
+      key: "community-rule",
+      scene: "family",
+      title: "Family safety rule",
+      prompt: "A family writes one shared rule for links, wallets, and help requests.",
+      question: "What makes the rule useful?",
+      answers: ["It is clear and shared", "It is secret and confusing", "It changes every minute"],
+      correct: 0,
+      lesson: "Simple shared rules reduce risky taps and panic decisions.",
+      points: 32,
+    },
+    {
+      key: "offer-compare",
+      scene: "market",
+      title: "Offer comparison",
+      prompt: "Two digital offers appear side by side, but only one explains the rules clearly.",
+      question: "Which sign helps you trust an offer?",
+      answers: ["Clear rules", "Urgent shouting", "Hidden details"],
+      correct: 0,
+      lesson: "Trust grows when the terms are clear before the action starts.",
+      points: 36,
+    },
+    {
+      key: "safe-observation",
+      scene: "lab",
+      title: "Check before tapping",
+      prompt: "A learner compares one safe sign and one risky sign before choosing a link.",
+      question: "What skill is being used?",
+      answers: ["Observation", "Blind trust", "Secret sharing"],
+      correct: 0,
+      lesson: "Safe Pi use starts with stopping, checking, and comparing.",
+      points: 34,
+    },
+    {
+      key: "secure-home",
+      scene: "pet",
+      title: "Home device care",
+      prompt: "A home checklist reminds the user to update devices and avoid risky promises.",
+      question: "What helps daily digital safety?",
+      answers: ["Simple checklists", "Ignoring updates", "Saving passwords in public chats"],
+      correct: 0,
+      lesson: "Security becomes easier when the habit is visible and repeatable.",
+      points: 38,
+    },
+  ],
+  money: [
+    {
+      key: "market-choice",
+      scene: "market",
+      title: "Marketplace decision",
+      prompt: "A user compares two offers before spending points or future Pi.",
+      question: "What should the user check?",
+      answers: ["Only bright colors", "Value and clear terms", "Pressure words"],
+      correct: 1,
+      lesson: "Good choices come from value, clear terms, and no pressure.",
+      points: 35,
+    },
+    {
+      key: "save-first",
+      scene: "phone",
+      title: "Tiny saving prompt",
+      prompt: "A phone budget note asks the learner to save a small amount before spending.",
+      question: "What habit is being built?",
+      answers: ["Save first", "Spend first", "Guess later"],
+      correct: 0,
+      lesson: "Small saving habits make bigger goals easier to reach.",
+      points: 30,
+    },
+    {
+      key: "family-budget",
+      scene: "family",
+      title: "Family budget talk",
+      prompt: "A family is choosing between a need and a want at the table.",
+      question: "What should come first?",
+      answers: ["The need", "The loudest choice", "The newest ad"],
+      correct: 0,
+      lesson: "Needs come first when a budget is limited.",
+      points: 34,
+    },
+    {
+      key: "price-check",
+      scene: "market",
+      title: "Price and value check",
+      prompt: "A learner compares a cheaper item and a better-value item with clearer use.",
+      question: "What matters most?",
+      answers: ["Long-term value", "The flashiest color", "The fastest countdown"],
+      correct: 0,
+      lesson: "Value is about usefulness, not pressure.",
+      points: 37,
+    },
+    {
+      key: "goal-board",
+      scene: "lab",
+      title: "Goal planning board",
+      prompt: "A simple chart shows a money goal broken into smaller weekly steps.",
+      question: "Why does this help?",
+      answers: ["The goal becomes visible", "It hides progress", "It removes planning"],
+      correct: 0,
+      lesson: "Visible goals make daily discipline easier.",
+      points: 33,
+    },
+    {
+      key: "careful-spending",
+      scene: "pet",
+      title: "Care before cost",
+      prompt: "A pet owner checks food, health, and safe supplies before spending on extras.",
+      question: "What does this show?",
+      answers: ["Priorities", "Random spending", "Impulse pressure"],
+      correct: 0,
+      lesson: "Good budgets support real needs before extras.",
+      points: 31,
+    },
+  ],
+  health: [
+    {
+      key: "water-break",
+      scene: "phone",
+      title: "Hydration reminder",
+      prompt: "A daily reminder encourages a water break before another long screen session.",
+      question: "What type of habit is this?",
+      answers: ["Small and repeatable", "Extreme and rare", "Stressful and unsafe"],
+      correct: 0,
+      lesson: "Healthy routines work best when they are easy to repeat.",
+      points: 30,
+    },
+    {
+      key: "family-wellbeing",
+      scene: "family",
+      title: "Family wellbeing check",
+      prompt: "A family plans sleep, movement, and meal times together.",
+      question: "What are they building?",
+      answers: ["A stable routine", "A random rush", "A hidden problem"],
+      correct: 0,
+      lesson: "Shared routines improve energy and reduce stress.",
+      points: 34,
+    },
+    {
+      key: "meal-choice",
+      scene: "market",
+      title: "Balanced meal choice",
+      prompt: "A learner compares one balanced meal and one empty snack before lunch.",
+      question: "What supports steady energy?",
+      answers: ["Balanced food", "Only sugar", "Skipping meals"],
+      correct: 0,
+      lesson: "Balanced meals help the body and brain work better through the day.",
+      points: 36,
+    },
+    {
+      key: "rest-observation",
+      scene: "lab",
+      title: "Rest and focus note",
+      prompt: "A learner records how sleep changes focus and patience over several days.",
+      question: "What is the learner doing?",
+      answers: ["Tracking a pattern", "Ignoring evidence", "Choosing chaos"],
+      correct: 0,
+      lesson: "Simple tracking helps people notice what improves health.",
+      points: 35,
+    },
+    {
+      key: "pet-walk",
+      scene: "pet",
+      title: "Walk and mood check",
+      prompt: "A pet owner takes a calm walk and notices better mood and energy after.",
+      question: "What daily benefit is shown?",
+      answers: ["Movement helps wellbeing", "Movement never matters", "Only screens improve energy"],
+      correct: 0,
+      lesson: "Gentle movement supports both body and mood.",
+      points: 32,
+    },
+    {
+      key: "screen-reset",
+      scene: "phone",
+      title: "Screen pause reset",
+      prompt: "A learner uses a short break, stretch, and deep breath before continuing online study.",
+      question: "Why is the break useful?",
+      answers: ["It resets focus", "It wastes the day", "It hides the lesson"],
+      correct: 0,
+      lesson: "Short healthy resets make long study sessions easier to manage.",
+      points: 31,
+    },
+  ],
+  growth: [
+    {
+      key: "idea-note",
+      scene: "phone",
+      title: "One useful idea",
+      prompt: "A learner writes a short note explaining a new idea in simple words.",
+      question: "What does this show?",
+      answers: ["Active learning", "Passive guessing", "Copying without thought"],
+      correct: 0,
+      lesson: "Learning becomes stronger when the learner can explain it clearly.",
+      points: 34,
+    },
+    {
+      key: "family-learning",
+      scene: "family",
+      title: "Family learning moment",
+      prompt: "A family is planning device rules together at a table.",
+      question: "What can they learn?",
+      answers: ["Agree on safe rules", "Hide all problems", "Click every offer"],
+      correct: 0,
+      lesson: "Shared rules help kids, teens, and adults stay safer online.",
+      points: 30,
+    },
+    {
+      key: "compare-skills",
+      scene: "market",
+      title: "Skill choice",
+      prompt: "A learner compares two skill paths and chooses the one with clearer real-world use.",
+      question: "What is a good next step?",
+      answers: ["Pick a useful path", "Wait forever", "Follow noise only"],
+      correct: 0,
+      lesson: "Useful growth starts when the next step is visible and practical.",
+      points: 33,
+    },
+    {
+      key: "progress-loop",
+      scene: "lab",
+      title: "Practice and improve",
+      prompt: "A learner tries, checks, and improves a simple task instead of quitting early.",
+      question: "What creates growth?",
+      answers: ["Practice with feedback", "Avoiding effort", "Hiding mistakes"],
+      correct: 0,
+      lesson: "Skills grow faster when mistakes become feedback.",
+      points: 37,
+    },
+    {
+      key: "pet-routine",
+      scene: "pet",
+      title: "Care routine confidence",
+      prompt: "A pet owner follows a calm daily checklist and becomes more confident over time.",
+      question: "Why does confidence rise?",
+      answers: ["Small wins build it", "Luck alone builds it", "Confusion builds it"],
+      correct: 0,
+      lesson: "Confidence usually comes from repeated proof, not hype.",
+      points: 32,
+    },
+    {
+      key: "focus-stack",
+      scene: "phone",
+      title: "Focus stack",
+      prompt: "A learner puts one task, one timer, and one goal on the screen before working.",
+      question: "What does the stack do?",
+      answers: ["Makes focus easier", "Adds distraction", "Removes purpose"],
+      correct: 0,
+      lesson: "Clear single-task focus beats vague intention.",
+      points: 35,
+    },
+  ],
+  stem: [
+    {
+      key: "stem-lab",
+      scene: "lab",
+      title: "Plant light test",
+      prompt: "A learner tests a plant near light and records what changes.",
+      question: "What STEM skill are they using?",
+      answers: ["Observation and testing", "Guessing without looking", "Copying a secret"],
+      correct: 0,
+      lesson: "STEM grows when you observe, test, record, and improve.",
+      points: 40,
+    },
+    {
+      key: "circuit-path",
+      scene: "engineering",
+      title: "Circuit path check",
+      prompt: "A learner traces a battery, switch, and lamp to understand whether a circuit is complete.",
+      question: "What makes the lamp work?",
+      answers: ["A complete path", "A random color", "A hidden wire name"],
+      correct: 0,
+      lesson: "Electrical engineering starts with understanding the path that current follows.",
+      points: 45,
+    },
+    {
+      key: "family-build",
+      scene: "family",
+      title: "Build and test together",
+      prompt: "A family works on a simple bridge model and checks which design holds better.",
+      question: "What are they doing?",
+      answers: ["Testing designs", "Avoiding evidence", "Pretending the result"],
+      correct: 0,
+      lesson: "Engineering improves when ideas are tested side by side.",
+      points: 36,
+    },
+    {
+      key: "compare-energy",
+      scene: "market",
+      title: "Energy choice comparison",
+      prompt: "A learner compares two energy-saving devices by looking at use and efficiency.",
+      question: "What matters most?",
+      answers: ["Performance and efficiency", "Only the brightest box", "Only the loudest ad"],
+      correct: 0,
+      lesson: "Good engineering decisions compare function, safety, and efficiency.",
+      points: 38,
+    },
+    {
+      key: "signal-screen",
+      scene: "phone",
+      title: "Signal on the screen",
+      prompt: "A phone app shows a changing graph from a sensor reading over time.",
+      question: "What is being learned?",
+      answers: ["Signals carry information", "Graphs hide meaning", "Sensors never help"],
+      correct: 0,
+      lesson: "Electrical systems often turn real-world changes into readable signals.",
+      points: 41,
+    },
+    {
+      key: "safe-kit",
+      scene: "engineering",
+      title: "Safe low-power kit",
+      prompt: "A beginner studies a supervised low-power circuit kit before touching bigger systems.",
+      question: "Why start small?",
+      answers: ["It is safer and clearer", "It is more dangerous", "It removes learning"],
+      correct: 0,
+      lesson: "Safe electrical learning begins with low-power examples and clear symbols.",
+      points: 44,
+    },
+  ],
+  pet: [
+    {
+      key: "pet-care",
+      scene: "pet",
+      title: "Pet care check",
+      prompt: "A house pet sits near a bowl, clean space, and care checklist.",
+      question: "What should the owner check every day?",
+      answers: ["Water, food, space, mood", "Only decorations", "Nothing until problems grow"],
+      correct: 0,
+      lesson: "Daily care helps pets stay safer, calmer, and healthier.",
+      points: 40,
+    },
+    {
+      key: "gentle-petting",
+      scene: "pet",
+      title: "Gentle petting guide",
+      prompt: "A learner sees calm pet signals before offering a gentle touch.",
+      question: "What should happen first?",
+      answers: ["Read the pet's signals", "Grab quickly", "Ignore stress"],
+      correct: 0,
+      lesson: "Good pet care starts with noticing comfort, stress, and consent.",
+      points: 36,
+    },
+    {
+      key: "family-care",
+      scene: "family",
+      title: "Shared care routine",
+      prompt: "A family shares feeding, cleaning, and play duties for a house pet.",
+      question: "What improves with this plan?",
+      answers: ["Consistency", "Confusion", "Neglect"],
+      correct: 0,
+      lesson: "Pets thrive when daily care is steady and shared clearly.",
+      points: 33,
+    },
+    {
+      key: "smart-supplies",
+      scene: "market",
+      title: "Smart supply choice",
+      prompt: "A pet owner compares safe, useful supplies with flashy extras.",
+      question: "What should come first?",
+      answers: ["Safe basics", "Only toys", "Only decoration"],
+      correct: 0,
+      lesson: "Good pet ownership puts health and safety before appearance.",
+      points: 31,
+    },
+    {
+      key: "mood-log",
+      scene: "lab",
+      title: "Mood and health log",
+      prompt: "A learner records mood, appetite, and activity changes to notice pet health early.",
+      question: "Why keep the log?",
+      answers: ["To notice patterns", "To ignore change", "To skip care"],
+      correct: 0,
+      lesson: "Simple daily notes help owners catch changes before they grow.",
+      points: 37,
+    },
+    {
+      key: "safe-home-pet",
+      scene: "phone",
+      title: "Pet checklist on screen",
+      prompt: "A phone checklist reminds the owner about water, space, and daily attention.",
+      question: "What does the checklist support?",
+      answers: ["Reliable care", "Forgetting", "Unsafe guessing"],
+      correct: 0,
+      lesson: "A visible checklist makes pet care easier to repeat well.",
+      points: 32,
+    },
+  ],
+};
+
+function buildAiArtLibrary() {
+  return categories.flatMap((category, categoryIndex) => {
+    const blueprints = artBlueprints[category.key] || [];
+    return blueprints.flatMap((blueprint, blueprintIndex) =>
+      artStyles.flatMap((style, styleIndex) =>
+        artFrames.flatMap((frame, frameIndex) => {
+          const palette = artPalettes[(categoryIndex + blueprintIndex + styleIndex + frameIndex) % artPalettes.length];
+          return {
+            key: `${category.key}-${blueprint.key}-${style.key}-${frame.key}`,
+            categoryKey: category.key,
+            title: `${blueprint.title}`,
+            scene: {
+              type: blueprint.scene,
+              palette,
+              style,
+              frame,
+            },
+            artLabel: `${style.label} - ${frame.label}`,
+            points: blueprint.points + (frameIndex % 2 === 0 ? 3 : 0),
+            prompt: `${blueprint.prompt} ${style.label} with a ${frame.label}.`,
+            question: blueprint.question,
+            answers: blueprint.answers,
+            correct: blueprint.correct,
+            lesson: blueprint.lesson,
+          };
+        }),
+      ),
+    );
+  });
+}
+
+const aiArtLibrary = buildAiArtLibrary();
+
+function dailyVisualTasks(categoryKey) {
+  const dayNumber = Math.floor(new Date(todayKey).getTime() / 86400000);
+  const categoryTasks = aiArtLibrary.filter((item) => item.categoryKey === categoryKey);
+  const globalTasks = aiArtLibrary.filter((item) => item.categoryKey !== categoryKey);
+  const localStart = (dayNumber * 3) % categoryTasks.length;
+  const globalStart = (dayNumber * 5) % globalTasks.length;
+  return [
+    ...categoryTasks.slice(localStart, localStart + 4),
+    ...globalTasks.slice(globalStart, globalStart + 2),
+  ];
+}
 
 const ethicsStatements = [
   {
@@ -795,6 +1220,8 @@ const rewardJourneyGrid = document.querySelector("#rewardJourneyGrid");
 const rewardJourneyCopy = document.querySelector("#rewardJourneyCopy");
 const rewardJourneyPill = document.querySelector("#rewardJourneyPill");
 const visualGrid = document.querySelector("#visualGrid");
+const visualPill = document.querySelector("#visualPill");
+const visualCopy = document.querySelector("#visualCopy");
 const ethicsList = document.querySelector("#ethicsList");
 const toolGrid = document.querySelector("#toolGrid");
 const premiumGrid = document.querySelector("#premiumGrid");
@@ -1099,6 +1526,12 @@ function homeSpotlights(category, dailyQuest, level, nextReward, claimable, reco
       page: "learn",
     },
     {
+      title: "Daily art drop",
+      body: `${aiArtLibrary.length.toLocaleString()} AI art scenes power Questora's rotating image tasks, so today's scroll feels fresh instead of repeated.`,
+      cta: "Open art tasks",
+      page: "learn",
+    },
+    {
       title: "Reward runway",
       body: nextReward
         ? `${nextReward.need - state.points} more pts unlocks ${nextReward.title}.`
@@ -1244,6 +1677,7 @@ function openPage(page) {
 function render() {
   const category = currentCategory();
   const dailyQuest = currentDailyQuest(category);
+  const todaysVisuals = dailyVisualTasks(category.key);
   const record = userRecord();
   const dailyDone = record.lastDailyDate === todayKey;
   const level = Math.max(1, Math.floor(state.points / 150) + 1);
@@ -1305,6 +1739,8 @@ function render() {
   premiumGuideCopy.textContent = unlockedRewards
     ? "Premium now feels like a deeper layer of something the user already trusts."
     : "Premium stays visible, but Questora should still prove itself through free learning first.";
+  visualPill.textContent = `${aiArtLibrary.length.toLocaleString()} art scenes`;
+  visualCopy.textContent = `${todaysVisuals.length} rotating visual tasks are live today for ${category.title}. Questora now pulls from a large AI-art library so users keep seeing new lesson moments.`;
   nextPill.textContent = nextReward ? `${nextReward.need - state.points} pts left` : "All unlocked";
   missionCopy.textContent = dailyDone
     ? "Today's question is complete. Keep the flow moving through lessons, rewards, and premium previews."
@@ -1526,7 +1962,7 @@ function render() {
     )
     .join("");
 
-  visualGrid.innerHTML = visualTasks
+  visualGrid.innerHTML = todaysVisuals
     .map((task) => {
       const key = `visual::${task.key}`;
       const answered = state.answered[key];
@@ -1536,7 +1972,8 @@ function render() {
           <div class="visual-copy">
             <strong>${task.title}</strong>
             <p>${task.prompt}</p>
-            <span>${answered ? task.lesson : `Earn +${task.points} pts`}</span>
+            <span>${task.artLabel}</span>
+            <b>${answered ? task.lesson : `Earn +${task.points} pts`}</b>
           </div>
           <div class="mini-question">
             <p>${task.question}</p>
@@ -1635,6 +2072,74 @@ function currentDailyQuest(category) {
 }
 
 function renderScene(scene) {
+  if (typeof scene === "object") {
+    const { type, palette, style, frame } = scene;
+    const accent = palette.accent;
+    const support = palette.support;
+    const extra = palette.extra;
+    const header = `
+      <rect width="260" height="150" rx="8" fill="${palette.background}" />
+      <rect x="16" y="16" width="228" height="118" rx="12" fill="rgba(255,255,255,0.76)" stroke="${support}" stroke-width="2" />
+      <text x="28" y="34" fill="${support}" font-size="10" font-weight="700">${style.label}</text>
+      <text x="182" y="34" fill="${accent}" font-size="10" font-weight="700">${frame.label}</text>
+    `;
+    const artShapes = {
+      phone: `
+        <rect x="92" y="36" width="76" height="86" rx="12" fill="#fff" stroke="${support}" stroke-width="6" />
+        <path d="M111 58h38M111 76h28M111 94h42" stroke="${support}" stroke-width="7" stroke-linecap="round" />
+        <circle cx="130" cy="112" r="5" fill="${accent}" />
+        <circle cx="62" cy="54" r="18" fill="${accent}" />
+        <path d="M190 52l12 12 22-24" fill="none" stroke="${extra}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+      `,
+      family: `
+        <rect x="50" y="98" width="160" height="20" rx="9" fill="${accent}" />
+        <circle cx="80" cy="66" r="18" fill="${support}" />
+        <circle cx="130" cy="56" r="22" fill="${extra}" />
+        <circle cx="182" cy="68" r="18" fill="${accent}" />
+        <path d="M60 100c7-25 33-25 40 0M109 100c8-31 36-31 43 0M164 100c6-24 29-24 36 0" fill="#fff" opacity=".92" />
+        <path d="M90 38h80" stroke="${support}" stroke-width="8" stroke-linecap="round" />
+      `,
+      market: `
+        <rect x="34" y="40" width="74" height="82" rx="10" fill="#fff" stroke="${accent}" stroke-width="5" />
+        <rect x="152" y="40" width="74" height="82" rx="10" fill="#fff" stroke="${support}" stroke-width="5" />
+        <path d="M51 60h40M51 80h28M51 100h46M169 60h40M169 80h28M169 100h46" stroke="#6f6878" stroke-width="6" stroke-linecap="round" />
+        <circle cx="130" cy="82" r="18" fill="${extra}" />
+        <path d="M122 82h16M130 74v16" stroke="${support}" stroke-width="5" stroke-linecap="round" />
+      `,
+      lab: `
+        <circle cx="58" cy="46" r="20" fill="${accent}" />
+        <rect x="136" y="38" width="68" height="80" rx="10" fill="#fff" stroke="${support}" stroke-width="5" />
+        <path d="M155 96c0-21 18-31 32-45" stroke="${extra}" stroke-width="7" fill="none" stroke-linecap="round" />
+        <path d="M156 72c-14-7-21-16-24-25M170 70c12-10 24-11 35-8" stroke="${extra}" stroke-width="7" fill="none" stroke-linecap="round" />
+        <path d="M46 108h72M58 88h44" stroke="${support}" stroke-width="8" stroke-linecap="round" />
+        <circle cx="86" cy="64" r="12" fill="${support}" />
+      `,
+      pet: `
+        <circle cx="88" cy="72" r="28" fill="${support}" />
+        <circle cx="69" cy="44" r="11" fill="${support}" />
+        <circle cx="107" cy="44" r="11" fill="${support}" />
+        <circle cx="78" cy="70" r="4" fill="#fff" />
+        <circle cx="99" cy="70" r="4" fill="#fff" />
+        <path d="M82 86c8 7 16 7 24 0" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" />
+        <rect x="150" y="42" width="68" height="72" rx="10" fill="#fff" stroke="${extra}" stroke-width="5" />
+        <path d="M164 64h34M164 82h28M164 100h38" stroke="#6f6878" stroke-width="6" stroke-linecap="round" />
+      `,
+      engineering: `
+        <circle cx="56" cy="50" r="18" fill="${accent}" />
+        <circle cx="92" cy="82" r="14" fill="${support}" />
+        <rect x="142" y="38" width="70" height="82" rx="12" fill="#fff" stroke="${extra}" stroke-width="5" />
+        <path d="M132 52h68" stroke="${support}" stroke-width="8" stroke-linecap="round" />
+        <path d="M82 100h42M72 118h62" stroke="${support}" stroke-width="8" stroke-linecap="round" />
+        <path d="M140 74c16 4 24 15 28 30M178 66c-18 10-24 16-30 32" stroke="${extra}" stroke-width="7" fill="none" stroke-linecap="round" />
+      `,
+    };
+    return `
+      <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="${style.label} ${type} learning art">
+        ${header}
+        ${artShapes[type] || artShapes.phone}
+      </svg>
+    `;
+  }
   const scenes = {
     phone: `
       <svg class="task-image" viewBox="0 0 260 150" role="img" aria-label="Phone with a suspicious reward message">
@@ -1833,7 +2338,7 @@ function answerLesson(key, index) {
 }
 
 function answerVisual(taskKey, index) {
-  const task = visualTasks.find((item) => item.key === taskKey);
+  const task = aiArtLibrary.find((item) => item.key === taskKey);
   const answerKey = `visual::${taskKey}`;
   if (!task || state.answered[answerKey]) {
     explain("This visual task is already complete.", "Continue scrolling to another image or premium learning.");
