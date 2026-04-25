@@ -623,6 +623,13 @@ select {
   margin-top: 16px;
 }
 
+.reward-center-grid,
+.claim-history-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 .spotlight-card {
   display: grid;
   gap: 8px;
@@ -865,6 +872,49 @@ select {
 
 .reward-journey-card.active {
   border-color: rgba(36, 168, 107, 0.4);
+}
+
+.reward-center-card,
+.claim-history-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff, #f9fbff);
+}
+
+.reward-center-card p,
+.claim-history-card p,
+.claim-history-card span {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.reward-center-card.gold {
+  background: linear-gradient(135deg, rgba(245, 184, 59, 0.18), #fff);
+}
+
+.reward-center-card.green {
+  background: linear-gradient(135deg, rgba(36, 168, 107, 0.16), #fff);
+}
+
+.reward-center-card.blue {
+  background: linear-gradient(135deg, rgba(47, 116, 208, 0.16), #fff);
+}
+
+.reward-center-card.purple {
+  background: linear-gradient(135deg, rgba(107, 58, 153, 0.16), #fff);
+}
+
+.claim-history-card span {
+  color: var(--purple);
+  font-weight: 800;
+}
+
+.claim-history-card.empty {
+  background: linear-gradient(135deg, #fbf8ff, #f8fbff);
 }
 
 .research-panel {
@@ -1223,6 +1273,21 @@ select {
   color: #fff;
   background: var(--purple);
   border-color: var(--purple);
+}
+
+.reward-meter {
+  overflow: hidden;
+  width: 100%;
+  height: 8px;
+  background: rgba(107, 58, 153, 0.12);
+  border-radius: 999px;
+}
+
+.reward-meter span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--purple));
+  border-radius: 999px;
 }
 
 .reward-card.unlocked p,

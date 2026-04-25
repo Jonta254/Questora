@@ -1221,9 +1221,14 @@ const nextGrid = document.querySelector("#nextGrid");
 const nextPill = document.querySelector("#nextPill");
 const lessonGrid = document.querySelector("#lessonGrid");
 const rewardGrid = document.querySelector("#rewardGrid");
+const rewardCenterGrid = document.querySelector("#rewardCenterGrid");
+const rewardCenterCopy = document.querySelector("#rewardCenterCopy");
+const rewardCenterPill = document.querySelector("#rewardCenterPill");
 const rewardJourneyGrid = document.querySelector("#rewardJourneyGrid");
 const rewardJourneyCopy = document.querySelector("#rewardJourneyCopy");
 const rewardJourneyPill = document.querySelector("#rewardJourneyPill");
+const claimHistoryList = document.querySelector("#claimHistoryList");
+const claimHistoryPill = document.querySelector("#claimHistoryPill");
 const visualGrid = document.querySelector("#visualGrid");
 const visualPill = document.querySelector("#visualPill");
 const visualCopy = document.querySelector("#visualCopy");
@@ -1488,6 +1493,43 @@ function rewardJourney(unlockedRewards, claimable, nextReward) {
         ? `${nextReward.need - state.points} more pts unlock ${nextReward.title}.`
         : "Current reward tiers are fully open, so the user can focus on record and premium value.",
       state: "live",
+    },
+  ];
+}
+
+function rewardCenterCards(unlockedRewards, claimable, nextReward, record) {
+  const level = Math.max(1, Math.floor(state.points / 150) + 1);
+  const nextNeed = nextReward ? Math.max(0, nextReward.need - state.points) : 0;
+  return [
+    {
+      label: "Reward energy",
+      title: `${state.points} pts total`,
+      body: `${record.completedDays} daily wins and ${record.completedLessons.length} lesson unlocks are already powering this account.`,
+      tone: "purple",
+    },
+    {
+      label: "Current level",
+      title: `Level ${level}`,
+      body: unlockedRewards
+        ? `${unlockedRewards} reward tier${unlockedRewards > 1 ? "s are" : " is"} already unlocked.`
+        : "The first reward tier is still ahead, so early progress needs to feel visible.",
+      tone: "blue",
+    },
+    {
+      label: "Next target",
+      title: nextReward ? nextReward.title : "All rewards open",
+      body: nextReward
+        ? `${nextNeed} more pts unlock ${nextReward.value}.`
+        : "Every reward tier is already open, so now the value comes from record quality and future premium fit.",
+      tone: "gold",
+    },
+    {
+      label: "Claim preview",
+      title: claimable >= 100 ? "Ready to record" : "Build more first",
+      body: claimable >= 100
+        ? `${claimable} fresh pts are ready for a new reward-claim preview.`
+        : `Reach 100 fresh pts to create a claim preview. You currently have ${claimable}.`,
+      tone: claimable >= 100 ? "green" : "purple",
     },
   ];
 }
@@ -1759,6 +1801,7 @@ function render() {
   const journey = learnJourney(category, completedCategoryLessons);
   const steps = missionSteps(dailyDone, completedLessons, unlockedRewards, claimable);
   const rewardFlow = rewardJourney(unlockedRewards, claimable, nextReward);
+  const rewardCenter = rewardCenterCards(unlockedRewards, claimable, nextReward, record);
   const premiumFlow = premiumGuide(unlockedRewards, claimable);
   const pulseCards = homePulse(category, dailyQuest, todaysVisuals, nextReward, claimable, level);
   const surpriseChallenge = dailySurpriseChallenge(category, dailyQuest, todaysVisuals);
@@ -1795,6 +1838,8 @@ function render() {
   challengePill.textContent = dailyDone ? "Continue" : "Do this";
   globalPill.textContent = `${state.country} • ${state.language}`;
   rewardJourneyPill.textContent = unlockedRewards ? `${unlockedRewards} unlocked` : "Building";
+  rewardCenterPill.textContent = claimable >= 100 ? "Ready to claim" : "Keep earning";
+  claimHistoryPill.textContent = state.walletClaims.length ? `${state.walletClaims.length} records` : "No claims yet";
   premiumGuidePill.textContent = unlockedRewards ? "Ready to compare" : "Value first";
   yourRankPoints.textContent = state.points;
   yourRankLabel.textContent = state.userName || "You";
@@ -1803,6 +1848,9 @@ function render() {
   rewardJourneyCopy.textContent = nextReward
     ? `Every point now pushes toward ${nextReward.title}, while claim records stay tied to real activity.`
     : "All current reward tiers are open, so the focus shifts to record quality and future value.";
+  rewardCenterCopy.textContent = claimable >= 100
+    ? "You have enough fresh progress for the Rewards page to feel active right now: review the center, then create a claim preview record."
+    : "The Rewards page now shows what is unlocked, what is close, and exactly how much progress is still needed.";
   premiumGuideCopy.textContent = unlockedRewards
     ? "Premium now feels like a deeper layer of something the user already trusts."
     : "Premium stays visible, but Questora should still prove itself through free learning first.";
@@ -2030,14 +2078,31 @@ function render() {
   rewardGrid.innerHTML = rewards
     .map((reward) => {
       const unlocked = state.points >= reward.need;
+      const progress = Math.min(100, Math.max(0, Math.round((state.points / reward.need) * 100)));
       return `
         <article class="reward-card ${unlocked ? "unlocked" : ""}">
+          <p class="eyebrow">${unlocked ? "Unlocked" : "In progress"}</p>
           <strong>${reward.title}</strong>
           <p>${reward.value}</p>
+          <div class="reward-meter" aria-hidden="true">
+            <span style="width:${progress}%"></span>
+          </div>
           <span>${unlocked ? "Unlocked" : `${reward.need - state.points} pts left`}</span>
         </article>
       `;
     })
+    .join("");
+
+  rewardCenterGrid.innerHTML = rewardCenter
+    .map(
+      (card) => `
+        <article class="reward-center-card ${card.tone}">
+          <p class="eyebrow">${card.label}</p>
+          <strong>${card.title}</strong>
+          <p>${card.body}</p>
+        </article>
+      `,
+    )
     .join("");
 
   rewardJourneyGrid.innerHTML = rewardFlow
@@ -2050,6 +2115,28 @@ function render() {
       `,
     )
     .join("");
+
+  claimHistoryList.innerHTML = state.walletClaims.length
+    ? state.walletClaims
+        .slice()
+        .reverse()
+        .map(
+          (claim, index) => `
+            <article class="claim-history-card">
+              <strong>Claim preview ${state.walletClaims.length - index}</strong>
+              <p>${claim.points} pts recorded on ${claim.date}.</p>
+              <span>This is a preview record only until approved Pi wallet payout flow is added.</span>
+            </article>
+          `,
+        )
+        .join("")
+    : `
+        <article class="claim-history-card empty">
+          <strong>No claim previews yet</strong>
+          <p>Earn at least 100 fresh points, then create your first claim preview record here.</p>
+          <span>Questora keeps the rules visible so reward history feels trustworthy.</span>
+        </article>
+      `;
 
   visualGrid.innerHTML = todaysVisuals
     .map((task) => {
