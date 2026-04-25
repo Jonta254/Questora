@@ -625,7 +625,8 @@ select {
 }
 
 .reward-center-grid,
-.claim-history-list {
+.claim-history-list,
+.profile-grid {
   display: grid;
   gap: 10px;
   margin-top: 16px;
@@ -655,7 +656,9 @@ select {
 }
 
 .pulse-card,
-.challenge-card {
+.challenge-card,
+.tomorrow-card,
+.profile-card {
   display: grid;
   gap: 8px;
   padding: 16px;
@@ -672,14 +675,18 @@ select {
 }
 
 .pulse-card p,
-.challenge-card p {
+.challenge-card p,
+.tomorrow-card p,
+.profile-card p {
   margin: 0;
   color: var(--muted);
   line-height: 1.5;
 }
 
 .pulse-card strong,
-.challenge-card strong {
+.challenge-card strong,
+.tomorrow-card strong,
+.profile-card strong {
   color: var(--ink);
 }
 
@@ -702,6 +709,31 @@ select {
 .challenge-card {
   margin-top: 16px;
   background: linear-gradient(135deg, rgba(107, 58, 153, 0.12), rgba(245, 184, 59, 0.14));
+}
+
+.tomorrow-card {
+  margin-top: 16px;
+  background: linear-gradient(135deg, rgba(47, 116, 208, 0.12), rgba(245, 184, 59, 0.14));
+}
+
+.profile-card {
+  background: linear-gradient(135deg, #ffffff, #f9fbff);
+}
+
+.profile-card.gold {
+  background: linear-gradient(135deg, rgba(245, 184, 59, 0.18), #fff);
+}
+
+.profile-card.green {
+  background: linear-gradient(135deg, rgba(36, 168, 107, 0.16), #fff);
+}
+
+.profile-card.blue {
+  background: linear-gradient(135deg, rgba(47, 116, 208, 0.16), #fff);
+}
+
+.profile-card.purple {
+  background: linear-gradient(135deg, rgba(107, 58, 153, 0.16), #fff);
 }
 
 .challenge-note {

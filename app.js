@@ -1185,6 +1185,9 @@ const actionText = document.querySelector("#actionText");
 const recordName = document.querySelector("#recordName");
 const recordLevel = document.querySelector("#recordLevel");
 const recordToday = document.querySelector("#recordToday");
+const profileGrid = document.querySelector("#profileGrid");
+const profileCopy = document.querySelector("#profileCopy");
+const profilePill = document.querySelector("#profilePill");
 const dailyStatusPill = document.querySelector("#dailyStatusPill");
 const dailyRewardPill = document.querySelector("#dailyRewardPill");
 const categoryPill = document.querySelector("#categoryPill");
@@ -1212,6 +1215,8 @@ const pulsePill = document.querySelector("#pulsePill");
 const pulseCopy = document.querySelector("#pulseCopy");
 const challengeCard = document.querySelector("#challengeCard");
 const challengePill = document.querySelector("#challengePill");
+const tomorrowCard = document.querySelector("#tomorrowCard");
+const tomorrowPill = document.querySelector("#tomorrowPill");
 const globalGrid = document.querySelector("#globalGrid");
 const globalPill = document.querySelector("#globalPill");
 const purposeGrid = document.querySelector("#purposeGrid");
@@ -1701,6 +1706,56 @@ function dailySurpriseChallenge(category, dailyQuest, todaysVisuals) {
   };
 }
 
+function profileSummaryCards(record, unlockedRewards, claimable, level, nextReward) {
+  return [
+    {
+      label: "Identity",
+      title: `${state.age} ${state.goal}`,
+      body: `${state.country} and ${state.language} shape the way Questora presents this learner's path.`,
+      tone: "purple",
+    },
+    {
+      label: "Consistency",
+      title: `${record.completedDays} daily wins`,
+      body: state.streak
+        ? `Current streak: ${state.streak} day${state.streak > 1 ? "s" : ""}.`
+        : "The next daily win starts the current streak.",
+      tone: "green",
+    },
+    {
+      label: "Progress",
+      title: `${record.completedLessons.length} lesson rewards`,
+      body: unlockedRewards
+        ? `${unlockedRewards} reward tier${unlockedRewards > 1 ? "s are" : " is"} already open at Level ${level}.`
+        : `Level ${level} is still building toward the first visible reward tier.`,
+      tone: "blue",
+    },
+    {
+      label: "Next move",
+      title: nextReward ? nextReward.title : "Keep refining",
+      body: nextReward
+        ? `${Math.max(0, nextReward.need - state.points)} more pts unlock the next reward. ${claimable} fresh pts are currently unclaimed.`
+        : "All current reward tiers are open, so the next step is deeper learning and stronger record quality.",
+      tone: "gold",
+    },
+  ];
+}
+
+function tomorrowPreview(category, dailyDone, nextReward) {
+  return {
+    title: dailyDone ? "A new daily brief unlocks tomorrow" : "Today's brief is still waiting",
+    body: dailyDone
+      ? `Questora will rotate a new ${category.title} brief, a new art mix, and a fresh reason to earn again tomorrow.`
+      : `Finishing today's brief keeps tomorrow's comeback feeling stronger and the streak easier to protect.`,
+    reward: nextReward
+      ? `Next reward in ${Math.max(0, nextReward.need - state.points)} pts`
+      : "Current reward ladder complete",
+    action: dailyDone
+      ? "Come back for a fresh question, another visual drop, and the next reward push."
+      : "Answer today's question first, then return tomorrow for the next brief.",
+  };
+}
+
 function currentCategory() {
   return categories.find((category) => category.key === state.category) || categories[0];
 }
@@ -1841,6 +1896,8 @@ function render() {
   const premiumFlow = premiumGuide(unlockedRewards, claimable);
   const pulseCards = homePulse(category, dailyQuest, todaysVisuals, nextReward, claimable, level);
   const surpriseChallenge = dailySurpriseChallenge(category, dailyQuest, todaysVisuals);
+  const profileCards = profileSummaryCards(record, unlockedRewards, claimable, level, nextReward);
+  const tomorrow = tomorrowPreview(category, dailyDone, nextReward);
   const currentStep = steps.findIndex((step) => !step.done);
   const activeStep = currentStep === -1 ? steps.length : currentStep + 1;
 
@@ -1863,6 +1920,7 @@ function render() {
   missionPill.textContent = `Step ${activeStep}`;
   recordLevel.textContent = `Level ${level}`;
   recordToday.textContent = dailyDone ? "Done" : "Waiting";
+  profilePill.textContent = state.userName ? "Known user" : "Guest path";
   dailyStatusPill.textContent = dailyDone ? "Completed" : "Available";
   dailyRewardPill.textContent = `+${dailyQuest.points} pts`;
   if (dailyRewardPillTop) dailyRewardPillTop.textContent = `+${dailyQuest.points} pts`;
@@ -1893,7 +1951,9 @@ function render() {
   visualPill.textContent = `${aiArtLibrary.length.toLocaleString()} art scenes`;
   visualCopy.textContent = `${todaysVisuals.length} rotating visual tasks are live today for ${category.title}. Questora now pulls from a large AI-art library so users keep seeing new lesson moments.`;
   pulseCopy.textContent = `${state.country}, ${state.language}, ${state.goal}, and ${category.title} are shaping today's feed so Questora feels more alive and less repetitive.`;
+  profileCopy.textContent = `${state.userName || "Guest learner"} is building a clear record across daily wins, lessons, rewards, and the next target in Questora.`;
   nextPill.textContent = nextReward ? `${nextReward.need - state.points} pts left` : "All unlocked";
+  tomorrowPill.textContent = dailyDone ? "Come back" : "Finish today";
   missionCopy.textContent = dailyDone
     ? "Today's question is complete. Keep the flow moving through lessons, rewards, and premium previews."
     : "Start with today's question, then keep moving through lessons, rewards, and premium previews.";
@@ -2004,6 +2064,26 @@ function render() {
     <strong>${surpriseChallenge.reward}</strong>
     <p class="challenge-note">${surpriseChallenge.reason}</p>
     <p class="challenge-note">${surpriseChallenge.action}</p>
+  `;
+
+  profileGrid.innerHTML = profileCards
+    .map(
+      (card) => `
+        <article class="profile-card ${card.tone}">
+          <p class="eyebrow">${card.label}</p>
+          <strong>${card.title}</strong>
+          <p>${card.body}</p>
+        </article>
+      `,
+    )
+    .join("");
+
+  tomorrowCard.innerHTML = `
+    <p class="quest-label">Return loop</p>
+    <h3>${tomorrow.title}</h3>
+    <p>${tomorrow.body}</p>
+    <strong>${tomorrow.reward}</strong>
+    <p class="challenge-note">${tomorrow.action}</p>
   `;
 
   globalGrid.innerHTML = globalMoments()
