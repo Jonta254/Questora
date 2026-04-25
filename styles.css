@@ -617,7 +617,8 @@ select {
 }
 
 .reward-journey-grid,
-.premium-guide-grid {
+.premium-guide-grid,
+.premium-compare-grid {
   display: grid;
   gap: 10px;
   margin-top: 16px;
@@ -848,7 +849,8 @@ select {
 }
 
 .reward-journey-card,
-.premium-guide-card {
+.premium-guide-card,
+.premium-compare-card {
   display: grid;
   gap: 8px;
   padding: 16px;
@@ -858,7 +860,8 @@ select {
 }
 
 .reward-journey-card p,
-.premium-guide-card p {
+.premium-guide-card p,
+.premium-compare-card p {
   margin: 0;
   color: var(--muted);
   line-height: 1.5;
@@ -868,6 +871,22 @@ select {
 .premium-guide-card.strong {
   border-color: rgba(107, 58, 153, 0.35);
   background: linear-gradient(135deg, #fbf8ff, #f7fbff);
+}
+
+.premium-compare-card.gold {
+  background: linear-gradient(135deg, rgba(245, 184, 59, 0.18), #fff);
+}
+
+.premium-compare-card.green {
+  background: linear-gradient(135deg, rgba(36, 168, 107, 0.16), #fff);
+}
+
+.premium-compare-card.blue {
+  background: linear-gradient(135deg, rgba(47, 116, 208, 0.16), #fff);
+}
+
+.premium-compare-card.purple {
+  background: linear-gradient(135deg, rgba(107, 58, 153, 0.16), #fff);
 }
 
 .reward-journey-card.active {
@@ -1201,6 +1220,22 @@ select {
   gap: 8px;
   padding-left: 20px;
   margin: 0;
+}
+
+.premium-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.premium-detail-meta span {
+  padding: 7px 10px;
+  color: var(--purple-dark);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 .premium-detail-card button {

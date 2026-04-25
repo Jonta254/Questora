@@ -1239,6 +1239,9 @@ const premiumDetail = document.querySelector("#premiumDetail");
 const premiumGuideGrid = document.querySelector("#premiumGuideGrid");
 const premiumGuideCopy = document.querySelector("#premiumGuideCopy");
 const premiumGuidePill = document.querySelector("#premiumGuidePill");
+const premiumCompareGrid = document.querySelector("#premiumCompareGrid");
+const premiumCompareCopy = document.querySelector("#premiumCompareCopy");
+const premiumComparePill = document.querySelector("#premiumComparePill");
 const walletClaimAmount = document.querySelector("#walletClaimAmount");
 const claimWalletButton = document.querySelector("#claimWalletButton");
 const walletPill = document.querySelector("#walletPill");
@@ -1554,6 +1557,39 @@ function premiumGuide(unlockedRewards, claimable) {
         ? "This learner has enough activity to compare premium as an upgrade, not a shortcut."
         : "More earned progress will make premium feel more credible and more interesting later.",
       tone: claimable >= 100 ? "strong" : "base",
+    },
+  ];
+}
+
+function premiumCompareCards(pack, unlockedRewards, claimable) {
+  return [
+    {
+      label: "What opens",
+      title: pack.title,
+      body: pack.body,
+      tone: "gold",
+    },
+    {
+      label: "What stays free",
+      title: "Daily learning still works",
+      body: "The daily question, category lessons, visual tasks, and reward progress remain useful before any Pi payment is made.",
+      tone: "blue",
+    },
+    {
+      label: "Why now",
+      title: unlockedRewards ? "Premium has context" : "Premium is still a preview",
+      body: unlockedRewards
+        ? "This user has already seen free value, so deeper learning now feels like an upgrade."
+        : "Questora still needs to prove value through free learning first, which keeps trust stronger.",
+      tone: "purple",
+    },
+    {
+      label: "Payment preview",
+      title: `${pack.price} example access`,
+      body: claimable >= 100
+        ? "The Pi payment preview fits a user who already has visible activity and reward history."
+        : "The Pi payment preview is shown for future readiness, but the app should still earn trust before payment matters.",
+      tone: "green",
     },
   ];
 }
@@ -2058,7 +2094,7 @@ function render() {
         <article class="lesson-card styled-card ${category.style} ${answered ? "claimed" : ""}">
           <strong>${lesson.title}</strong>
           <p>${lesson.body}</p>
-          <span>${lesson.reward} • +${lesson.points} pts</span>
+          <span>${lesson.reward} - +${lesson.points} pts</span>
           <div class="mini-question">
             <p>${lesson.question}</p>
             <small>${answered ? "Completed and saved." : "Pick one answer. Right turns green and wrong turns red."}</small>
@@ -2213,10 +2249,24 @@ function render() {
     .join("");
 
   const selectedPack = premiumPacks.find((pack) => pack.key === state.selectedPremium) || premiumPacks[0];
+  const premiumCompare = premiumCompareCards(selectedPack, unlockedRewards, claimable);
+  premiumComparePill.textContent = selectedPack.title;
+  premiumCompareCopy.textContent = `${selectedPack.title} should feel clear before payment: what it improves, what stays free, and why ${selectedPack.price} is only a preview until the Pi backend flow is completed.`;
   premiumGuideGrid.innerHTML = premiumFlow
     .map(
       (item) => `
         <article class="premium-guide-card ${item.tone}">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+        </article>
+      `,
+    )
+    .join("");
+  premiumCompareGrid.innerHTML = premiumCompare
+    .map(
+      (item) => `
+        <article class="premium-compare-card ${item.tone}">
+          <p class="eyebrow">${item.label}</p>
           <strong>${item.title}</strong>
           <p>${item.body}</p>
         </article>
@@ -2231,6 +2281,10 @@ function render() {
       <ul>
         ${selectedPack.tips.map((tip) => `<li>${tip}</li>`).join("")}
       </ul>
+      <div class="premium-detail-meta">
+        <span>Example access: ${selectedPack.price}</span>
+        <span>Free learning remains available</span>
+      </div>
       <button type="button" id="premiumAccessButton">Preview ${selectedPack.price} access</button>
     </div>
   `;
