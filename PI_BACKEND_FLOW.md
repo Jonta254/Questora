@@ -19,10 +19,17 @@ POST /api/complete
 POST /api/incomplete
 ```
 
-Live Pi payments are intentionally disabled in `app.js` with:
+Required server environment:
 
-```js
-const PI_PAYMENTS_ENABLED = false;
-```
+- `PI_API_KEY`
+- optional `PI_API_BASE`
 
-Set this to `true` only after the backend uses the Pi Platform API as the source of truth and keeps the server API key private.
+Questora should only mark a premium service as unlocked after:
+
+1. the user connects in Pi Browser,
+2. the Pi Wallet creates the payment,
+3. `/api/approve` succeeds,
+4. blockchain submission returns a `txid`,
+5. `/api/complete` succeeds.
+
+Questora keeps premium Pi services separate from reward review records so users always know whether an action was a real Pi payment or only an in-app progress record.

@@ -1,6 +1,6 @@
 const todayKey = new Date().toISOString().slice(0, 10);
 const PI_SANDBOX = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-const PI_PAYMENTS_ENABLED = false;
+const PI_PAYMENTS_ENABLED = true;
 const BACKEND_ENDPOINTS = {
   signin: "/api/signin",
   approve: "/api/approve",
@@ -371,47 +371,153 @@ const rewards = [
 
 const premiumPacks = [
   {
-    key: "deep-stem",
-    title: "STEM Lab Pro",
-    price: "0.2 Pi",
-    body: "Advanced science projects, coding logic, math puzzles, and builder guides.",
-    tips: [
-      "Start every project with one question you can test.",
-      "Write what you changed and what stayed the same.",
-      "Improve the design after each result, even if the test failed.",
+    key: "trust-review",
+    title: "Pioneer Trust Review",
+    amount: 0.2,
+    price: "0.20 Pi",
+    audience: "Best for users who want safer Pi decisions before spending time or Pi.",
+    body: "A premium safety service with deeper scam spotting, marketplace trust checks, and a step-by-step account protection playbook.",
+    includes: [
+      "12 short premium safety pages with clear examples and safer next actions.",
+      "Red-flag review for links, promises, app wording, and privacy terms.",
+      "A repeatable trust checklist the user can use before future Pi actions.",
+    ],
+    outcomes: [
+      "Spot hype and fake reward language faster.",
+      "Know which app details should be checked before using a service.",
+      "Use Pi Browser more confidently with less guesswork.",
+    ],
+    lessons: [
+      {
+        title: "Did you know trust grows when rules are visible?",
+        hint: "Apps that hide terms, pressure quick action, or blur fees are harder to trust.",
+        action: "Check source, terms, payment reason, support path, and privacy signals before you continue.",
+      },
+      {
+        title: "This is how to compare a risky offer",
+        hint: "Fast reward language often tries to outrun careful thinking.",
+        action: "Pause, compare the promise with the app purpose, and reject anything that asks for secrets or blind trust.",
+      },
     ],
   },
   {
-    key: "life-skills",
-    title: "Life Skills Pro",
-    price: "0.2 Pi",
-    body: "Money habits, safety decisions, study routines, confidence, and daily planning.",
-    tips: [
-      "Use one small action per day instead of a huge plan you cannot repeat.",
-      "Track decisions by goal: safety, money, health, learning, or family.",
-      "Review your wins weekly and choose the next useful habit.",
+    key: "money-blueprint",
+    title: "Money Blueprint Pro",
+    amount: 0.25,
+    price: "0.25 Pi",
+    audience: "Best for learners who want stronger saving, planning, and value decisions.",
+    body: "A premium money service with guided weekly planning, spending filters, and practical decision tools that go beyond the free basics.",
+    includes: [
+      "15 premium pages on saving, value checks, goal planning, and spending pressure.",
+      "Small-budget decision templates for students, workers, and families.",
+      "Simple weekly review prompts that keep the user returning with purpose.",
+    ],
+    outcomes: [
+      "Turn money goals into repeatable daily behavior.",
+      "Spend with more clarity and less impulse.",
+      "Build a stronger record before using Pi on optional services.",
+    ],
+    lessons: [
+      {
+        title: "Did you know a budget works better when it is tiny?",
+        hint: "Most people keep a small plan longer than a perfect plan.",
+        action: "Track one need, one want, and one savings move each day before spending.",
+      },
+      {
+        title: "This is how to test value before paying",
+        hint: "A good offer should still make sense one week later.",
+        action: "Ask what problem it solves, how often it helps, and what cheaper option already exists.",
+      },
     ],
   },
   {
-    key: "pet-home",
-    title: "Pet Care Pro",
-    price: "0.2 Pi",
-    body: "House pet ownership, care checklists, safe petting, hygiene, and family guidance.",
-    tips: [
-      "Check water, food, clean space, and mood every day.",
-      "Teach children to approach pets calmly and respect signals.",
-      "Record unusual appetite, energy, or behavior changes early.",
+    key: "stem-builder",
+    title: "STEM Builder Vault",
+    amount: 0.3,
+    price: "0.30 Pi",
+    audience: "Best for curious learners who want premium STEM tasks, especially electrical engineering.",
+    body: "A premium STEM service with deeper science labs, electrical engineering explainers, builder logic, and structured observation tasks.",
+    includes: [
+      "18 premium STEM pages spanning circuits, signals, safe testing, energy flow, and design loops.",
+      "Electrical engineering prompts covering current, switches, loads, sensors, and safe troubleshooting.",
+      "Project cards that turn theory into observe-test-record-improve learning.",
+    ],
+    outcomes: [
+      "Understand how systems behave instead of only memorizing words.",
+      "Build stronger STEM confidence through guided testing.",
+      "See electrical engineering as practical, not abstract.",
+    ],
+    lessons: [
+      {
+        title: "Did you know electrical engineering begins with flow?",
+        hint: "Current needs a complete path, not just a power source.",
+        action: "Follow source, path, load, and switch so the user understands what completes or breaks a circuit.",
+      },
+      {
+        title: "This is how STEM thinking gets better",
+        hint: "The strongest learners do not guess once and stop.",
+        action: "Observe, test, record, compare results, and improve the design with each round.",
+      },
     ],
   },
   {
-    key: "pioneer-pro",
-    title: "Pioneer Pro Tips",
-    price: "0.2 Pi",
-    body: "Pi safety, ecosystem trust checks, marketplace choices, and creator tips.",
-    tips: [
-      "Never trade trust for a fast reward promise.",
-      "Check terms, support, privacy, and app purpose before using a service.",
-      "Build or use Pi utility that solves a real problem first.",
+    key: "family-circle",
+    title: "Family Learning Circle",
+    amount: 0.2,
+    price: "0.20 Pi",
+    audience: "Best for homes that want family-safe routines, pet care guidance, and shared learning moments.",
+    body: "A premium family service with guided conversation prompts, pet care routines, health follow-ups, and home learning activities for all ages.",
+    includes: [
+      "14 premium pages on family device rules, kindness routines, pet ownership, and shared goals.",
+      "Daily check-in ideas that keep younger and older users learning together.",
+      "A house-pet care bundle with feeding, mood, hygiene, and safe petting reminders.",
+    ],
+    outcomes: [
+      "Create safer shared rules at home.",
+      "Keep family learning gentle, clear, and repeatable.",
+      "Turn device time into guided growth instead of passive scrolling.",
+    ],
+    lessons: [
+      {
+        title: "Did you know family rules work better when everyone helps shape them?",
+        hint: "People follow rules more consistently when they understand the reason behind them.",
+        action: "Agree on a simple device, payment, or pet-care rule and keep it visible.",
+      },
+      {
+        title: "This is how daily pet care becomes safer",
+        hint: "Care is not only food; it is also space, mood, water, and observation.",
+        action: "Check water, food, clean space, movement, and mood every day, then record changes early.",
+      },
+    ],
+  },
+  {
+    key: "creator-launch",
+    title: "Creator Launch Notes",
+    amount: 0.45,
+    price: "0.45 Pi",
+    audience: "Best for pioneers who want to build credible Pi services or mini apps.",
+    body: "A premium creator service with product positioning, trust cues, launch sequencing, and Pi-utility thinking for mini app builders.",
+    includes: [
+      "16 premium pages on launch readiness, trust copy, payment positioning, and product flow.",
+      "A creator checklist for Pi Browser onboarding, reward wording, and premium timing.",
+      "Examples of how to make optional Pi services feel earned rather than forced.",
+    ],
+    outcomes: [
+      "Design clearer user flows from first visit to optional payment.",
+      "Avoid weak trust signals in copy and service design.",
+      "Build premium features that feel worth Pi, not speculative.",
+    ],
+    lessons: [
+      {
+        title: "Did you know premium works best after trust?",
+        hint: "A payment request lands better when the free product already solves a real problem.",
+        action: "Prove value first, then show the deeper service, the exact outcome, and the reason Pi is being used.",
+      },
+      {
+        title: "This is how to launch a useful Pi service",
+        hint: "Users stay when the first screen answers what this app does for them today.",
+        action: "Lead with one clear task, one reward, one next step, and one optional upgrade that has visible value.",
+      },
     ],
   },
 ];
@@ -1150,7 +1256,9 @@ const state = {
   answered: JSON.parse(localStorage.getItem("questora-answered") || "{}"),
   ethics: JSON.parse(localStorage.getItem("questora-ethics") || "{}"),
   walletClaims: JSON.parse(localStorage.getItem("questora-wallet-claims") || "[]"),
-  selectedPremium: localStorage.getItem("questora-selected-premium") || "deep-stem",
+  premiumUnlocks: JSON.parse(localStorage.getItem("questora-premium-unlocks") || "{}"),
+  premiumHistory: JSON.parse(localStorage.getItem("questora-premium-history") || "[]"),
+  selectedPremium: localStorage.getItem("questora-selected-premium") || "trust-review",
   currentPage: localStorage.getItem("questora-current-page") || "home",
   highContrast: localStorage.getItem("questora-high-contrast") === "true",
   largeText: localStorage.getItem("questora-large-text") === "true",
@@ -1241,6 +1349,8 @@ const ethicsList = document.querySelector("#ethicsList");
 const toolGrid = document.querySelector("#toolGrid");
 const premiumGrid = document.querySelector("#premiumGrid");
 const premiumDetail = document.querySelector("#premiumDetail");
+const premiumStatusGrid = document.querySelector("#premiumStatusGrid");
+const premiumHistoryList = document.querySelector("#premiumHistoryList");
 const premiumGuideGrid = document.querySelector("#premiumGuideGrid");
 const premiumGuideCopy = document.querySelector("#premiumGuideCopy");
 const premiumGuidePill = document.querySelector("#premiumGuidePill");
@@ -1419,7 +1529,7 @@ function missionSteps(dailyDone, completedLessons, unlockedRewards, claimable) {
       done: unlockedRewards > 0,
     },
     {
-      title: "Preview premium",
+      title: "Compare premium services",
       body: claimable >= 100 ? "You now have enough point activity to meaningfully compare free and premium value." : "Premium stays visible, but free learning should prove value first.",
       done: claimable >= 100,
     },
@@ -1439,15 +1549,15 @@ function nextUnlockCards(nextReward, claimable, unlockedRewards) {
       title: claimable >= 100 ? "Claim record ready" : "Build claim record",
       body:
         claimable >= 100
-          ? `${claimable} pts are ready for a claim preview record in Rewards.`
-          : `Reach 100 fresh pts to create a new claim preview. You currently have ${claimable} pts.`,
-      label: "Wallet preview",
+          ? `${claimable} pts are ready for a payout review record in Rewards.`
+          : `Reach 100 fresh pts to create a new payout review record. You currently have ${claimable} pts.`,
+      label: "Wallet review",
     },
     {
       title: unlockedRewards ? "Premium has context" : "Premium should wait",
       body:
         unlockedRewards
-          ? "The user has already seen free value, so premium previews make more sense now."
+          ? "The user has already seen free value, so premium services make more sense now."
           : "Keep the user in free learning until the reward system feels credible.",
       label: "Trust path",
     },
@@ -1489,9 +1599,9 @@ function rewardJourney(unlockedRewards, claimable, nextReward) {
       state: unlockedRewards ? "done" : "active",
     },
     {
-      title: claimable >= 100 ? "Claim preview available" : "Build claim preview",
+      title: claimable >= 100 ? "Review record available" : "Build review record",
       body: claimable >= 100
-        ? `${claimable} pts are available for a reward claim record preview.`
+        ? `${claimable} pts are available for a reward review record.`
         : "Keep going until there are 100 fresh points ready for a claim record.",
       state: claimable >= 100 ? "done" : "active",
     },
@@ -1532,11 +1642,11 @@ function rewardCenterCards(unlockedRewards, claimable, nextReward, record) {
       tone: "gold",
     },
     {
-      label: "Claim preview",
+      label: "Review queue",
       title: claimable >= 100 ? "Ready to record" : "Build more first",
       body: claimable >= 100
-        ? `${claimable} fresh pts are ready for a new reward-claim preview.`
-        : `Reach 100 fresh pts to create a claim preview. You currently have ${claimable}.`,
+        ? `${claimable} fresh pts are ready for a new reward-review record.`
+        : `Reach 100 fresh pts to create a reward-review record. You currently have ${claimable}.`,
       tone: claimable >= 100 ? "green" : "purple",
     },
   ];
@@ -1550,7 +1660,7 @@ function premiumGuide(unlockedRewards, claimable) {
       tone: "base",
     },
     {
-      title: unlockedRewards ? "Premium now has context" : "Premium should stay a preview",
+      title: unlockedRewards ? "Premium now has context" : "Premium should stay informative",
       body: unlockedRewards
         ? "The user already sees real value, so deeper paid learning feels more reasonable."
         : "Until rewards and lessons feel solid, premium should remain informative rather than urgent.",
@@ -1582,21 +1692,69 @@ function premiumCompareCards(pack, unlockedRewards, claimable) {
     },
     {
       label: "Why now",
-      title: unlockedRewards ? "Premium has context" : "Premium is still a preview",
+      title: unlockedRewards ? "Premium has context" : "Premium is still optional",
       body: unlockedRewards
         ? "This user has already seen free value, so deeper learning now feels like an upgrade."
         : "Questora still needs to prove value through free learning first, which keeps trust stronger.",
       tone: "purple",
     },
     {
-      label: "Payment preview",
-      title: `${pack.price} example access`,
+      label: "Pi payment",
+      title: `${pack.price} service unlock`,
       body: claimable >= 100
-        ? "The Pi payment preview fits a user who already has visible activity and reward history."
-        : "The Pi payment preview is shown for future readiness, but the app should still earn trust before payment matters.",
+        ? "The Pi payment flow fits a user who already has visible activity and reward history."
+        : "The Pi payment route is visible for readiness, but the app should still earn trust before payment matters.",
       tone: "green",
     },
   ];
+}
+
+function premiumStatusCards(pack, unlocked, connected, claimable) {
+  return [
+    {
+      label: "Service value",
+      title: unlocked ? "Unlocked and readable" : "Worth paying only if useful",
+      body: unlocked
+        ? `${pack.title} is now open with premium pages, deeper guidance, and a stronger next-action path.`
+        : `${pack.price} should unlock a specific result, not vague access. This service is designed around one clear outcome.`,
+      tone: unlocked ? "green" : "gold",
+    },
+    {
+      label: "User state",
+      title: connected ? "Pi connected" : "Connect first",
+      body: connected
+        ? "This user can request an in-app Pi payment when they decide the service is worth it."
+        : "Pi Browser connection is required before a premium payment can begin.",
+      tone: connected ? "blue" : "purple",
+    },
+    {
+      label: "Why now",
+      title: claimable >= 100 ? "Strong engagement signal" : "Free loop still matters",
+      body: claimable >= 100
+        ? "This learner already has visible progress, so premium feels like a real upgrade instead of an early interruption."
+        : "Questora should still win trust through daily learning before the user spends Pi.",
+      tone: claimable >= 100 ? "green" : "purple",
+    },
+    {
+      label: "Payment route",
+      title: "Pi demo flow aligned",
+      body: "Questora requests payment in Pi Browser, then the backend handles approval and completion before access is treated as unlocked.",
+      tone: "blue",
+    },
+  ];
+}
+
+function rememberPremiumEvent(pack, status, note, extra = {}) {
+  state.premiumHistory.unshift({
+    serviceKey: pack.key,
+    service: pack.title,
+    amount: pack.price,
+    status,
+    note,
+    date: new Date().toLocaleString(),
+    ...extra,
+  });
+  state.premiumHistory = state.premiumHistory.slice(0, 12);
 }
 
 function homeSpotlights(category, dailyQuest, level, nextReward, claimable, record) {
@@ -1628,14 +1786,14 @@ function homeSpotlights(category, dailyQuest, level, nextReward, claimable, reco
       page: "rewards",
     },
     {
-      title: "Premium preview",
-      body: `Level ${level} learners can preview deeper guides, research, and tips. Example access stays paired to the 0.2 Pi payment flow.`,
+      title: "Premium services",
+      body: `Level ${level} learners can compare optional Pi services with deeper guides, structured outcomes, and clear value before payment.`,
       cta: "See premium",
       page: "premium",
     },
     {
       title: "Consistency matters",
-      body: `${record.completedDays} daily wins saved and ${claimable} pts currently ready for a claim record preview.`,
+      body: `${record.completedDays} daily wins saved and ${claimable} pts currently ready for a reward review record.`,
       cta: "Open profile",
       page: "profile",
     },
@@ -1680,7 +1838,7 @@ function homePulse(category, dailyQuest, todaysVisuals, nextReward, claimable, l
       label: "Upgrade mood",
       title: `Level ${level} momentum`,
       body: claimable >= 100
-        ? "You already have enough activity for premium to feel like a real upgrade instead of noise."
+        ? "You already have enough activity for a premium Pi service to feel earned rather than random."
         : "Questora is still proving value through free learning first, which makes premium feel more trustworthy later.",
       tone: "purple",
       page: "premium",
@@ -1792,6 +1950,8 @@ function saveState() {
   localStorage.setItem("questora-answered", JSON.stringify(state.answered));
   localStorage.setItem("questora-ethics", JSON.stringify(state.ethics));
   localStorage.setItem("questora-wallet-claims", JSON.stringify(state.walletClaims));
+  localStorage.setItem("questora-premium-unlocks", JSON.stringify(state.premiumUnlocks));
+  localStorage.setItem("questora-premium-history", JSON.stringify(state.premiumHistory));
   localStorage.setItem("questora-selected-premium", state.selectedPremium);
   localStorage.setItem("questora-current-page", state.currentPage);
   localStorage.setItem("questora-high-contrast", String(state.highContrast));
@@ -1816,10 +1976,17 @@ async function postToBackend(endpoint, body) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    return response.ok;
+    const text = await response.text();
+    let data = null;
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch (error) {
+      data = { raw: text };
+    }
+    return { ok: response.ok, status: response.status, data };
   } catch (error) {
     console.info("Backend endpoint not ready yet", endpoint, error);
-    return false;
+    return { ok: false, status: 0, data: { error: "Backend endpoint not ready yet." } };
   }
 }
 
@@ -1943,11 +2110,11 @@ function render() {
     ? `Every point now pushes toward ${nextReward.title}, while claim records stay tied to real activity.`
     : "All current reward tiers are open, so the focus shifts to record quality and future value.";
   rewardCenterCopy.textContent = claimable >= 100
-    ? "You have enough fresh progress for the Rewards page to feel active right now: review the center, then create a claim preview record."
+    ? "You have enough fresh progress for the Rewards page to feel active right now: review the center, then create a reward review record."
     : "The Rewards page now shows what is unlocked, what is close, and exactly how much progress is still needed.";
   premiumGuideCopy.textContent = unlockedRewards
-    ? "Premium now feels like a deeper layer of something the user already trusts."
-    : "Premium stays visible, but Questora should still prove itself through free learning first.";
+    ? "Premium now feels like a deeper service layer built on top of free learning the user already trusts."
+    : "Premium stays visible, but Questora should still prove itself through free learning before Pi is requested.";
   visualPill.textContent = `${aiArtLibrary.length.toLocaleString()} art scenes`;
   visualCopy.textContent = `${todaysVisuals.length} rotating visual tasks are live today for ${category.title}. Questora now pulls from a large AI-art library so users keep seeing new lesson moments.`;
   pulseCopy.textContent = `${state.country}, ${state.language}, ${state.goal}, and ${category.title} are shaping today's feed so Questora feels more alive and less repetitive.`;
@@ -1955,8 +2122,8 @@ function render() {
   nextPill.textContent = nextReward ? `${nextReward.need - state.points} pts left` : "All unlocked";
   tomorrowPill.textContent = dailyDone ? "Come back" : "Finish today";
   missionCopy.textContent = dailyDone
-    ? "Today's question is complete. Keep the flow moving through lessons, rewards, and premium previews."
-    : "Start with today's question, then keep moving through lessons, rewards, and premium previews.";
+    ? "Today's question is complete. Keep the flow moving through lessons, rewards, and premium services."
+    : "Start with today's question, then keep moving through lessons, rewards, and premium services.";
 
   document.documentElement.classList.toggle("high-contrast", state.highContrast);
   document.documentElement.classList.toggle("large-text", state.largeText);
@@ -2239,18 +2406,18 @@ function render() {
         .map(
           (claim, index) => `
             <article class="claim-history-card">
-              <strong>Claim preview ${state.walletClaims.length - index}</strong>
-              <p>${claim.points} pts recorded on ${claim.date}.</p>
-              <span>This is a preview record only until approved Pi wallet payout flow is added.</span>
+              <strong>Payout review ${state.walletClaims.length - index}</strong>
+              <p>${claim.points} pts were recorded on ${claim.date} for later reward review.</p>
+              <span>Questora keeps this separate from Pi payments so premium purchases stay clear and reward rules stay honest.</span>
             </article>
           `,
         )
         .join("")
     : `
         <article class="claim-history-card empty">
-          <strong>No claim previews yet</strong>
-          <p>Earn at least 100 fresh points, then create your first claim preview record here.</p>
-          <span>Questora keeps the rules visible so reward history feels trustworthy.</span>
+          <strong>No payout review records yet</strong>
+          <p>Earn at least 100 fresh points, then create your first review record here.</p>
+          <span>Questora keeps premium Pi services and reward-review records clearly separated.</span>
         </article>
       `;
 
@@ -2321,17 +2488,23 @@ function render() {
       (pack) => `
         <button class="premium-card ${state.selectedPremium === pack.key ? "active" : ""}" data-premium="${pack.key}" type="button">
           <strong>${pack.title}</strong>
-          <p>${pack.body}</p>
-          <span>${pack.price} example access</span>
+          <p>${pack.audience}</p>
+          <span>${pack.price} premium service</span>
         </button>
       `,
     )
     .join("");
 
   const selectedPack = premiumPacks.find((pack) => pack.key === state.selectedPremium) || premiumPacks[0];
+  if (selectedPack.key !== state.selectedPremium) {
+    state.selectedPremium = selectedPack.key;
+    saveState();
+  }
+  const premiumUnlocked = Boolean(state.premiumUnlocks[selectedPack.key]);
   const premiumCompare = premiumCompareCards(selectedPack, unlockedRewards, claimable);
+  const premiumStatus = premiumStatusCards(selectedPack, premiumUnlocked, Boolean(state.user), claimable);
   premiumComparePill.textContent = selectedPack.title;
-  premiumCompareCopy.textContent = `${selectedPack.title} should feel clear before payment: what it improves, what stays free, and why ${selectedPack.price} is only a preview until the Pi backend flow is completed.`;
+  premiumCompareCopy.textContent = `${selectedPack.title} should feel clear before payment: what it solves, what still stays free, and why ${selectedPack.price} is being requested.`;
   premiumGuideGrid.innerHTML = premiumFlow
     .map(
       (item) => `
@@ -2353,21 +2526,80 @@ function render() {
       `,
     )
     .join("");
+  premiumStatusGrid.innerHTML = premiumStatus
+    .map(
+      (item) => `
+        <article class="premium-compare-card ${item.tone}">
+          <p class="eyebrow">${item.label}</p>
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+        </article>
+      `,
+    )
+    .join("");
   premiumDetail.innerHTML = `
     <div class="premium-detail-card">
-      <p class="quest-label">Premium learning preview</p>
+      <p class="quest-label">${premiumUnlocked ? "Premium service unlocked" : "Premium service preview"}</p>
       <h3>${selectedPack.title}</h3>
       <p>${selectedPack.body}</p>
-      <ul>
-        ${selectedPack.tips.map((tip) => `<li>${tip}</li>`).join("")}
-      </ul>
       <div class="premium-detail-meta">
-        <span>Example access: ${selectedPack.price}</span>
-        <span>Free learning remains available</span>
+        <span>${selectedPack.price}</span>
+        <span>${premiumUnlocked ? "Unlocked for this browser profile" : "Optional Pi payment"}</span>
+        <span>${selectedPack.lessons.length} guided pages shown now</span>
       </div>
-      <button type="button" id="premiumAccessButton">Preview ${selectedPack.price} access</button>
+      <article class="premium-insight-card">
+        <strong>What this service includes</strong>
+        <ul>
+          ${selectedPack.includes.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="premium-insight-card">
+        <strong>What the user should gain</strong>
+        <ul>
+          ${selectedPack.outcomes.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </article>
+      <div class="premium-page-grid">
+        ${selectedPack.lessons
+          .map(
+            (lesson, index) => `
+              <article class="premium-page-card">
+                <p class="eyebrow">Page ${index + 1}</p>
+                <strong>${lesson.title}</strong>
+                <p>${lesson.hint}</p>
+                <span>${lesson.action}</span>
+              </article>
+            `,
+          )
+          .join("")}
+      </div>
+      <ul>
+        <li>${selectedPack.audience}</li>
+        <li>${premiumUnlocked ? "Access is open on this device profile because the Pi payment flow completed." : "Free learning remains available even if the user does not buy this service."}</li>
+        <li>Questora keeps Pi payment tied to a real service outcome, not a vague promise.</li>
+      </ul>
+      <button type="button" id="premiumAccessButton" ${premiumUnlocked ? "disabled" : ""}>${premiumUnlocked ? "Service already unlocked" : `Pay ${selectedPack.price} with Pi to unlock`}</button>
     </div>
   `;
+  premiumHistoryList.innerHTML = state.premiumHistory.length
+    ? state.premiumHistory
+        .map(
+          (entry) => `
+            <article class="claim-history-card">
+              <strong>${entry.service}</strong>
+              <p>${entry.status} - ${entry.amount} on ${entry.date}</p>
+              <span>${entry.note}</span>
+            </article>
+          `,
+        )
+        .join("")
+    : `
+        <article class="claim-history-card empty">
+          <strong>No premium service activity yet</strong>
+          <p>When a user opens, cancels, approves, or completes a Pi payment, Questora records it here.</p>
+          <span>This keeps premium value and payment state easy to understand.</span>
+        </article>
+      `;
 
   walletClaimAmount.textContent = `${claimable} points ready`;
   walletPill.textContent = state.walletClaims.length ? `${state.walletClaims.length} claims` : "Preview";
@@ -2538,10 +2770,10 @@ async function connectWithPi() {
     render();
     loginButton.textContent = "Connected";
     explain(
-      verified
+      verified.ok
         ? `Connected and backend verified as ${state.userName}.`
         : `Connected as ${state.userName}, but backend verification is still needed.`,
-      verified
+      verified.ok
         ? "Continue learning and claiming app-point rewards."
         : "Add /api/signin to verify the access token with Pi Platform API /v2/me.",
     );
@@ -2553,19 +2785,85 @@ async function connectWithPi() {
 
 function paymentCallbacks(pack) {
   return {
-    onReadyForServerApproval: (paymentId) => {
-      explain("Payment created.", "Backend must approve it with Pi server approval.");
-      postToBackend(BACKEND_ENDPOINTS.approve, { paymentId, packKey: pack.key });
+    onReadyForServerApproval: async (paymentId) => {
+      explain("Payment created.", "Questora is asking the backend to approve it with Pi Platform.");
+      const result = await postToBackend(BACKEND_ENDPOINTS.approve, {
+        paymentId,
+        packKey: pack.key,
+        amount: pack.amount,
+      });
+      rememberPremiumEvent(
+        pack,
+        result.ok ? "Approved" : "Approval pending",
+        result.ok
+          ? "Pi backend approved the payment request."
+          : "Approval could not be confirmed yet. Check backend logs and Pi API key setup.",
+        { paymentId },
+      );
+      saveState();
+      renderInPlace();
+      explain(
+        result.ok ? "Payment approved by backend." : "Payment approval did not finish cleanly.",
+        result.ok
+          ? "The wallet can now continue toward blockchain submission and final completion."
+          : "Check the backend approve route, Pi API key, and service deployment before trying again.",
+      );
     },
-    onReadyForServerCompletion: (paymentId, txid) => {
-      explain("Payment submitted to blockchain.", "Backend must complete it with Pi server completion.");
-      postToBackend(BACKEND_ENDPOINTS.complete, { paymentId, txid, packKey: pack.key });
+    onReadyForServerCompletion: async (paymentId, txid) => {
+      explain("Payment submitted to blockchain.", "Questora is now asking the backend to complete the payment.");
+      const result = await postToBackend(BACKEND_ENDPOINTS.complete, {
+        paymentId,
+        txid,
+        packKey: pack.key,
+        amount: pack.amount,
+      });
+      if (result.ok) {
+        state.premiumUnlocks[pack.key] = {
+          paymentId,
+          txid,
+          date: todayKey,
+          title: pack.title,
+        };
+        rememberPremiumEvent(pack, "Unlocked", "Payment completed and premium service opened.", {
+          paymentId,
+          txid,
+        });
+        saveState();
+        renderInPlace();
+        explain(
+          `${pack.title} is now unlocked.`,
+          "Open the premium service card to read the full learning pages and use what you paid for right away.",
+        );
+        return;
+      }
+      rememberPremiumEvent(
+        pack,
+        "Completion pending",
+        "The payment reached the backend, but final completion was not confirmed.",
+        { paymentId, txid },
+      );
+      saveState();
+      renderInPlace();
+      explain(
+        "Payment completion was not confirmed.",
+        "Check the backend complete route and Pi server response before treating the service as unlocked.",
+      );
     },
     onCancel: (paymentId) => {
+      rememberPremiumEvent(pack, "Cancelled", "The user cancelled the Pi payment before completion.", {
+        paymentId,
+      });
+      saveState();
+      renderInPlace();
       explain(`Payment cancelled: ${paymentId}.`, "No premium access should unlock from a cancelled payment.");
     },
     onError: (error, payment) => {
       console.error("Pi payment error", error, payment);
+      rememberPremiumEvent(pack, "Error", "Pi payment flow returned an error.", {
+        paymentId: payment?.identifier,
+      });
+      saveState();
+      renderInPlace();
       explain("Pi payment could not be completed.", "Check backend approval, completion, and incomplete-payment handling.");
     },
   };
@@ -2582,19 +2880,27 @@ async function requestPremiumPayment(pack) {
     return;
   }
 
-  if (!PI_PAYMENTS_ENABLED) {
+  if (state.premiumUnlocks[pack.key]) {
     explain(
-      "Premium is paired with Pi payment callbacks, but live payment is disabled.",
-      "Deploy backend approve and complete endpoints before enabling real 0.2 Pi access.",
+      `${pack.title} is already unlocked.`,
+      "Scroll through the premium learning pages in this service and use the included guidance now.",
     );
     return;
   }
 
+  if (!PI_PAYMENTS_ENABLED) {
+    explain("Pi payment is currently disabled in this build.", "Turn on the payment flag only when you want to block live purchases.");
+    return;
+  }
+
+  rememberPremiumEvent(pack, "Started", "The user opened the Pi payment flow for this premium service.");
+  saveState();
+  renderInPlace();
   await window.Pi.createPayment(
     {
-      amount: Number(pack.price.replace(" Pi", "")),
-      memo: `Questora premium: ${pack.title}`,
-      metadata: { packKey: pack.key, type: "premium-learning" },
+      amount: pack.amount,
+      memo: `Questora premium service: ${pack.title}`,
+      metadata: { packKey: pack.key, type: "premium-service" },
     },
     paymentCallbacks(pack),
   );
@@ -2761,6 +3067,8 @@ function resetProgress() {
   state.answered = {};
   state.ethics = {};
   state.walletClaims = [];
+  state.premiumUnlocks = {};
+  state.premiumHistory = [];
   saveState();
   render();
   explain("Progress reset for a fresh test.", "Start again with a category and daily question.");
@@ -2836,7 +3144,8 @@ premiumGrid.addEventListener("click", (event) => {
   state.selectedPremium = card.dataset.premium;
   saveState();
   render();
-  explain("Premium learning area opened.", "Read the tips now; real 0.2 Pi access needs backend payment verification before launch.");
+  const pack = premiumPacks.find((item) => item.key === state.selectedPremium) || premiumPacks[0];
+  explain(`${pack.title} is selected.`, "Review what it includes, why it is worth Pi, and what action payment would unlock.");
 });
 premiumDetail.addEventListener("click", (event) => {
   if (!event.target.closest("#premiumAccessButton")) return;
@@ -2856,13 +3165,13 @@ claimWalletButton.addEventListener("click", () => {
   const alreadyClaimed = state.walletClaims.reduce((sum, claim) => sum + claim.points, 0);
   const claimable = Math.max(0, state.points - alreadyClaimed);
   if (claimable < 100) {
-    explain("Not enough new points for a claim record.", "Earn at least 100 new points by answering lessons and tasks.");
+    explain("Not enough new points for a payout review record.", "Earn at least 100 new points by answering lessons and tasks.");
     return;
   }
   state.walletClaims.push({ points: claimable, date: todayKey });
   saveState();
   render();
-  explain("Reward claim record created.", "Real wallet transfer needs approved Pi backend payments and clear reward rules.");
+  explain("Payout review record created.", "Questora now shows the reward record clearly without pretending it was a real Pi transfer.");
 });
 
 userRecord();

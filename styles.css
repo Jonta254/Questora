@@ -1249,6 +1249,11 @@ select {
   margin-top: 14px;
 }
 
+.premium-status-grid,
+.premium-history-list {
+  margin-top: 14px;
+}
+
 .premium-detail-card {
   display: grid;
   gap: 12px;
@@ -1277,6 +1282,48 @@ select {
   margin: 0;
 }
 
+.premium-insight-card,
+.premium-page-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.premium-insight-card strong,
+.premium-page-card strong {
+  color: var(--ink);
+}
+
+.premium-insight-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.premium-page-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.premium-page-card p,
+.premium-page-card span,
+.premium-insight-card p,
+.premium-insight-card li {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.premium-page-card span {
+  color: var(--purple);
+  font-weight: 800;
+}
+
 .premium-detail-meta {
   display: flex;
   flex-wrap: wrap;
@@ -1300,6 +1347,10 @@ select {
   border-radius: 8px;
   font-weight: 800;
   cursor: pointer;
+}
+
+.premium-history-panel .claim-history-card strong {
+  color: var(--ink);
 }
 
 .wallet-card button:disabled {
@@ -1509,6 +1560,7 @@ select {
   .pulse-grid,
   .reward-grid,
   .premium-grid,
+  .premium-page-grid,
   .category-grid,
   .field-grid,
   .choice-grid,
