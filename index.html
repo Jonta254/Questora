@@ -2,18 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Questora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#2E1A8A" />
+    <meta name="description" content="Questora — Daily Pi Network quests for Pioneers. Learn, earn, and grow on Pi Mainnet." />
+    <title>Questora — Pi Pioneer Quests</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainContent">Skip to app content</a>
-    <main class="app-shell">
+
+    <main class="app-shell" id="mainContent">
+
+      <!-- ── Access panel ─────────────────── -->
       <section class="access-panel" data-page="profile" aria-labelledby="accessTitle">
         <div>
-          <p class="eyebrow">Access</p>
-          <h2 id="accessTitle">Comfort tools</h2>
+          <p class="eyebrow" style="margin:0">Access</p>
+          <small id="accessTitle" style="color:var(--muted);font-size:.8rem;font-weight:700">Comfort tools</small>
         </div>
         <div class="access-actions">
           <button class="small-tool" id="textSizeButton" type="button">Bigger text</button>
@@ -22,27 +27,23 @@
         </div>
       </section>
 
-      <section class="hero" data-page="home">
-        <div class="brand-row">
-          <div class="logo-mark" aria-hidden="true">Q</div>
-          <div>
-            <p class="eyebrow">Mainnet pioneer quests</p>
-            <h1>Questora</h1>
-            <p class="hero-copy">
-              A polished daily learning mini app for Pioneers with clear questions,
-              instant feedback, strong rewards, and deeper premium learning when users are ready.
-            </p>
+      <!-- ── Hero ─────────────────────────── -->
+      <section class="hero" data-page="home" aria-label="Questora hero">
+        <div>
+          <span class="hero-eyebrow">π Mainnet Pioneer Quests</span>
+          <h1>Questora</h1>
+          <p class="hero-copy">
+            Daily quests, Pi knowledge, streaks, and premium learning for Pioneers of all ages on Pi Mainnet.
+          </p>
+        </div>
+        <div class="hero-rank-row">
+          <div class="rank-badge">
+            <span class="rank-icon" id="rankIcon">🥉</span>
+            <span id="rankLabel">Explorer</span>
           </div>
+          <small style="color:rgba(255,255,255,.65);font-size:.8rem" id="rankSubtitle">Earn points to rank up</small>
         </div>
-
-        <div class="hero-badges" aria-label="Questora highlights">
-          <span>Daily wins</span>
-          <span>Clear rewards</span>
-          <span>Premium learning</span>
-          <span>Pi paired flow</span>
-        </div>
-
-        <div class="stats-grid" aria-label="Questora progress">
+        <div class="stats-grid" aria-label="Your progress">
           <article>
             <span id="streakCount">0</span>
             <p>Day streak</p>
@@ -56,599 +57,744 @@
             <p>Badges</p>
           </article>
         </div>
+        <div class="hero-badges" aria-label="Questora highlights">
+          <span>Daily quests</span>
+          <span>Pi ecosystem</span>
+          <span>Pioneer ranks</span>
+          <span>Premium packs</span>
+        </div>
+      </section>
 
-        <button class="primary-action" id="loginButton" type="button">
-          Connect with Pi
+      <!-- ── Navigation ───────────────────── -->
+      <nav class="page-nav" aria-label="App pages" role="navigation">
+        <button class="page-tab active" data-page-target="home" type="button">
+          <span class="tab-icon">🏠</span>Home
         </button>
-        <p class="status-text" id="statusText" aria-live="polite">Sign in to save your progress.</p>
-        <div class="hero-actions">
-          <button class="secondary-action" data-page-jump="learn" type="button">Start learning</button>
-          <button class="secondary-action" data-page-jump="premium" type="button">See premium</button>
-        </div>
-      </section>
-
-      <nav class="page-nav" aria-label="Questora pages">
-        <button class="page-tab active" data-page-target="home" type="button">Home</button>
-        <button class="page-tab" data-page-target="learn" type="button">Learn</button>
-        <button class="page-tab" data-page-target="rewards" type="button">Rewards</button>
-        <button class="page-tab" data-page-target="premium" type="button">Premium</button>
-        <button class="page-tab" data-page-target="profile" type="button">Profile</button>
+        <button class="page-tab" data-page-target="learn" type="button">
+          <span class="tab-icon">📚</span>Learn
+        </button>
+        <button class="page-tab" data-page-target="pioneer" type="button">
+          <span class="tab-icon">π</span>Pioneer
+        </button>
+        <button class="page-tab" data-page-target="rewards" type="button">
+          <span class="tab-icon">🏆</span>Rewards
+        </button>
+        <button class="page-tab" data-page-target="profile" type="button">
+          <span class="tab-icon">👤</span>Profile
+        </button>
       </nav>
 
-      <section class="daily-learning-panel home-priority" data-page="home" aria-labelledby="dailyLearningTitleTop">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Daily First</p>
-            <h2 id="dailyLearningTitleTop">Today's learning quest</h2>
-          </div>
-          <span class="pill" id="dailyRewardPillTop">+50 pts</span>
-        </div>
-        <div class="daily-card" id="dailyCardTop">
-          <p class="quest-label">Loading</p>
-          <h3>Preparing your daily task</h3>
-          <p>Questora gives one daily learning reward per day to keep progress fair.</p>
-        </div>
-        <div class="answer-grid" id="dailyAnswerGridTop"></div>
-        <p class="quiz-feedback" id="dailyFeedbackTop">Answer today's question to earn your daily reward.</p>
-      </section>
+      <!-- ════════════════════════════════════
+           PAGE: HOME
+           ════════════════════════════════════ -->
+      <div data-page="home">
 
-      <section class="mission-panel" data-page="home" aria-labelledby="missionTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Today</p>
-            <h2 id="missionTitle">Your Questora flow</h2>
+        <!-- Pi connection -->
+        <section class="feature-panel" aria-labelledby="loginTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pi Network</p>
+              <h2 id="loginTitle">Connect as Pioneer</h2>
+            </div>
+            <span class="pill" id="dashboardPill">Guest mode</span>
           </div>
-          <span class="pill" id="missionPill">Step 1</span>
-        </div>
-        <p class="panel-copy" id="missionCopy">
-          Start with today's question, then keep moving through lessons, rewards, and premium services.
-        </p>
-        <div class="mission-rail" id="missionRail"></div>
-      </section>
-
-      <section class="dashboard-panel" data-page="home" aria-labelledby="dashboardTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Dashboard</p>
-            <h2 id="dashboardTitle">Your Questora progress</h2>
-          </div>
-          <span class="pill" id="dashboardPill">Live</span>
-        </div>
-        <div class="dashboard-grid">
-          <article>
-            <span id="dashUser">Guest</span>
-            <strong>User</strong>
-          </article>
-          <article>
-            <span id="dashLevel">Level 1</span>
-            <strong>Level</strong>
-          </article>
-          <article>
-            <span id="dashRewards">0</span>
-            <strong>Rewards</strong>
-          </article>
-          <article>
-            <span id="dashLessons">0</span>
-            <strong>Lessons</strong>
-          </article>
-          <article>
-            <span id="dashDaily">0</span>
-            <strong>Daily wins</strong>
-          </article>
-          <article>
-            <span id="dashNext">100 pts</span>
-            <strong>Next unlock</strong>
-          </article>
-        </div>
-        <div class="reason-panel" aria-live="polite">
-          <div>
-            <p class="eyebrow">Reason</p>
-            <strong id="reasonText">Questora rewards learning because users return when every tap teaches something useful.</strong>
-          </div>
-          <div>
-            <p class="eyebrow">Action</p>
-            <strong id="actionText">Choose a category, answer the daily question, then keep scrolling for lessons and rewards.</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="next-panel" data-page="home" aria-labelledby="nextTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Next</p>
-            <h2 id="nextTitle">What unlocks from here</h2>
-          </div>
-          <span class="pill" id="nextPill">On track</span>
-        </div>
-        <div class="next-grid" id="nextGrid"></div>
-      </section>
-
-      <section class="purpose-panel" data-page="home" aria-labelledby="purposeTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Purpose</p>
-            <h2 id="purposeTitle">Why Questora exists</h2>
-          </div>
-          <span class="pill" id="purposePill">Useful daily</span>
-        </div>
-        <p class="panel-copy" id="purposeCopy">
-          Questora helps Pioneers build trust, practical knowledge, and visible progress through short daily learning.
-        </p>
-        <div class="purpose-grid" id="purposeGrid"></div>
-      </section>
-
-      <section class="home-strip" data-page="home" aria-labelledby="homeStripTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Start here</p>
-            <h2 id="homeStripTitle">Quick actions</h2>
-          </div>
-          <span class="pill">Daily</span>
-        </div>
-        <div class="home-strip-grid">
-          <button class="shortcut-card" data-page-jump="home" type="button">
-            <strong>Do daily task</strong>
-            <span>Start with today's reward first</span>
+          <p>Open in Pi Browser and tap Connect to link your Pioneer account, unlock payment features, and save progress to your Pi identity.</p>
+          <button id="loginButton" type="button">
+            <span>π</span> Connect Pi Account
           </button>
-          <button class="shortcut-card" data-page-jump="learn" type="button">
-            <strong>Answer lessons</strong>
-            <span>Keep scrolling and earn points</span>
-          </button>
-          <button class="shortcut-card" data-page-jump="premium" type="button">
-            <strong>Open premium</strong>
-            <span>Preview `0.2 Pi` learning packs</span>
-          </button>
-        </div>
-      </section>
-
-      <section class="surprise-panel" data-page="home" aria-labelledby="surpriseTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Spotlight</p>
-            <h2 id="surpriseTitle">Why people keep returning</h2>
-          </div>
-          <span class="pill" id="surprisePill">Fresh today</span>
-        </div>
-        <div class="surprise-grid" id="surpriseGrid"></div>
-      </section>
-
-      <section class="pulse-panel" data-page="home" aria-labelledby="pulseTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Live today</p>
-            <h2 id="pulseTitle">What feels interesting right now</h2>
-          </div>
-          <span class="pill" id="pulsePill">Fresh flow</span>
-        </div>
-        <p class="panel-copy" id="pulseCopy">
-          Questora should feel alive the moment a Pioneer enters, with fresh things to do, unlock, and explore.
-        </p>
-        <div class="pulse-grid" id="pulseGrid"></div>
-      </section>
-
-      <section class="challenge-panel" data-page="home" aria-labelledby="challengeTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Challenge</p>
-            <h2 id="challengeTitle">Surprise challenge of the day</h2>
-          </div>
-          <span class="pill" id="challengePill">Bonus</span>
-        </div>
-        <div class="challenge-card" id="challengeCard"></div>
-      </section>
-
-      <section class="onboarding-panel" data-page="home" id="mainContent" aria-labelledby="onboardingTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Personalize</p>
-            <h2 id="onboardingTitle">Choose your quest path</h2>
-          </div>
-          <span class="pill" id="pathPill">Starter</span>
-        </div>
-
-        <div class="choice-grid" aria-label="Age group">
-          <button class="choice active" data-age="Kids" type="button">Kids</button>
-          <button class="choice" data-age="Teens" type="button">Teens</button>
-          <button class="choice" data-age="Adults" type="button">Adults</button>
-          <button class="choice" data-age="Family" type="button">Family</button>
-        </div>
-
-        <label class="field-label" for="goalSelect">Goal</label>
-        <select id="goalSelect">
-          <option value="Pi safety">Pi safety</option>
-          <option value="Daily learning">Daily learning</option>
-          <option value="Healthy habits">Healthy habits</option>
-          <option value="Money basics">Money basics</option>
-          <option value="STEM learning">STEM learning</option>
-          <option value="Pet care">Pet care</option>
-          <option value="Family growth">Family growth</option>
-        </select>
-
-        <div class="field-grid">
-          <div>
-            <label class="field-label" for="countrySelect">Country</label>
-            <select id="countrySelect">
-              <option value="Kenya">Kenya</option>
-              <option value="Nigeria">Nigeria</option>
-              <option value="India">India</option>
-              <option value="Brazil">Brazil</option>
-              <option value="Philippines">Philippines</option>
-              <option value="South Africa">South Africa</option>
-              <option value="Global">Global</option>
-            </select>
-          </div>
-          <div>
-            <label class="field-label" for="languageSelect">Language</label>
-            <select id="languageSelect">
-              <option value="English">English</option>
-              <option value="Swahili">Swahili</option>
-              <option value="French">French</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Portuguese">Portuguese</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <section class="global-panel" data-page="home" aria-labelledby="globalTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Global</p>
-            <h2 id="globalTitle">Questora around the world</h2>
-          </div>
-          <span class="pill" id="globalPill">Worldwide</span>
-        </div>
-        <div class="global-grid" id="globalGrid"></div>
-      </section>
-
-      <section class="record-panel" data-page="profile" aria-labelledby="recordTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Record</p>
-            <h2 id="recordTitle">Your learning record</h2>
-          </div>
-          <span class="pill" id="dailyStatusPill">Today</span>
-        </div>
-        <div class="record-grid">
-          <article>
-            <strong id="recordName">Guest learner</strong>
-            <span>Profile</span>
-          </article>
-          <article>
-            <strong id="recordLevel">Level 1</strong>
-            <span>Rank</span>
-          </article>
-          <article>
-            <strong id="recordToday">Not done</strong>
-            <span>Daily task</span>
-          </article>
-        </div>
-      </section>
-
-      <section class="profile-panel" data-page="profile" aria-labelledby="profileSummaryTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Profile</p>
-            <h2 id="profileSummaryTitle">Pioneer summary</h2>
-          </div>
-          <span class="pill" id="profilePill">Growing</span>
-        </div>
-        <p class="panel-copy" id="profileCopy">
-          Questora keeps a simple record so users can see why their progress matters and what to do next.
-        </p>
-        <div class="profile-grid" id="profileGrid"></div>
-      </section>
-
-      <section class="tomorrow-panel" data-page="home" aria-labelledby="tomorrowTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Tomorrow</p>
-            <h2 id="tomorrowTitle">Why come back tomorrow</h2>
-          </div>
-          <span class="pill" id="tomorrowPill">Next up</span>
-        </div>
-        <div class="tomorrow-card" id="tomorrowCard"></div>
-      </section>
-
-      <section class="category-panel" data-page="learn" aria-labelledby="categoryTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Explore</p>
-            <h2 id="categoryTitle">Choose a learning category</h2>
-          </div>
-          <span class="pill" id="categoryPill">Safety</span>
-        </div>
-        <div class="category-grid" id="categoryGrid"></div>
-        <div class="research-panel" id="researchPanel"></div>
-      </section>
-
-      <section class="learn-journey-panel" data-page="learn" aria-labelledby="learnJourneyTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Journey</p>
-            <h2 id="learnJourneyTitle">How to learn in this category</h2>
-          </div>
-          <span class="pill" id="learnJourneyPill">Start here</span>
-        </div>
-        <p class="panel-copy" id="learnJourneyCopy">
-          Pick the brief, answer the lessons, then reinforce the topic with visual tasks and tools.
-        </p>
-        <div class="learn-journey-grid" id="learnJourneyGrid"></div>
-      </section>
-
-      <section class="featured-lesson-panel" data-page="learn" aria-labelledby="featuredLessonTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Featured</p>
-            <h2 id="featuredLessonTitle">Best next lesson</h2>
-          </div>
-          <span class="pill" id="featuredLessonPill">Ready</span>
-        </div>
-        <div class="featured-lesson-card" id="featuredLessonCard"></div>
-      </section>
-
-      <section class="daily-learning-panel" data-page="home" aria-labelledby="dailyLearningTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Daily</p>
-            <h2 id="dailyLearningTitle">Today’s learning quest</h2>
-          </div>
-          <span class="pill" id="dailyRewardPill">+50 pts</span>
-        </div>
-        <div class="daily-card" id="dailyCard">
-          <p class="quest-label">Loading</p>
-          <h3>Preparing your daily task</h3>
-          <p>Questora gives one daily learning reward per day to keep progress fair.</p>
-        </div>
-        <div class="answer-grid" id="dailyAnswerGrid"></div>
-        <p class="quiz-feedback" id="dailyFeedback">Answer today’s question to earn your daily reward.</p>
-      </section>
-
-      <section class="tabs" data-page="learn" aria-label="Questora features">
-        <button class="tab active" data-tab="learn" type="button">Learn</button>
-        <button class="tab" data-tab="family" type="button">Family</button>
-        <button class="tab" data-tab="rank" type="button">Rank</button>
-      </section>
-
-      <section class="feature-panel" data-page="learn" id="featurePanel">
-        <h2>Pi safety lessons</h2>
-        <p>
-          Short lessons teach users how to avoid scams, protect wallets, and use
-          ecosystem apps with confidence.
-        </p>
-      </section>
-
-      <section class="learning-panel" data-page="learn" aria-labelledby="learningTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Academy</p>
-            <h2 id="learningTitle">Category lessons</h2>
-          </div>
-          <span class="pill">Quizzes</span>
-        </div>
-        <div class="lesson-grid" id="lessonGrid"></div>
-      </section>
-
-      <section class="reward-panel" data-page="rewards" aria-labelledby="rewardTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Rewards</p>
-            <h2 id="rewardTitle">Reward styles</h2>
-          </div>
-          <span class="pill">Unlock</span>
-        </div>
-        <div class="reward-grid" id="rewardGrid"></div>
-      </section>
-
-      <section class="reward-center-panel" data-page="rewards" aria-labelledby="rewardCenterTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Center</p>
-            <h2 id="rewardCenterTitle">Your reward center</h2>
-          </div>
-          <span class="pill" id="rewardCenterPill">Growing</span>
-        </div>
-        <p class="panel-copy" id="rewardCenterCopy">
-          Reward progress should feel clear, exciting, and worth returning for.
-        </p>
-        <div class="reward-center-grid" id="rewardCenterGrid"></div>
-      </section>
-
-      <section class="reward-journey-panel" data-page="rewards" aria-labelledby="rewardJourneyTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Journey</p>
-            <h2 id="rewardJourneyTitle">How rewards build up</h2>
-          </div>
-          <span class="pill" id="rewardJourneyPill">Progressing</span>
-        </div>
-        <p class="panel-copy" id="rewardJourneyCopy">
-          Daily answers, lessons, tools, and visual tasks all move the user toward the next unlock.
-        </p>
-        <div class="reward-journey-grid" id="rewardJourneyGrid"></div>
-      </section>
-
-      <section class="claim-history-panel" data-page="rewards" aria-labelledby="claimHistoryTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">History</p>
-            <h2 id="claimHistoryTitle">Reward review history</h2>
-          </div>
-          <span class="pill" id="claimHistoryPill">New</span>
-        </div>
-        <div class="claim-history-list" id="claimHistoryList"></div>
-      </section>
-
-      <section class="visual-panel" data-page="learn" aria-labelledby="visualTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Visual</p>
-            <h2 id="visualTitle">Look and learn tasks</h2>
-          </div>
-          <span class="pill" id="visualPill">Daily art</span>
-        </div>
-        <p class="panel-copy" id="visualCopy">
-          Questora rotates a large visual learning library into a smaller daily art drop so the lessons stay fresh.
-        </p>
-        <div class="visual-grid" id="visualGrid"></div>
-      </section>
-
-      <section class="ethics-panel" data-page="learn" aria-labelledby="ethicsTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Ethics</p>
-            <h2 id="ethicsTitle">Responsible AI check</h2>
-          </div>
-          <span class="pill">Reflection</span>
-        </div>
-        <p class="panel-copy">
-          Rate each statement to practice safer thinking before building or using AI.
-        </p>
-        <div class="ethics-list" id="ethicsList"></div>
-      </section>
-
-      <section class="tool-panel" data-page="learn" aria-labelledby="toolTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Tools</p>
-            <h2 id="toolTitle">Pioneer toolkit</h2>
-          </div>
-          <span class="pill">Useful</span>
-        </div>
-        <div class="tool-grid" id="toolGrid"></div>
-      </section>
-
-      <section class="future-panel" data-page="premium" aria-labelledby="futureTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Future</p>
-            <h2 id="futureTitle">Premium Pi utility vision</h2>
-          </div>
-          <span class="pill">Later</span>
-        </div>
-        <p>
-          Questora uses Pi payments only for optional services that open deeper
-          learning, better guidance, and clearer outcomes. Free daily learning
-          stays useful first, so trust grows before any user spends Pi.
-        </p>
-      </section>
-
-      <section class="premium-guide-panel" data-page="premium" aria-labelledby="premiumGuideTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Guide</p>
-            <h2 id="premiumGuideTitle">When premium makes sense</h2>
-          </div>
-          <span class="pill" id="premiumGuidePill">Value first</span>
-        </div>
-        <p class="panel-copy" id="premiumGuideCopy">
-          Premium should feel like a deeper version of something already useful, not a wall in front of learning.
-        </p>
-        <div class="premium-guide-grid" id="premiumGuideGrid"></div>
-      </section>
-
-      <section class="premium-compare-panel" data-page="premium" aria-labelledby="premiumCompareTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Compare</p>
-            <h2 id="premiumCompareTitle">Why this pack is worth opening</h2>
-          </div>
-          <span class="pill" id="premiumComparePill">Clear value</span>
-        </div>
-        <p class="panel-copy" id="premiumCompareCopy">
-          Premium should explain what gets deeper, what stays free, and why the Pi payment request exists.
-        </p>
-        <div class="premium-compare-grid" id="premiumCompareGrid"></div>
-      </section>
-
-      <section class="premium-panel" data-page="premium" aria-labelledby="premiumTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Premium</p>
-            <h2 id="premiumTitle">Premium Pi services</h2>
-          </div>
-          <span class="pill">0.2 Pi example</span>
-        </div>
-        <p class="panel-copy">
-          Each service should explain why it is worth Pi, what becomes available after payment, and what still stays free for every pioneer.
-        </p>
-        <div class="premium-grid" id="premiumGrid"></div>
-        <div class="premium-compare-grid premium-status-grid" id="premiumStatusGrid"></div>
-        <div class="premium-detail" id="premiumDetail"></div>
-      </section>
-
-      <section class="claim-history-panel premium-history-panel" data-page="premium" aria-labelledby="premiumHistoryTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Premium</p>
-            <h2 id="premiumHistoryTitle">Service and payment activity</h2>
-          </div>
-          <span class="pill">Tracked</span>
-        </div>
-        <p class="panel-copy">
-          Pi service actions should be easy to follow, from payment start to unlock.
-        </p>
-        <div class="claim-history-list premium-history-list" id="premiumHistoryList"></div>
-      </section>
-
-      <section class="mission-list" data-page="rewards" aria-labelledby="missionsTitle">
-        <h2 id="missionsTitle">Starter missions</h2>
-        <ul>
-          <li>
-            <span>1</span>
-            <p>Read one safety tip and answer a quick quiz.</p>
-          </li>
-          <li>
-            <span>2</span>
-            <p>Invite a friend to learn safe Pi habits.</p>
-          </li>
-          <li>
-            <span>3</span>
-            <p>Earn a badge by completing three daily quests.</p>
-          </li>
-        </ul>
-      </section>
-
-      <section class="leaderboard-panel" data-page="rewards" aria-labelledby="leaderboardTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Global</p>
-            <h2 id="leaderboardTitle">Leaderboard preview</h2>
-          </div>
-          <span class="pill">Demo</span>
-        </div>
-        <ol class="leaderboard-list">
-          <li><span>Questora Kenya</span><strong>840</strong></li>
-          <li><span>Questora Global</span><strong>790</strong></li>
-          <li><span id="yourRankLabel">You</span><strong id="yourRankPoints">0</strong></li>
-        </ol>
-      </section>
-
-      <section class="wallet-panel" data-page="rewards" aria-labelledby="walletTitle">
-        <div class="section-title">
-          <div>
-            <p class="eyebrow">Wallet</p>
-            <h2 id="walletTitle">Reward review queue</h2>
-          </div>
-          <span class="pill" id="walletPill">Preview</span>
-        </div>
-        <div class="wallet-card">
-          <strong id="walletClaimAmount">0 points ready</strong>
-          <p>
-            This creates a reward review record only. Questora keeps reward reviews separate from premium Pi payments so each action stays honest and easy to understand.
+          <p id="statusText" aria-live="polite" style="margin-top:10px;padding:10px 14px;background:var(--surface-tint);border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.85rem;color:var(--muted)">
+            Open Questora in Pi Browser to connect.
           </p>
-          <button id="claimWalletButton" type="button">Create payout review record</button>
-        </div>
-      </section>
+        </section>
 
-      <nav class="bottom-nav" aria-label="Questora bottom pages">
-        <button class="bottom-tab active" data-page-target="home" type="button">Home</button>
-        <button class="bottom-tab" data-page-target="learn" type="button">Learn</button>
-        <button class="bottom-tab" data-page-target="rewards" type="button">Rewards</button>
-        <button class="bottom-tab" data-page-target="premium" type="button">Premium</button>
-        <button class="bottom-tab" data-page-target="profile" type="button">Profile</button>
-      </nav>
-    </main>
+        <!-- Daily Pi fact -->
+        <div class="pi-fact-band" id="dailyPiFact" aria-label="Today's Pi fact" role="complementary">
+          <span class="pi-fact-icon">💡</span>
+          <div>
+            <strong>Pi Fact of the Day</strong>
+            <p id="piFactText">Loading today's Pi fact…</p>
+          </div>
+        </div>
+
+        <!-- Dashboard quick stats -->
+        <section class="feature-panel" aria-labelledby="dashTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Dashboard</p>
+              <h2 id="dashTitle">Your progress</h2>
+            </div>
+          </div>
+          <p><strong id="dashUser">Guest</strong> · <span id="dashLevel">Level 1</span></p>
+          <div class="dashboard-grid">
+            <article class="dashboard-card">
+              <strong id="dashRewards">0</strong><p>Rewards</p>
+            </article>
+            <article class="dashboard-card">
+              <strong id="dashLessons">0</strong><p>Lessons</p>
+            </article>
+            <article class="dashboard-card">
+              <strong id="dashDaily">0</strong><p>Daily wins</p>
+            </article>
+          </div>
+          <p style="margin-top:12px;font-size:.84rem;color:var(--muted)">Next reward unlock: <strong id="dashNext">—</strong></p>
+        </section>
+
+        <!-- Daily question (top) -->
+        <section class="daily-learning-panel" aria-labelledby="topDailyTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Today's quest</p>
+              <h2 id="topDailyTitle">Daily question</h2>
+            </div>
+            <span class="pill" id="dailyStatusPill">Available</span>
+          </div>
+          <div id="dailyCardTop" class="daily-card gold"></div>
+          <div id="dailyAnswerGridTop" class="answer-grid" role="group" aria-label="Daily answers"></div>
+          <p id="dailyFeedbackTop" class="quest-feedback" aria-live="polite"></p>
+          <span class="pill gold" id="dailyRewardPillTop" style="display:inline-block;margin-top:10px">+50 pts</span>
+        </section>
+
+        <!-- Pulse cards -->
+        <section class="feature-panel" aria-labelledby="pulseTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Live feed</p>
+              <h2 id="pulseTitle">What's hot today</h2>
+            </div>
+            <span class="pill" id="pulsePill">4 live</span>
+          </div>
+          <p id="pulseCopy">Your personalised daily feed.</p>
+          <div id="pulseGrid" class="home-strip-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Mission steps -->
+        <section class="mission-list" aria-labelledby="missionTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Today's plan</p>
+              <h2 id="missionTitle">Pioneer mission</h2>
+            </div>
+            <span class="pill" id="missionPill">Step 1</span>
+          </div>
+          <p id="missionCopy">Start with today's question.</p>
+          <div id="missionRail" style="display:grid;gap:8px;margin-top:14px" role="list"></div>
+        </section>
+
+        <!-- Combo challenge -->
+        <section class="quest-panel" aria-labelledby="challengeTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Bonus</p>
+              <h2 id="challengeTitle">Surprise challenge</h2>
+            </div>
+            <span class="pill" id="challengePill">Do this</span>
+          </div>
+          <div id="challengeCard"></div>
+        </section>
+
+        <!-- Purpose profile -->
+        <section class="feature-panel" aria-labelledby="purposeTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Your path</p>
+              <h2 id="purposeTitle">Why Questora fits</h2>
+            </div>
+            <span class="pill" id="purposePill">Trust first</span>
+          </div>
+          <p id="purposeCopy"></p>
+          <div id="purposeGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Spotlights -->
+        <section class="feature-panel" aria-labelledby="spotTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Explore</p>
+              <h2 id="spotTitle">App spotlights</h2>
+            </div>
+          </div>
+          <div id="surpriseGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Global / country context -->
+        <section class="feature-panel" aria-labelledby="globalTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Global pioneers</p>
+              <h2 id="globalTitle">Your region</h2>
+            </div>
+            <span class="pill" id="globalPill">Kenya</span>
+          </div>
+          <div id="globalGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Tomorrow preview -->
+        <section class="quest-panel" aria-labelledby="tomorrowTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Return loop</p>
+              <h2 id="tomorrowTitle">Tomorrow preview</h2>
+            </div>
+            <span class="pill" id="tomorrowPill">Come back</span>
+          </div>
+          <div id="tomorrowCard"></div>
+        </section>
+
+        <!-- Next unlock path -->
+        <section class="next-panel" aria-labelledby="nextTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Progress path</p>
+              <h2 id="nextTitle">Next unlocks</h2>
+            </div>
+            <span class="pill" id="nextPill">—</span>
+          </div>
+          <div id="nextGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+      </div><!-- /home -->
+
+      <!-- ════════════════════════════════════
+           PAGE: LEARN
+           ════════════════════════════════════ -->
+      <div data-page="learn" hidden>
+
+        <!-- Reason/action explainer -->
+        <section class="feature-panel" aria-labelledby="featurePanelTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Reasoning</p>
+              <h2 id="featurePanelTitle">Why this matters</h2>
+            </div>
+            <span class="pill" id="pathPill">Pioneers</span>
+          </div>
+          <p id="reasonText" style="color:var(--muted);font-size:.9rem;line-height:1.55"></p>
+          <p id="actionText" style="color:var(--pi-purple);font-weight:700;font-size:.88rem"></p>
+        </section>
+
+        <!-- Category picker -->
+        <section class="category-panel" aria-labelledby="categoryTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Learning paths</p>
+              <h2 id="categoryTitle">Choose category</h2>
+            </div>
+            <span class="pill" id="categoryPill">Pi Safety</span>
+          </div>
+          <div id="categoryGrid" class="category-grid" role="group" aria-label="Learning categories"></div>
+        </section>
+
+        <!-- Daily question (main) -->
+        <section class="daily-learning-panel" aria-labelledby="dailyTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Daily brief</p>
+              <h2 id="dailyTitle">Today's question</h2>
+            </div>
+            <span class="pill gold" id="dailyRewardPill">+50 pts</span>
+          </div>
+          <div id="dailyCard" class="daily-card gold"></div>
+          <div id="dailyAnswerGrid" class="answer-grid" role="group" aria-label="Daily quest answers"></div>
+          <p id="dailyFeedback" class="quest-feedback" aria-live="polite"></p>
+        </section>
+
+        <!-- Point boosters -->
+        <section class="learning-panel" aria-labelledby="boosterTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Daily boosters</p>
+              <h2 id="boosterTitle">Point multipliers</h2>
+            </div>
+          </div>
+          <div id="boosterGrid" class="booster-grid" style="display:grid;gap:8px;margin-top:14px" role="group"></div>
+        </section>
+
+        <!-- Learning journey -->
+        <section class="learn-journey-panel" aria-labelledby="journeyTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Learning path</p>
+              <h2 id="journeyTitle">Journey</h2>
+            </div>
+            <span class="pill" id="learnJourneyPill">0/3 done</span>
+          </div>
+          <p id="learnJourneyCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <div id="learnJourneyGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+        </section>
+
+        <!-- Featured lesson -->
+        <section class="featured-lesson-panel" aria-labelledby="featuredTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Best next lesson</p>
+              <h2 id="featuredTitle">Featured</h2>
+            </div>
+            <span class="pill" id="featuredLessonPill">Best next</span>
+          </div>
+          <div id="featuredLessonCard" class="featured-lesson-card"></div>
+        </section>
+
+        <!-- All lessons -->
+        <section class="learning-panel" aria-labelledby="lessonTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Lessons</p>
+              <h2 id="lessonTitle">Category lessons</h2>
+            </div>
+          </div>
+          <div id="lessonGrid" class="lesson-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Research library -->
+        <section class="learning-panel" aria-labelledby="researchTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Deep reading</p>
+              <h2 id="researchTitle">Research library</h2>
+            </div>
+          </div>
+          <div id="researchPanel"></div>
+        </section>
+
+        <!-- Visual tasks -->
+        <section class="visual-panel" aria-labelledby="visualTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Visual learning</p>
+              <h2 id="visualTitle">AI art tasks</h2>
+            </div>
+            <span class="pill" id="visualPill">Loading…</span>
+          </div>
+          <p id="visualCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <div id="visualGrid" class="visual-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Ethics reflection -->
+        <section class="ethics-panel" aria-labelledby="ethicsTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Responsible AI</p>
+              <h2 id="ethicsTitle">AI ethics reflection</h2>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Rate each statement about responsible AI design.</p>
+          <div id="ethicsList" style="display:grid;gap:8px;margin-top:12px"></div>
+        </section>
+
+        <!-- Pioneer toolkit -->
+        <section class="tool-panel" aria-labelledby="toolTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pioneer tools</p>
+              <h2 id="toolTitle">Your toolkit</h2>
+            </div>
+          </div>
+          <div id="toolGrid" class="tool-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+      </div><!-- /learn -->
+
+      <!-- ════════════════════════════════════
+           PAGE: PIONEER HUB
+           ════════════════════════════════════ -->
+      <div data-page="pioneer" hidden>
+
+        <!-- Pioneer welcome -->
+        <section class="pioneer-panel" aria-labelledby="pioneerTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">π Pioneer Hub</p>
+              <h2 id="pioneerTitle">Know your network</h2>
+            </div>
+            <span class="pill" id="pioneerRankPill">Explorer</span>
+          </div>
+          <p style="color:var(--muted);font-size:.9rem;line-height:1.55">
+            Everything you need to understand Pi Network — phases, mining, wallets, apps, and the path to full Mainnet use.
+          </p>
+        </section>
+
+        <!-- Pioneer rank system -->
+        <section class="pioneer-panel" aria-labelledby="rankTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Your rank</p>
+              <h2 id="rankTitle">Pioneer ranks</h2>
+            </div>
+            <span class="pill gold" id="yourRankPill">Current</span>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Earn points through daily quests, lessons, and visual tasks to advance your Pioneer rank.</p>
+          <div id="rankGrid" class="rank-grid"></div>
+        </section>
+
+        <!-- Pi phases -->
+        <section class="pi-fact-panel" aria-labelledby="phaseTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pi Network</p>
+              <h2 id="phaseTitle">Three phases</h2>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Pi Network launched in 2019 and has evolved through three major phases.</p>
+          <div id="piPhaseGrid" class="pi-phase-grid"></div>
+        </section>
+
+        <!-- Daily Pi fact -->
+        <div class="pi-fact-band" aria-label="Pioneer knowledge" style="margin-top:14px">
+          <span class="pi-fact-icon">🔬</span>
+          <div>
+            <strong>Did you know?</strong>
+            <p id="piFactHub">Pi uses the Stellar Consensus Protocol — so mining happens through trust, not computation.</p>
+          </div>
+        </div>
+
+        <!-- Pi ecosystem apps -->
+        <section class="ecosystem-panel" aria-labelledby="ecosystemTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pi ecosystem</p>
+              <h2 id="ecosystemTitle">Core Pi apps</h2>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">The Pi ecosystem includes apps built on the Pi Platform using Pi as currency.</p>
+          <div id="piAppsGrid" class="pi-apps-grid"></div>
+        </section>
+
+        <!-- Pi utility checklist -->
+        <section class="pioneer-panel" aria-labelledby="utilityTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Getting started</p>
+              <h2 id="utilityTitle">Pi utility guide</h2>
+            </div>
+            <span class="pill" id="utilityPill">0/7 done</span>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Seven steps every Pioneer should complete to safely use Pi on Mainnet.</p>
+          <div id="piUtilityGrid" class="pi-utility-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Pi Knowledge quiz -->
+        <section class="pi-fact-panel" aria-labelledby="piQuizTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Test yourself</p>
+              <h2 id="piQuizTitle">Pi knowledge quiz</h2>
+            </div>
+            <span class="pill" id="piQuizPill">Daily</span>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Rotate through Pi Network questions. Each correct answer earns bonus points.</p>
+          <div id="piQuizCard" class="pi-quiz-card"></div>
+        </section>
+
+        <!-- Pi safety checklist -->
+        <section class="pioneer-panel" aria-labelledby="piSafeTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Account protection</p>
+              <h2 id="piSafeTitle">Pi safety rules</h2>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Five rules every Pioneer should know to protect their Pi wallet and account.</p>
+          <div id="piSafetyList" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Mining FAQ -->
+        <section class="pioneer-panel" aria-labelledby="miningTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">How it works</p>
+              <h2 id="miningTitle">Mining explained</h2>
+            </div>
+          </div>
+          <div id="miningFaq" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+      </div><!-- /pioneer -->
+
+      <!-- ════════════════════════════════════
+           PAGE: REWARDS
+           ════════════════════════════════════ -->
+      <div data-page="rewards" hidden>
+
+        <!-- Reward center -->
+        <section class="reward-center-panel" aria-labelledby="rewardCenterTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Progress</p>
+              <h2 id="rewardCenterTitle">Reward center</h2>
+            </div>
+            <span class="pill" id="rewardCenterPill">Keep earning</span>
+          </div>
+          <p id="rewardCenterCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <div id="rewardCenterGrid" class="record-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Reward journey -->
+        <section class="reward-journey-panel" aria-labelledby="rewardJourneyTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Progress path</p>
+              <h2 id="rewardJourneyTitle">Reward journey</h2>
+            </div>
+            <span class="pill" id="rewardJourneyPill">Building</span>
+          </div>
+          <p id="rewardJourneyCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <div id="rewardJourneyGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Reward tiers -->
+        <section class="reward-panel" aria-labelledby="rewardTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Unlock tiers</p>
+              <h2 id="rewardTitle">Reward tiers</h2>
+            </div>
+          </div>
+          <div id="rewardGrid" class="reward-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Wallet / claim record -->
+        <section class="wallet-panel" aria-labelledby="walletTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Claim record</p>
+              <h2 id="walletTitle">Reward wallet</h2>
+            </div>
+            <span class="pill gold" id="walletPill">Review</span>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Create a payout review record for unclaimed points. This is separate from any Pi payment.</p>
+          <span class="wallet-amount" id="walletClaimAmount">0 pts</span>
+          <button id="claimWalletButton" type="button" disabled>Create payout review record</button>
+        </section>
+
+        <!-- Claim history -->
+        <section class="reward-panel" aria-labelledby="claimHistoryTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">History</p>
+              <h2 id="claimHistoryTitle">Claim records</h2>
+            </div>
+            <span class="pill" id="claimHistoryPill">No claims yet</span>
+          </div>
+          <div id="claimHistoryList" style="margin-top:12px"></div>
+        </section>
+
+        <!-- Premium packs -->
+        <section class="premium-panel" aria-labelledby="premiumTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pi premium</p>
+              <h2 id="premiumTitle">Premium packs</h2>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Optional Pi-powered services that unlock deeper learning after free value is already proven.</p>
+          <div id="premiumGrid" class="premium-grid" style="display:grid;gap:8px;margin-top:14px"></div>
+          <div id="premiumDetail"></div>
+        </section>
+
+        <!-- Premium guide -->
+        <section class="premium-guide-panel" aria-labelledby="premiumGuideTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pi payment guide</p>
+              <h2 id="premiumGuideTitle">When premium makes sense</h2>
+            </div>
+            <span class="pill" id="premiumGuidePill">Value first</span>
+          </div>
+          <p id="premiumGuideCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <div id="premiumGuideGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Premium compare -->
+        <section class="premium-compare-panel" aria-labelledby="premiumCompareTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Comparison</p>
+              <h2 id="premiumCompareTitle">Free vs premium</h2>
+            </div>
+            <span class="pill" id="premiumComparePill">Trust Review</span>
+          </div>
+          <p id="premiumCompareCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <div id="premiumCompareGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Premium payment status -->
+        <section class="premium-panel" aria-labelledby="premiumStatusTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Payment status</p>
+              <h2 id="premiumStatusTitle">Pi service state</h2>
+            </div>
+          </div>
+          <div id="premiumStatusGrid" style="display:grid;gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Premium history -->
+        <section class="premium-panel" aria-labelledby="premiumHistoryTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Payment log</p>
+              <h2 id="premiumHistoryTitle">Pi payment history</h2>
+            </div>
+          </div>
+          <div id="premiumHistoryList" style="margin-top:12px"></div>
+        </section>
+
+        <!-- Leaderboard -->
+        <section class="leaderboard-panel" aria-labelledby="leaderTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Global ranking</p>
+              <h2 id="leaderTitle">Pioneer leaderboard</h2>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Local preview — full ranking connects after backend launch.</p>
+          <div id="leaderboardGrid" style="margin-top:12px"></div>
+          <div class="leaderboard-row you" style="margin-top:12px" aria-label="Your rank">
+            <span class="leaderboard-rank">—</span>
+            <span class="leaderboard-name" id="yourRankLabel">You</span>
+            <span class="leaderboard-pts" id="yourRankPoints">0 pts</span>
+          </div>
+        </section>
+
+      </div><!-- /rewards -->
+
+      <!-- ════════════════════════════════════
+           PAGE: PROFILE
+           ════════════════════════════════════ -->
+      <div data-page="profile" hidden>
+
+        <!-- Profile record -->
+        <section class="record-panel" aria-labelledby="recordTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Pioneer identity</p>
+              <h2 id="recordTitle">Your record</h2>
+            </div>
+            <span class="pill" id="profilePill">Guest path</span>
+          </div>
+          <p id="profileCopy" style="color:var(--muted);font-size:.88rem;line-height:1.5"></p>
+          <p style="font-size:.88rem;color:var(--muted)">
+            Name: <strong id="recordName">Guest learner</strong> ·
+            Level: <strong id="recordLevel">Level 1</strong> ·
+            Today: <strong id="recordToday">Waiting</strong>
+          </p>
+          <div id="profileGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Personalise -->
+        <section class="profile-panel" aria-labelledby="onboardTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Personalise</p>
+              <h2 id="onboardTitle">Your preferences</h2>
+            </div>
+          </div>
+
+          <label class="field-label">Age group</label>
+          <div class="choice-grid" role="group" aria-label="Age group">
+            <button class="choice" data-age="Kids" type="button">Kids</button>
+            <button class="choice" data-age="Teens" type="button">Teens</button>
+            <button class="choice" data-age="Adults" type="button">Adults</button>
+            <button class="choice" data-age="Parents" type="button">Parents</button>
+          </div>
+
+          <div class="field-grid">
+            <div>
+              <label class="field-label" for="goalSelect">Learning goal</label>
+              <select id="goalSelect" aria-label="Select your learning goal">
+                <option>Pi safety</option>
+                <option>Daily learning</option>
+                <option>Healthy habits</option>
+                <option>Money basics</option>
+                <option>STEM learning</option>
+                <option>Pet care</option>
+                <option>Family growth</option>
+                <option>Pi ecosystem</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="countrySelect">Country</label>
+              <select id="countrySelect" aria-label="Select your country">
+                <option>Kenya</option>
+                <option>Nigeria</option>
+                <option>India</option>
+                <option>Brazil</option>
+                <option>Philippines</option>
+                <option>South Africa</option>
+                <option>Indonesia</option>
+                <option>Vietnam</option>
+                <option>Pakistan</option>
+                <option>Ghana</option>
+                <option>Turkey</option>
+                <option>Mexico</option>
+                <option>Egypt</option>
+                <option>Global</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-grid" style="margin-top:10px">
+            <div>
+              <label class="field-label" for="languageSelect">Language</label>
+              <select id="languageSelect" aria-label="Select your language">
+                <option>English</option>
+                <option>Swahili</option>
+                <option>Hindi</option>
+                <option>Portuguese</option>
+                <option>Spanish</option>
+                <option>Indonesian</option>
+                <option>Vietnamese</option>
+                <option>Tagalog</option>
+                <option>Yoruba</option>
+                <option>Hausa</option>
+                <option>Tamil</option>
+                <option>Turkish</option>
+                <option>Arabic</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="categorySelect">Active category</label>
+              <select id="categorySelect" aria-label="Select active learning category">
+                <option value="safety">Pi Safety</option>
+                <option value="money">Money Basics</option>
+                <option value="health">Healthy Habits</option>
+                <option value="growth">Skills &amp; Growth</option>
+                <option value="stem">STEM Lab</option>
+                <option value="pet">Pet Care</option>
+                <option value="pieco">Pi Ecosystem</option>
+              </select>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Profile summary -->
+        <section class="profile-panel" aria-labelledby="profileSummaryTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Summary</p>
+              <h2 id="profileSummaryTitle">Progress overview</h2>
+            </div>
+          </div>
+          <div id="profileSummaryGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px"></div>
+        </section>
+
+        <!-- Referral -->
+        <section class="pioneer-panel" aria-labelledby="referralTitle">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Invite friends</p>
+              <h2 id="referralTitle">Pioneer referral</h2>
+            </div>
+            <span class="pill green" id="referralPill">+50 pts</span>
+          </div>
+          <p style="color:var(--muted);font-size:.88rem">Share Questora with fellow Pioneers. Each friend who joins and completes their first quest earns you bonus points.</p>
+          <div id="referralCard" style="margin-top:12px"></div>
+        </section>
+
+      </div><!-- /profile -->
+
+    </main><!-- /app-shell -->
 
     <script src="app.js"></script>
   </body>
