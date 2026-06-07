@@ -2,7 +2,134 @@
 const todayKey = new Date().toISOString().slice(0, 10);
 const PI_SANDBOX = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 const PI_PAYMENTS_ENABLED = true;
-const BACKEND_ENDPOINTS = { signin:"/api/signin", approve:"/api/approve", complete:"/api/complete", incomplete:"/api/incomplete" };
+const BACKEND_ENDPOINTS = { signin:"/api/signin", approve:"/api/approve", complete:"/api/complete", incomplete:"/api/incomplete", leaderboard:"/api/leaderboard", me:"/api/me", ping:"/api/ping" };
+
+// ── Toast system ───────────────────────────────────────────────────
+function showToast(msg, type = "points", duration = 3000) {
+  const container = document.getElementById("toastContainer");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), duration);
+}
+
+// ── Achievements ───────────────────────────────────────────────────
+const ACHIEVEMENTS = [
+  { key:"first-answer",  icon:"⚡", name:"First Answer",    desc:"Answer your first daily quest.",           check: s => s.record && Object.values(s.record).some(r => r.completedDays >= 1) },
+  { key:"streak-3",      icon:"🔥", name:"3-Day Streak",    desc:"Complete 3 days in a row.",                check: s => s.streak >= 3 },
+  { key:"streak-7",      icon:"💫", name:"Week Warrior",    desc:"Complete 7 days in a row.",                check: s => s.streak >= 7 },
+  { key:"pts-100",       icon:"🌱", name:"100 Points",      desc:"Earn your first 100 points.",              check: s => s.points >= 100 },
+  { key:"pts-500",       icon:"⭐", name:"500 Points",      desc:"Reach 500 points.",                        check: s => s.points >= 500 },
+  { key:"pts-1000",      icon:"🌟", name:"1000 Points",     desc:"Reach 1,000 points.",                      check: s => s.points >= 1000 },
+  { key:"lessons-5",     icon:"📖", name:"Scholar",         desc:"Complete 5 lessons.",                      check: s => Object.keys(s.answered||{}).filter(k => !k.startsWith("visual::")).length >= 5 },
+  { key:"pi-quiz",       icon:"π",  name:"Pi Scholar",      desc:"Answer a Pi knowledge quiz question.",     check: s => Object.keys(s.piQuizAnswers||{}).length >= 1 },
+  { key:"utility-done",  icon:"🗺️", name:"Mainnet Ready",   desc:"Complete all 7 Pi utility steps.",         check: s => [0,1,2,3,4,5,6].every(i => s.claimed[`utility-${i}`]) },
+  { key:"premium-view",  icon:"💜", name:"Pi Spender",      desc:"Unlock a premium Pi service.",             check: s => Object.keys(s.premiumUnlocks||{}).length >= 1 },
+  { key:"visual-done",   icon:"🎨", name:"Visual Learner",  desc:"Complete 3 visual learning tasks.",        check: s => Object.keys(s.answered||{}).filter(k => k.startsWith("visual::")).length >= 3 },
+  { key:"pi-pioneer",    icon:"🚀", name:"True Pioneer",    desc:"Reach Pioneer rank (300+ pts).",           check: s => s.points >= 300 },
+];
+
+function getUnlockedAchievements(st) {
+  return ACHIEVEMENTS.filter(a => a.check(st));
+}
+
+function checkAndCelebrateAchievements(st, prevUnlocked) {
+  const now = getUnlockedAchievements(st).map(a => a.key);
+  const prev = prevUnlocked || [];
+  const newOnes = now.filter(k => !prev.includes(k));
+  newOnes.forEach(key => {
+    const badge = ACHIEVEMENTS.find(a => a.key === key);
+    if (badge) showToast(`${badge.icon} Achievement unlocked: ${badge.name}!`, "success", 4000);
+  });
+  return now;
+}
+
+// ── Rank-up detection ──────────────────────────────────────────────
+let _lastRankKey = null;
+function checkRankUp(pts) {
+  const rank = currentRank(pts);
+  if (_lastRankKey && _lastRankKey !== rank.key) {
+    const overlay   = document.getElementById("rankUpOverlay");
+    const iconEl    = document.getElementById("rankUpIcon");
+    const msgEl     = document.getElementById("rankUpMsg");
+    if (overlay && iconEl && msgEl) {
+      iconEl.textContent = rank.icon;
+      msgEl.textContent  = `You are now a ${rank.label}`;
+      overlay.hidden     = false;
+    }
+  }
+  _lastRankKey = rank.key;
+}
+
+// ── PWA / service worker ───────────────────────────────────────────
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}
+
+// ── Pi Browser detection ───────────────────────────────────────────
+function detectPiBrowser() {
+  const isPiBrowser = /Pi Browser/i.test(navigator.userAgent) || typeof window.Pi !== "undefined";
+  const banner      = document.getElementById("piBrowserBanner");
+  const dismissed   = localStorage.getItem("questora-banner-dismissed");
+  if (!isPiBrowser && !dismissed && banner) {
+    banner.hidden = false;
+  }
+  return isPiBrowser;
+}
+
+// ── Backend ping ───────────────────────────────────────────────────
+async function pingBackend() {
+  const card = document.getElementById("backendStatusCard");
+  if (!card) return;
+  try {
+    const res  = await fetch("/api/ping");
+    const data = await res.json();
+    if (data.piReady) {
+      card.className = "backend-status-card ok";
+      card.innerHTML = `<span class="bs-icon">✅</span><div><strong>Backend ready</strong><p>Pi API key is configured. Payments and user verification are active.</p></div>`;
+    } else {
+      card.className = "backend-status-card warn";
+      card.innerHTML = `<span class="bs-icon">⚠️</span><div><strong>PI_API_KEY missing</strong><p>Add PI_API_KEY in Vercel Dashboard → questora → Settings → Environment Variables, then redeploy.</p></div>`;
+    }
+  } catch (_) {
+    card.className = "backend-status-card";
+    card.innerHTML = `<span class="bs-icon">⚪</span><div><strong>Backend checking…</strong><p>Connecting to Questora backend.</p></div>`;
+  }
+}
+
+// ── Leaderboard fetch ──────────────────────────────────────────────
+async function fetchAndRenderLeaderboard() {
+  const grid   = document.getElementById("leaderboardGrid");
+  const pill   = document.getElementById("leaderPill");
+  if (!grid) return;
+  grid.innerHTML = `<div style="padding:14px;text-align:center;color:var(--muted);font-size:.88rem">Loading leaderboard…</div>`;
+  try {
+    const res  = await fetch("/api/leaderboard", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: state.userName, points: state.points }),
+    });
+    const data = await res.json();
+    if (data.ok && data.leaderboard) {
+      const icons = ["🥇","🥈","🥉"];
+      const rankCls = ["first","second","third"];
+      grid.innerHTML = data.leaderboard.map((p, i) =>
+        `<div class="leaderboard-row${p.isYou ? " you" : ""}">
+          <span class="leaderboard-rank ${rankCls[i]||""}">${icons[i]||i+1}</span>
+          <span class="leaderboard-name">${p.username}${p.isYou ? " (you)" : ""}</span>
+          <span class="leaderboard-pts">${p.points} pts</span>
+        </div>`
+      ).join("");
+      if (pill) pill.textContent = `${data.leaderboard.length} Pioneers`;
+    }
+  } catch (_) {
+    grid.innerHTML = `<div style="padding:14px;text-align:center;color:var(--muted);font-size:.88rem">Leaderboard unavailable offline.</div>`;
+  }
+}
 
 // ── Pioneer ranks ──────────────────────────────────────────────────
 const pioneerRanks = [
@@ -538,11 +665,23 @@ function saveState() {
 }
 
 function addPoints(pts, reason) {
+  const prevUnlocked = getUnlockedAchievements(state).map(a => a.key);
+  const prevRank     = currentRank(state.points).key;
   state.points += pts;
   if (state.points >= 250 && state.badges < 1) state.badges = 1;
   if (state.points >= 500 && state.badges < 2) state.badges = 2;
   if (state.points >= 900 && state.badges < 3) state.badges = 3;
   saveState();
+  // Show toast
+  showToast(`+${pts} pts · ${reason.split(".")[0]}`, "points");
+  // Check achievements
+  checkAndCelebrateAchievements(state, prevUnlocked);
+  // Check rank up (after points applied)
+  if (currentRank(state.points).key !== prevRank) {
+    checkRankUp(state.points);
+  } else {
+    _lastRankKey = currentRank(state.points).key;
+  }
   renderInPlace();
   if (statusText) statusText.textContent = reason;
 }
@@ -715,6 +854,60 @@ function render() {
   if (recordName)  recordName.textContent  = state.userName || "Guest learner";
   if (recordLevel) recordLevel.textContent = `Level ${level}`;
   if (recordToday) recordToday.textContent = dailyDone ? "Done" : "Waiting";
+
+  // ── Streak calendar ─────────────────────────────────────────────
+  const cal = document.getElementById("streakCalendar");
+  if (cal) {
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const now  = new Date();
+    cal.innerHTML = Array.from({ length: 7 }, (_, i) => {
+      const d    = new Date(now); d.setDate(now.getDate() - (6 - i));
+      const key  = d.toISOString().slice(0,10);
+      const dayName = days[d.getDay()];
+      const isToday = key === todayKey;
+      const isDone  = key === record.lastDailyDate || (isToday && dailyDone);
+      return `<div class="streak-day${isDone?" done":""}${isToday&&!isDone?" today":""}">
+        <span class="day-label">${dayName}</span>
+        <span class="day-icon">${isDone?"✓":isToday?"📍":"·"}</span>
+      </div>`;
+    }).join("");
+  }
+
+  // ── Achievements ─────────────────────────────────────────────────
+  const unlocked = getUnlockedAchievements(state);
+  const renderAchGrid = (el) => {
+    if (!el) return;
+    el.innerHTML = ACHIEVEMENTS.map(a => {
+      const done = unlocked.some(u => u.key === a.key);
+      return `<div class="achievement-badge${done?" unlocked":"locked"}" title="${a.desc}">
+        <span class="badge-icon">${a.icon}</span>
+        <span class="badge-name">${a.name}</span>
+      </div>`;
+    }).join("");
+  };
+  renderAchGrid(document.getElementById("achievementGrid"));
+  renderAchGrid(document.getElementById("profileAchievementGrid"));
+  const achieveCount = unlocked.length;
+  const achievePill  = document.getElementById("achievePill");
+  const profAchPill  = document.getElementById("profileAchievePill");
+  if (achievePill) achievePill.textContent = `${achieveCount} unlocked`;
+  if (profAchPill) profAchPill.textContent = `${achieveCount} / ${ACHIEVEMENTS.length}`;
+
+  // ── Pi status band ────────────────────────────────────────────────
+  const piStatus = document.getElementById("piStatusBand");
+  if (piStatus) {
+    if (state.user) {
+      piStatus.className = "pi-status-band connected";
+      document.getElementById("piStatusIcon").textContent  = "🟢";
+      document.getElementById("piStatusTitle").textContent = `Connected as @${state.userName}`;
+      document.getElementById("piStatusDesc").textContent  = "Pioneer account linked. Pi payments and verification are active.";
+    } else {
+      piStatus.className = "pi-status-band";
+      document.getElementById("piStatusIcon").textContent  = "⚪";
+      document.getElementById("piStatusTitle").textContent = "Not connected";
+      document.getElementById("piStatusDesc").textContent  = "Open Questora in Pi Browser to connect your Pioneer account.";
+    }
+  }
 
   // ── Daily card ──────────────────────────────────────────────────
   const dailyMarkup = `<p class="quest-label">${category.title}</p><h3>${dailyQuest.title}</h3><p>${dailyQuest.body}</p><strong class="reward-note">Correct answer earns +${dailyQuest.points} pts and saves today's win.</strong>`;
@@ -1145,8 +1338,11 @@ function paymentCallbacks(pack) {
       explain("Payment completion not confirmed.", "Check backend complete route.");
     },
     onCancel: paymentId => {
+      const ov = document.getElementById("paymentOverlay");
+      if (ov) ov.hidden = true;
       rememberPremiumEvent(pack, "Cancelled", "User cancelled the Pi payment.", { paymentId });
       saveState(); renderInPlace();
+      showToast("Payment cancelled", "error", 2500);
       explain("Payment cancelled.", "No premium access from a cancelled payment.");
     },
     onError: (error, payment) => {
@@ -1165,7 +1361,20 @@ async function requestPremiumPayment(pack) {
   if (!PI_PAYMENTS_ENABLED) { explain("Pi payment is disabled in this build.", "Enable the payment flag to allow live purchases."); return; }
   rememberPremiumEvent(pack, "Started", "User opened the Pi payment flow.");
   saveState(); renderInPlace();
-  await window.Pi.createPayment({ amount:pack.amount, memo:`Questora premium: ${pack.title}`, metadata:{ packKey:pack.key, type:"premium-service" } }, paymentCallbacks(pack));
+  // Show payment overlay
+  const overlay = document.getElementById("paymentOverlay");
+  const overlayTitle = document.getElementById("paymentOverlayTitle");
+  const overlayMsg   = document.getElementById("paymentOverlayMsg");
+  if (overlay && overlayTitle && overlayMsg) {
+    overlayTitle.textContent = `Paying ${pack.price}`;
+    overlayMsg.textContent   = `${pack.title} — confirm in your Pi Wallet`;
+    overlay.hidden = false;
+  }
+  try {
+    await window.Pi.createPayment({ amount:pack.amount, memo:`Questora premium: ${pack.title}`, metadata:{ packKey:pack.key, type:"premium-service" } }, paymentCallbacks(pack));
+  } finally {
+    if (overlay) overlay.hidden = true;
+  }
 }
 
 // ── Answer handlers ────────────────────────────────────────────────
@@ -1395,6 +1604,57 @@ if (languageSelect) languageSelect.addEventListener("change", () => { state.lang
 if (categorySelect) categorySelect.addEventListener("change", () => { state.category = categorySelect.value; saveState(); render(); });
 choiceButtons.forEach(b => b.addEventListener("click", () => { state.age = b.dataset.age; saveState(); renderInPlace(); }));
 
+// ── Refresh leaderboard button ─────────────────────────────────────
+const refreshBtn = document.getElementById("refreshLeaderboard");
+if (refreshBtn) refreshBtn.addEventListener("click", fetchAndRenderLeaderboard);
+
+// ── Rank-up dismiss ────────────────────────────────────────────────
+const rankUpDismiss = document.getElementById("rankUpDismiss");
+if (rankUpDismiss) rankUpDismiss.addEventListener("click", () => {
+  const ov = document.getElementById("rankUpOverlay");
+  if (ov) ov.hidden = true;
+});
+
+// ── Dark mode button ───────────────────────────────────────────────
+const darkModeButton = document.getElementById("darkModeButton");
+if (darkModeButton) darkModeButton.addEventListener("click", () => {
+  state.darkMode = !state.darkMode;
+  document.documentElement.classList.toggle("dark-mode", state.darkMode);
+  localStorage.setItem("questora-dark-mode", String(state.darkMode));
+  darkModeButton.textContent = state.darkMode ? "☀️" : "🌙";
+  showToast(state.darkMode ? "🌙 Dark mode on" : "☀️ Light mode on", "info", 2000);
+});
+// Restore dark mode
+if (localStorage.getItem("questora-dark-mode") === "true") {
+  state.darkMode = true;
+  document.documentElement.classList.add("dark-mode");
+  if (darkModeButton) darkModeButton.textContent = "☀️";
+}
+
+// ── Pi Browser banner dismiss ──────────────────────────────────────
+const dismissBanner = document.getElementById("dismissBanner");
+if (dismissBanner) dismissBanner.addEventListener("click", () => {
+  const banner = document.getElementById("piBrowserBanner");
+  if (banner) banner.hidden = true;
+  localStorage.setItem("questora-banner-dismissed", "1");
+});
+
+// ── Payment overlay cancel ─────────────────────────────────────────
+const cancelPaymentBtn = document.getElementById("cancelPaymentBtn");
+if (cancelPaymentBtn) cancelPaymentBtn.addEventListener("click", () => {
+  const ov = document.getElementById("paymentOverlay");
+  if (ov) ov.hidden = true;
+  showToast("Payment cancelled", "error", 2500);
+});
+
 // ── Init ───────────────────────────────────────────────────────────
+state.darkMode = localStorage.getItem("questora-dark-mode") === "true";
 userRecord();
+_lastRankKey = currentRank(state.points).key;
+detectPiBrowser();
 render();
+// Async post-init
+setTimeout(() => {
+  pingBackend();
+  fetchAndRenderLeaderboard();
+}, 800);
