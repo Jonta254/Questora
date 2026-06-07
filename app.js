@@ -504,6 +504,23 @@ const state = {
   accessToken:   "",
 };
 
+// ── Settings accordion ─────────────────────────────────────────────
+document.addEventListener("click", function settingsAccordion(e) {
+  const toggle = e.target.closest(".settings-toggle[data-toggle]");
+  if (!toggle) return;
+  const bodyId = toggle.dataset.toggle;
+  const body   = document.getElementById(bodyId);
+  if (!body) return;
+  const isOpen = body.classList.contains("open");
+  // Close all others
+  document.querySelectorAll(".settings-body.open").forEach(b => b.classList.remove("open"));
+  document.querySelectorAll(".settings-toggle[aria-expanded='true']").forEach(t => t.setAttribute("aria-expanded","false"));
+  if (!isOpen) {
+    body.classList.add("open");
+    toggle.setAttribute("aria-expanded","true");
+  }
+}, { capture: true });
+
 // ── DOM refs ───────────────────────────────────────────────────────
 const streakCount        = document.querySelector("#streakCount");
 const pointCount         = document.querySelector("#pointCount");
@@ -696,8 +713,7 @@ function renderPages() {
   const page = state.currentPage;
   pageSections.forEach(s => { s.hidden = s.dataset.page !== page; });
   pageTabs.forEach(t => { t.classList.toggle("active", t.dataset.pageTarget === page); });
-  document.documentElement.classList.toggle("high-contrast", state.highContrast);
-  document.documentElement.classList.toggle("large-text",    state.largeText);
+  syncToggles();
 }
 
 function openPage(page) {
@@ -773,12 +789,76 @@ function render() {
   if (badgeCount)  badgeCount.textContent  = state.badges;
   if (rankIcon)    rankIcon.textContent    = rank.icon;
   if (rankLabel)   rankLabel.textContent   = rank.label;
-  if (rankSubtitle) {
-    const nextRank = pioneerRanks[pioneerRanks.indexOf(rank) + 1];
-    rankSubtitle.textContent = nextRank
-      ? `${nextRank.min - state.points} pts to ${nextRank.label}`
-      : "Maximum rank reached — Ambassador";
+
+  // Rank chip (compact hero)
+  const rankChip = document.getElementById("rankChip");
+  if (rankChip) rankChip.innerHTML = `<span>${rank.icon}</span><span>${rank.label}</span>`;
+
+  // Level chip
+  const levelChip = document.getElementById("dashLevel");
+  if (levelChip) levelChip.textContent = `L${level}`;
+
+  // Connect bar
+  const connectBar   = document.getElementById("connectBar");
+  const connectIcon  = document.getElementById("connectIcon");
+  const connectLabel = document.getElementById("connectLabel");
+  const loginBtn     = document.getElementById("loginButton");
+  if (connectBar && connectIcon && connectLabel) {
+    if (state.user) {
+      connectBar.className = "connect-bar connected";
+      connectIcon.textContent  = "🟢";
+      connectLabel.textContent = `@${state.userName}`;
+      if (loginBtn) { loginBtn.textContent = "Connected"; loginBtn.disabled = true; }
+    } else {
+      connectBar.className = "connect-bar";
+      connectIcon.textContent  = "⚪";
+      connectLabel.textContent = "Not connected";
+      if (loginBtn) { loginBtn.textContent = "π Connect"; loginBtn.disabled = false; }
+    }
   }
+
+  // Quick tile sub-labels
+  const qls = document.getElementById("quickLearnSub");
+  const qrs = document.getElementById("quickRewardSub");
+  if (qls) qls.textContent = `${completedLessons} lessons done`;
+  if (qrs) qrs.textContent = `${unlockedRewards} reward${unlockedRewards!==1?"s":""} open`;
+
+  // Streak pill
+  const streakPill = document.getElementById("streakPill");
+  if (streakPill) streakPill.textContent = `${state.streak}-day streak`;
+
+  // Next unlock band
+  const nub = document.getElementById("nextUnlockBand");
+  if (nub) {
+    if (nextReward) {
+      nub.innerHTML = `<span class="nub-icon">🎯</span><div><strong>${nextReward.title}</strong><p>${Math.max(0,nextReward.need-state.points)} pts to unlock · ${nextReward.value}</p></div>`;
+      nub.hidden = false;
+    } else {
+      nub.innerHTML = `<span class="nub-icon">✅</span><div><strong>All rewards unlocked</strong><p>You have reached the top reward tier. Keep earning to build your Pioneer record.</p></div>`;
+    }
+  }
+
+  // Reward strip
+  const rsPts = document.getElementById("rewardStripPts");
+  const rsUnl = document.getElementById("rewardStripUnlocked");
+  const rsCl  = document.getElementById("rewardStripClaimable");
+  if (rsPts) rsPts.textContent = state.points;
+  if (rsUnl) rsUnl.textContent = unlockedRewards;
+  if (rsCl)  rsCl.textContent  = claimable;
+
+  // Profile hero
+  const phName  = document.getElementById("profileHeroName");
+  const phRank  = document.getElementById("profileHeroRank");
+  const phStats = document.getElementById("profileHeroStats");
+  const phAvatar= document.getElementById("profileAvatar");
+  if (phName)   phName.textContent   = state.userName ? `@${state.userName}` : "Guest Pioneer";
+  if (phRank)   phRank.textContent   = `${rank.icon} ${rank.label}`;
+  if (phStats)  phStats.textContent  = `${state.points} pts · Level ${level} · ${record.completedDays} daily wins`;
+  if (phAvatar) phAvatar.textContent = state.userName ? state.userName[0].toUpperCase() : "π";
+
+  // Achieve count in settings toggle
+  const achCount = document.getElementById("achieveCount");
+  if (achCount) achCount.textContent = `${getUnlockedAchievements(state).length} / ${ACHIEVEMENTS.length}`;
 
   // ── Dashboard ───────────────────────────────────────────────────
   if (dashUser)      dashUser.textContent      = state.userName || "Guest";
@@ -907,6 +987,36 @@ function render() {
       document.getElementById("piStatusTitle").textContent = "Not connected";
       document.getElementById("piStatusDesc").textContent  = "Open Questora in Pi Browser to connect your Pioneer account.";
     }
+  }
+
+  // ── Quest hero (home page) ────────────────────────────────────────
+  const qhCat      = document.getElementById("questHeroCategory");
+  const qhCard     = document.getElementById("questHeroCard");
+  const qhAnswers  = document.getElementById("questHeroAnswers");
+  const qhFeedback = document.getElementById("questHeroFeedback");
+  const qhReward   = document.getElementById("questRewardPill");
+  const qhStatus   = document.getElementById("questStatusPill");
+  if (qhCat)    qhCat.textContent    = category.title;
+  if (qhReward) qhReward.textContent = `+${dailyQuest.points} pts`;
+  if (qhStatus) qhStatus.textContent = dailyDone ? "✓ Done" : "Ready";
+  if (qhCard) {
+    qhCard.className = `quest-hero-card${dailyDone ? " daily-card " + category.style : ""}`;
+    qhCard.innerHTML = `<h3>${dailyQuest.title}</h3><p style="color:var(--muted);font-size:.88rem;margin:0">${dailyQuest.body}</p>${dailyDone ? `<span class="reward-note">✓ Quest complete for today</span>` : `<strong class="reward-note">Correct answer → +${dailyQuest.points} pts saved</strong>`}`;
+  }
+  if (qhAnswers) {
+    qhAnswers.innerHTML = dailyQuest.answers.map((a,i) =>
+      `<button class="answer${dailyDone && i===dailyQuest.correct?" correct":""}" data-daily-answer="${i}" type="button"${dailyDone?" disabled":""}>${a}</button>`
+    ).join("");
+  }
+  if (qhFeedback) qhFeedback.textContent = dailyDone ? "Daily quest complete. Come back tomorrow." : dailyQuest.question;
+
+  // ── Achievement strip ─────────────────────────────────────────────
+  const strip = document.getElementById("achievementStrip");
+  if (strip) {
+    strip.innerHTML = ACHIEVEMENTS.map(a => {
+      const done = getUnlockedAchievements(state).some(u => u.key === a.key);
+      return `<div class="achievement-badge${done?" unlocked":" locked"}" title="${a.desc}"><span class="badge-icon">${a.icon}</span><span class="badge-name">${a.name}</span></div>`;
+    }).join("");
   }
 
   // ── Daily card ──────────────────────────────────────────────────
@@ -1465,7 +1575,7 @@ document.addEventListener("click", e => {
   const pt = e.target.closest("[data-page-target]");
   if (pt) { openPage(pt.dataset.pageTarget); return; }
 
-  // daily answers
+  // daily answers (both learn page and quest hero)
   const da = e.target.closest("[data-daily-answer]");
   if (da) { answerDaily(Number(da.dataset.dailyAnswer)); return; }
 
@@ -1577,22 +1687,26 @@ document.addEventListener("click", e => {
     return;
   }
 
-  // text size / contrast / reset
+  // text size / contrast / reset / dark mode
   if (e.target.closest("#textSizeButton")) {
     state.largeText = !state.largeText; saveState(); renderInPlace();
-    explain(state.largeText?"Bigger text on.":"Bigger text off.", "Use the setting that makes reading easier.");
+    const btn = document.getElementById("textSizeButton");
+    if (btn) { btn.classList.toggle("on", state.largeText); btn.textContent = state.largeText ? "On" : "Off"; btn.setAttribute("aria-checked", String(state.largeText)); }
+    showToast(state.largeText ? "Aa Bigger text on" : "Aa Bigger text off", "info", 2000);
     return;
   }
   if (e.target.closest("#contrastButton")) {
     state.highContrast = !state.highContrast; saveState(); renderInPlace();
-    explain(state.highContrast?"High contrast on.":"High contrast off.", "Use the setting that makes answers clearer.");
+    const btn = document.getElementById("contrastButton");
+    if (btn) { btn.classList.toggle("on", state.highContrast); btn.textContent = state.highContrast ? "On" : "Off"; btn.setAttribute("aria-checked", String(state.highContrast)); }
+    showToast(state.highContrast ? "◑ High contrast on" : "◑ High contrast off", "info", 2000);
     return;
   }
   if (e.target.closest("#resetButton")) {
-    if (!confirm("Reset all progress?")) return;
+    if (!confirm("Reset ALL progress? This cannot be undone.")) return;
     Object.assign(state, { streak:0, points:0, badges:0, record:{}, claimed:{}, answered:{}, ethics:{}, walletClaims:[], premiumUnlocks:{}, premiumHistory:[], piQuizAnswers:{} });
     saveState(); render();
-    explain("Progress reset.", "Start again from the beginning.");
+    showToast("↺ Progress reset", "error", 3000);
     return;
   }
 });
@@ -1647,11 +1761,25 @@ if (cancelPaymentBtn) cancelPaymentBtn.addEventListener("click", () => {
   showToast("Payment cancelled", "error", 2500);
 });
 
+// ── Sync toggle-switch UI state ────────────────────────────────────
+function syncToggles() {
+  const tSize = document.getElementById("textSizeButton");
+  const tCon  = document.getElementById("contrastButton");
+  const tDark = document.getElementById("darkModeButton");
+  if (tSize) { tSize.classList.toggle("on", !!state.largeText);    tSize.textContent = state.largeText    ? "On" : "Off"; tSize.setAttribute("aria-checked", String(!!state.largeText)); }
+  if (tCon)  { tCon.classList.toggle("on",  !!state.highContrast); tCon.textContent  = state.highContrast ? "On" : "Off"; tCon.setAttribute("aria-checked", String(!!state.highContrast)); }
+  if (tDark) { tDark.classList.toggle("on", !!state.darkMode);     tDark.textContent = state.darkMode     ? "On" : "Off"; tDark.setAttribute("aria-checked", String(!!state.darkMode)); }
+  document.documentElement.classList.toggle("high-contrast", !!state.highContrast);
+  document.documentElement.classList.toggle("large-text",    !!state.largeText);
+  document.documentElement.classList.toggle("dark-mode",     !!state.darkMode);
+}
+
 // ── Init ───────────────────────────────────────────────────────────
 state.darkMode = localStorage.getItem("questora-dark-mode") === "true";
 userRecord();
 _lastRankKey = currentRank(state.points).key;
 detectPiBrowser();
+syncToggles();
 render();
 // Async post-init
 setTimeout(() => {
