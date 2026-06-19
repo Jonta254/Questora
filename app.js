@@ -1426,65 +1426,80 @@ async function connectWithPi() {
   }
 }
 
+function _paymentOverlay(show, title, msg) {
+  const ov = document.getElementById("paymentOverlay");
+  const ot = document.getElementById("paymentOverlayTitle");
+  const om = document.getElementById("paymentOverlayMsg");
+  if (!ov) return;
+  if (show) {
+    if (ot) ot.textContent = title || "Confirming payment…";
+    if (om) om.textContent = msg   || "Contacting Pi Platform…";
+    ov.hidden = false;
+  } else {
+    ov.hidden = true;
+  }
+}
+
 function paymentCallbacks(pack) {
   return {
+    // Fires when Pi SDK has a paymentId — send to backend for approval
     onReadyForServerApproval: async paymentId => {
+      _paymentOverlay(true, `Approving ${pack.price}`, "Checking payment with Pi Platform…");
       const result = await postToBackend(BACKEND_ENDPOINTS.approve, { paymentId, packKey:pack.key, amount:pack.amount });
       rememberPremiumEvent(pack, result.ok?"Approved":"Approval pending", result.ok?"Backend approved the payment.":"Check backend logs.", { paymentId });
       saveState(); renderInPlace();
-      explain(result.ok?"Payment approved.":"Approval issue.", result.ok?"Wallet continues to blockchain.":"Check backend and Pi API key.");
     },
+    // Fires after user submits tx to blockchain — send paymentId + txid to backend
     onReadyForServerCompletion: async (paymentId, txid) => {
+      _paymentOverlay(true, "Completing payment…", "Confirming on Pi blockchain…");
       const result = await postToBackend(BACKEND_ENDPOINTS.complete, { paymentId, txid, packKey:pack.key, amount:pack.amount });
+      _paymentOverlay(false);
       if (result.ok) {
         state.premiumUnlocks[pack.key] = { paymentId, txid, date:todayKey, title:pack.title };
         rememberPremiumEvent(pack, "Unlocked", "Payment completed and service opened.", { paymentId, txid });
         saveState(); renderInPlace();
+        showToast(`✅ ${pack.title} unlocked!`, "success", 4000);
         explain(`${pack.title} is now unlocked.`, "Open the premium card to read your learning pages.");
         return;
       }
       rememberPremiumEvent(pack, "Completion pending", "Payment reached backend but completion was not confirmed.", { paymentId, txid });
       saveState(); renderInPlace();
-      explain("Payment completion not confirmed.", "Check backend complete route.");
+      showToast("Payment pending — check history", "info", 4000);
     },
+    // Fires when user cancels in Pi Browser — or no approval within 60 s
     onCancel: paymentId => {
-      const ov = document.getElementById("paymentOverlay");
-      if (ov) ov.hidden = true;
+      _paymentOverlay(false);
       rememberPremiumEvent(pack, "Cancelled", "User cancelled the Pi payment.", { paymentId });
       saveState(); renderInPlace();
       showToast("Payment cancelled", "error", 2500);
-      explain("Payment cancelled.", "No premium access from a cancelled payment.");
     },
+    // Fires on any SDK error
     onError: (error, payment) => {
+      _paymentOverlay(false);
       console.error("Pi payment error", error, payment);
       rememberPremiumEvent(pack, "Error", "Pi payment returned an error.", { paymentId:payment?.identifier });
       saveState(); renderInPlace();
-      explain("Pi payment could not be completed.", "Check backend approval, completion, and incomplete-payment handling.");
+      showToast("Payment error — try again", "error", 3000);
     },
   };
 }
 
 async function requestPremiumPayment(pack) {
-  if (!initPiSdk()) { explain("Pi payments need Pi Browser.", "Open Questora in Pi Browser first."); return; }
-  if (!state.user)  { explain("Connect Pi first.", "Tap Connect Pi Account then try premium again."); return; }
-  if (state.premiumUnlocks[pack.key]) { explain(`${pack.title} is already unlocked.`, "Scroll to the premium card to read your pages."); return; }
-  if (!PI_PAYMENTS_ENABLED) { explain("Pi payment is disabled in this build.", "Enable the payment flag to allow live purchases."); return; }
+  if (!initPiSdk()) { showToast("Open in Pi Browser for payments", "error", 3000); return; }
+  if (!state.user)  { showToast("Connect Pi account first", "error", 3000); return; }
+  if (state.premiumUnlocks[pack.key]) { showToast(`${pack.title} is already unlocked`, "info", 2500); return; }
+  if (!PI_PAYMENTS_ENABLED) { showToast("Payments disabled in this build", "error", 3000); return; }
+
   rememberPremiumEvent(pack, "Started", "User opened the Pi payment flow.");
   saveState(); renderInPlace();
-  // Show payment overlay
-  const overlay = document.getElementById("paymentOverlay");
-  const overlayTitle = document.getElementById("paymentOverlayTitle");
-  const overlayMsg   = document.getElementById("paymentOverlayMsg");
-  if (overlay && overlayTitle && overlayMsg) {
-    overlayTitle.textContent = `Paying ${pack.price}`;
-    overlayMsg.textContent   = `${pack.title} — confirm in your Pi Wallet`;
-    overlay.hidden = false;
-  }
-  try {
-    await window.Pi.createPayment({ amount:pack.amount, memo:`Questora premium: ${pack.title}`, metadata:{ packKey:pack.key, type:"premium-service" } }, paymentCallbacks(pack));
-  } finally {
-    if (overlay) overlay.hidden = true;
-  }
+
+  // Pi.createPayment is void — it opens the Pi Browser payment sheet natively.
+  // Do NOT wrap in try/finally to hide an overlay here (it would hide immediately).
+  // Overlay is shown/hidden inside the callbacks instead.
+  window.Pi.createPayment(
+    { amount: pack.amount, memo: `Questora: ${pack.title}`, metadata: { packKey: pack.key, type: "premium-service" } },
+    paymentCallbacks(pack)
+  );
 }
 
 // ── Answer handlers ────────────────────────────────────────────────

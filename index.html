@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#2E1A8A" />
-    <meta name="description" content="Questora — Daily Pi Network quests, learning, and Pioneer rewards on Pi Mainnet." />
+    <meta name="description" content="Questora — Daily Pi Network quests, learning, and Pioneer rewards." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Questora" />
     <link rel="manifest" href="/manifest.json" />
@@ -18,7 +18,7 @@
     <!-- Pi Browser banner -->
     <div id="piBrowserBanner" class="pi-browser-banner" hidden>
       <span>🌐</span>
-      <p>Open in <strong>Pi Browser</strong> for payments &amp; full Pioneer features.</p>
+      <p>Open in <strong>Pi Browser</strong> for full Pioneer features.</p>
       <button id="dismissBanner" type="button" aria-label="Dismiss">✕</button>
     </div>
 
@@ -45,43 +45,35 @@
       </div>
     </div>
 
-    <main class="app-shell" id="mainContent">
-
-      <!-- ── Compact Hero ─────────────────── -->
-      <header class="hero-compact" aria-label="Questora Pioneer app">
-        <div class="hero-compact-left">
-          <div class="hero-logo">π</div>
-          <div>
-            <p class="hero-app-name">Questora</p>
-            <p class="hero-app-sub">Pi Pioneer Quests</p>
-          </div>
-        </div>
-        <div class="hero-compact-right">
-          <div class="rank-chip" id="rankChip">
-            <span id="rankIcon">🥉</span>
-            <span id="rankLabel">Explorer</span>
-          </div>
-        </div>
-      </header>
-
-      <!-- ── Stats strip ─────────────────── -->
-      <div class="stats-strip" aria-label="Your stats">
-        <div class="stat-chip"><span id="streakCount">0</span><label>streak</label></div>
-        <div class="stat-chip gold"><span id="pointCount">0</span><label>points</label></div>
-        <div class="stat-chip purple"><span id="badgeCount">0</span><label>badges</label></div>
-        <div class="stat-chip" id="levelChip"><span id="dashLevel">L1</span><label>level</label></div>
+    <!-- ── Fixed top header ── -->
+    <header class="app-header" aria-label="Questora">
+      <div class="app-header-left">
+        <div class="header-logo">π</div>
+        <span class="header-title">Questora</span>
       </div>
+      <div class="app-header-right">
+        <div class="rank-chip" id="rankChip">
+          <span id="rankIcon">🥉</span>
+          <span id="rankLabel">Explorer</span>
+        </div>
+      </div>
+    </header>
 
-      <!-- ── Navigation ───────────────────── -->
-      <nav class="page-nav" aria-label="App pages">
-        <button class="page-tab active" data-page-target="home"     type="button"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></button>
-        <button class="page-tab"        data-page-target="learn"    type="button"><span class="tab-icon">📚</span><span class="tab-label">Learn</span></button>
-        <button class="page-tab"        data-page-target="pioneer"  type="button"><span class="tab-icon">π</span><span class="tab-label">Pioneer</span></button>
-        <button class="page-tab"        data-page-target="rewards"  type="button"><span class="tab-icon">🏆</span><span class="tab-label">Rewards</span></button>
-        <button class="page-tab"        data-page-target="settings" type="button"><span class="tab-icon">⚙️</span><span class="tab-label">Settings</span></button>
-      </nav>
+    <!-- ── Stats bar (below header, sticky) ── -->
+    <div class="stats-bar" aria-label="Your stats">
+      <div class="sbar-item"><span id="streakCount">0</span><label>streak</label></div>
+      <div class="sbar-sep"></div>
+      <div class="sbar-item gold"><span id="pointCount">0</span><label>points</label></div>
+      <div class="sbar-sep"></div>
+      <div class="sbar-item purple"><span id="badgeCount">0</span><label>badges</label></div>
+      <div class="sbar-sep"></div>
+      <div class="sbar-item"><span id="dashLevel">L1</span><label>level</label></div>
+    </div>
 
-      <!-- ════════════ PAGE: HOME ═══════════ -->
+    <!-- ── Scrollable content ── -->
+    <main class="app-content" id="mainContent">
+
+      <!-- ════ PAGE: HOME ════ -->
       <div data-page="home">
 
         <!-- Connect bar -->
@@ -93,60 +85,60 @@
           <button class="connect-btn" id="loginButton" type="button">π Connect</button>
         </div>
 
-        <!-- Today's quest (prominent) -->
-        <section class="quest-hero" aria-labelledby="questHeroTitle">
-          <div class="quest-hero-header">
+        <!-- Today's quest -->
+        <section class="pane" aria-labelledby="questHeroTitle">
+          <div class="pane-head">
             <div>
               <p class="eyebrow" id="questHeroCategory">Pi Safety</p>
               <h2 id="questHeroTitle">Today's Quest</h2>
             </div>
-            <div class="quest-hero-badges">
+            <div class="head-pills">
               <span class="pill gold" id="questRewardPill">+50 pts</span>
               <span class="pill" id="questStatusPill">Ready</span>
             </div>
           </div>
-          <div id="questHeroCard" class="quest-hero-card"></div>
+          <div id="questHeroCard" class="quest-card"></div>
           <div id="questHeroAnswers" class="answer-grid" role="group" aria-label="Quest answers"></div>
           <p id="questHeroFeedback" class="quest-feedback" aria-live="polite"></p>
         </section>
 
-        <!-- Quick-action tiles -->
-        <div class="quick-grid" aria-label="Quick actions">
-          <button class="quick-tile" data-page-target="learn" type="button">
-            <span class="quick-icon">📚</span>
+        <!-- 4-tile quick grid -->
+        <div class="tile-grid" aria-label="Quick actions">
+          <button class="tile" data-page-target="learn" type="button">
+            <span class="tile-icon">📚</span>
             <strong>Learn</strong>
             <p id="quickLearnSub">Lessons &amp; quizzes</p>
           </button>
-          <button class="quick-tile" data-page-target="pioneer" type="button">
-            <span class="quick-icon">π</span>
+          <button class="tile" data-page-target="pioneer" type="button">
+            <span class="tile-icon">π</span>
             <strong>Pioneer Hub</strong>
-            <p>Pi phases, quiz, ranks</p>
+            <p>Phases, quiz &amp; ranks</p>
           </button>
-          <button class="quick-tile" data-page-target="rewards" type="button">
-            <span class="quick-icon">🏆</span>
+          <button class="tile" data-page-target="rewards" type="button">
+            <span class="tile-icon">🏆</span>
             <strong>Rewards</strong>
-            <p id="quickRewardSub">Unlock &amp; premium</p>
+            <p id="quickRewardSub">Unlock &amp; claim</p>
           </button>
-          <button class="quick-tile" data-page-target="settings" type="button">
-            <span class="quick-icon">⚙️</span>
+          <button class="tile" data-page-target="settings" type="button">
+            <span class="tile-icon">⚙️</span>
             <strong>Settings</strong>
             <p>Guide &amp; preferences</p>
           </button>
         </div>
 
-        <!-- 7-day streak calendar -->
-        <section class="card-section" aria-labelledby="streakTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Consistency</p><h3 id="streakTitle">This week</h3></div>
+        <!-- Streak week -->
+        <section class="pane" aria-labelledby="streakTitle">
+          <div class="pane-head">
+            <h3 id="streakTitle">This week</h3>
             <span class="pill green" id="streakPill">0-day streak</span>
           </div>
           <div id="streakCalendar" class="streak-calendar"></div>
         </section>
 
-        <!-- Achievements strip -->
-        <section class="card-section" aria-labelledby="achieveTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Achievements</p><h3 id="achieveTitle">Badges</h3></div>
+        <!-- Achievement strip -->
+        <section class="pane" aria-labelledby="achieveTitle">
+          <div class="pane-head">
+            <h3 id="achieveTitle">Achievements</h3>
             <span class="pill green" id="achievePill">0 unlocked</span>
           </div>
           <div id="achievementStrip" class="achievement-strip"></div>
@@ -158,45 +150,36 @@
           <div><strong>Pi Fact</strong><p id="piFactText">Loading…</p></div>
         </div>
 
-        <!-- Pulse feed (compact, no explanations) -->
-        <section class="card-section" aria-labelledby="feedTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Live feed</p><h3 id="feedTitle">Now active</h3></div>
-            <span class="pill" id="pulsePill">4</span>
-          </div>
-          <div id="pulseGrid" style="display:grid;gap:8px;margin-top:12px"></div>
-        </section>
-
         <!-- Mission -->
-        <section class="card-section" aria-labelledby="missionTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Today's plan</p><h3 id="missionTitle">Mission</h3></div>
+        <section class="pane" aria-labelledby="missionTitle">
+          <div class="pane-head">
+            <h3 id="missionTitle">Today's mission</h3>
             <span class="pill" id="missionPill">Step 1</span>
           </div>
-          <div id="missionRail" style="display:grid;gap:8px;margin-top:12px" role="list"></div>
+          <div id="missionRail" style="display:grid;gap:8px;margin-top:10px" role="list"></div>
         </section>
 
-        <!-- Next unlock (single card) -->
+        <!-- Next unlock -->
         <div id="nextUnlockBand" class="next-unlock-band"></div>
 
       </div><!-- /home -->
 
-      <!-- ════════════ PAGE: LEARN ═══════════ -->
+      <!-- ════ PAGE: LEARN ════ -->
       <div data-page="learn" hidden>
 
         <!-- Category selector -->
-        <section class="card-section" aria-labelledby="categoryTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Learning paths</p><h2 id="categoryTitle">Categories</h2></div>
+        <section class="pane" aria-labelledby="categoryTitle">
+          <div class="pane-head">
+            <h2 id="categoryTitle">Categories</h2>
             <span class="pill" id="categoryPill">Pi Safety</span>
           </div>
           <div id="categoryGrid" class="category-grid" role="group" aria-label="Learning categories"></div>
         </section>
 
         <!-- Daily brief -->
-        <section class="card-section" aria-labelledby="dailyTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Daily brief</p><h2 id="dailyTitle">Question</h2></div>
+        <section class="pane" aria-labelledby="dailyTitle">
+          <div class="pane-head">
+            <h2 id="dailyTitle">Daily brief</h2>
             <span class="pill gold" id="dailyRewardPill">+50 pts</span>
           </div>
           <div id="dailyCard" class="daily-card gold"></div>
@@ -205,125 +188,124 @@
         </section>
 
         <!-- Boosters -->
-        <section class="card-section" aria-labelledby="boosterTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Boosters</p><h2 id="boosterTitle">Daily points</h2></div>
+        <section class="pane" aria-labelledby="boosterTitle">
+          <div class="pane-head">
+            <h2 id="boosterTitle">Daily boosters</h2>
           </div>
-          <div id="boosterGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px" role="group"></div>
+          <div id="boosterGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px" role="group"></div>
         </section>
 
         <!-- Lessons -->
-        <section class="card-section" aria-labelledby="lessonTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Lessons</p><h2 id="lessonTitle">Category lessons</h2></div>
+        <section class="pane" aria-labelledby="lessonTitle">
+          <div class="pane-head">
+            <h2 id="lessonTitle">Lessons</h2>
             <span class="pill" id="learnJourneyPill">0/3</span>
           </div>
-          <div id="lessonGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="lessonGrid" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
         <!-- Visual tasks -->
-        <section class="card-section" aria-labelledby="visualTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Visual learning</p><h2 id="visualTitle">Art tasks</h2></div>
+        <section class="pane" aria-labelledby="visualTitle">
+          <div class="pane-head">
+            <h2 id="visualTitle">Visual learning</h2>
             <span class="pill" id="visualPill">6 today</span>
           </div>
-          <div id="visualGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="visualGrid" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
         <!-- Tools -->
-        <section class="card-section" aria-labelledby="toolTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Pioneer tools</p><h2 id="toolTitle">Toolkit</h2></div>
+        <section class="pane" aria-labelledby="toolTitle">
+          <div class="pane-head">
+            <h2 id="toolTitle">Pioneer tools</h2>
           </div>
-          <div id="toolGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="toolGrid" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
         <!-- Ethics -->
-        <section class="card-section" aria-labelledby="ethicsTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Responsible AI</p><h2 id="ethicsTitle">Ethics</h2></div>
+        <section class="pane" aria-labelledby="ethicsTitle">
+          <div class="pane-head">
+            <h2 id="ethicsTitle">Ethics</h2>
           </div>
-          <div id="ethicsList" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="ethicsList" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
       </div><!-- /learn -->
 
-      <!-- ════════════ PAGE: PIONEER ════════ -->
+      <!-- ════ PAGE: PIONEER ════ -->
       <div data-page="pioneer" hidden>
 
-        <div class="pi-fact-band" style="margin-bottom:14px">
+        <div class="pi-fact-band" style="margin-bottom:12px">
           <span class="pi-fact-icon">π</span>
           <div><strong>Pi Fact</strong><p id="piFactHub">Pi uses the Stellar Consensus Protocol.</p></div>
         </div>
 
-        <!-- Backend status -->
-        <div id="backendStatusCard" class="backend-status-card" style="margin-bottom:14px"></div>
+        <div id="backendStatusCard" class="backend-status-card" style="margin-bottom:12px"></div>
 
         <!-- Rank system -->
-        <section class="card-section" aria-labelledby="rankTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Your rank</p><h2 id="rankTitle">Pioneer ranks</h2></div>
+        <section class="pane" aria-labelledby="rankTitle">
+          <div class="pane-head">
+            <h2 id="rankTitle">Pioneer ranks</h2>
             <span class="pill gold" id="yourRankPill">Current</span>
           </div>
           <div id="rankGrid" class="rank-grid"></div>
         </section>
 
         <!-- Pi phases -->
-        <section class="card-section" aria-labelledby="phaseTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Pi Network</p><h2 id="phaseTitle">Three phases</h2></div>
+        <section class="pane" aria-labelledby="phaseTitle">
+          <div class="pane-head">
+            <h2 id="phaseTitle">Three phases</h2>
           </div>
           <div id="piPhaseGrid" class="pi-phase-grid"></div>
         </section>
 
         <!-- Ecosystem apps -->
-        <section class="card-section" aria-labelledby="ecosystemTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Ecosystem</p><h2 id="ecosystemTitle">Pi apps</h2></div>
+        <section class="pane" aria-labelledby="ecosystemTitle">
+          <div class="pane-head">
+            <h2 id="ecosystemTitle">Pi ecosystem</h2>
           </div>
           <div id="piAppsGrid" class="pi-apps-grid"></div>
         </section>
 
         <!-- Pi knowledge quiz -->
-        <section class="card-section" aria-labelledby="piQuizTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Daily quiz</p><h2 id="piQuizTitle">Pi knowledge</h2></div>
+        <section class="pane" aria-labelledby="piQuizTitle">
+          <div class="pane-head">
+            <h2 id="piQuizTitle">Pi knowledge quiz</h2>
             <span class="pill" id="piQuizPill">+40 pts</span>
           </div>
           <div id="piQuizCard" class="pi-quiz-card"></div>
         </section>
 
         <!-- Utility guide -->
-        <section class="card-section" aria-labelledby="utilityTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Mainnet guide</p><h2 id="utilityTitle">7-step setup</h2></div>
+        <section class="pane" aria-labelledby="utilityTitle">
+          <div class="pane-head">
+            <h2 id="utilityTitle">Mainnet setup</h2>
             <span class="pill" id="utilityPill">0/7</span>
           </div>
-          <div id="piUtilityGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="piUtilityGrid" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
         <!-- Safety rules -->
-        <section class="card-section" aria-labelledby="piSafeTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Security</p><h2 id="piSafeTitle">Pi safety rules</h2></div>
+        <section class="pane" aria-labelledby="piSafeTitle">
+          <div class="pane-head">
+            <h2 id="piSafeTitle">Pi safety rules</h2>
           </div>
-          <div id="piSafetyList" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="piSafetyList" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
         <!-- Mining FAQ -->
-        <section class="card-section" aria-labelledby="miningTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Mining</p><h2 id="miningTitle">FAQ</h2></div>
+        <section class="pane" aria-labelledby="miningTitle">
+          <div class="pane-head">
+            <h2 id="miningTitle">Mining FAQ</h2>
           </div>
-          <div id="miningFaq" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="miningFaq" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
       </div><!-- /pioneer -->
 
-      <!-- ════════════ PAGE: REWARDS ════════ -->
+      <!-- ════ PAGE: REWARDS ════ -->
       <div data-page="rewards" hidden>
 
-        <!-- Reward summary strip -->
+        <!-- Summary strip -->
         <div class="reward-strip">
           <div class="reward-strip-stat purple">
             <strong id="rewardStripPts">0</strong><p>Total pts</p>
@@ -337,17 +319,17 @@
         </div>
 
         <!-- Reward tiers -->
-        <section class="card-section" aria-labelledby="rewardTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Unlock tiers</p><h2 id="rewardTitle">Rewards</h2></div>
+        <section class="pane" aria-labelledby="rewardTitle">
+          <div class="pane-head">
+            <h2 id="rewardTitle">Reward tiers</h2>
           </div>
-          <div id="rewardGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="rewardGrid" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
-        <!-- Wallet / claim -->
-        <section class="card-section" aria-labelledby="walletTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Claim record</p><h2 id="walletTitle">Wallet</h2></div>
+        <!-- Wallet -->
+        <section class="pane" aria-labelledby="walletTitle">
+          <div class="pane-head">
+            <h2 id="walletTitle">Wallet</h2>
             <span class="pill gold" id="walletPill">Review</span>
           </div>
           <span class="wallet-amount" id="walletClaimAmount">0 pts</span>
@@ -356,39 +338,39 @@
         </section>
 
         <!-- Premium packs -->
-        <section class="card-section" aria-labelledby="premiumTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Pi premium</p><h2 id="premiumTitle">Premium packs</h2></div>
+        <section class="pane" aria-labelledby="premiumTitle">
+          <div class="pane-head">
+            <h2 id="premiumTitle">Premium packs</h2>
           </div>
-          <p style="color:var(--muted);font-size:.84rem;margin-bottom:12px">Optional Pi-powered learning services. Free content comes first — premium deepens it.</p>
+          <p class="pane-sub">Pi-powered learning services. Free content comes first.</p>
           <div id="premiumGrid" style="display:grid;gap:8px"></div>
           <div id="premiumDetail"></div>
         </section>
 
-        <!-- Premium guide (compact) -->
-        <section class="card-section" aria-labelledby="premiumGuideTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Payment guide</p><h2 id="premiumGuideTitle">When to pay</h2></div>
+        <!-- Payment guide -->
+        <section class="pane" aria-labelledby="premiumGuideTitle">
+          <div class="pane-head">
+            <h2 id="premiumGuideTitle">When to pay</h2>
             <span class="pill" id="premiumGuidePill">Value first</span>
           </div>
-          <div id="premiumGuideGrid" style="display:grid;gap:8px;margin-top:12px"></div>
+          <div id="premiumGuideGrid" style="display:grid;gap:8px;margin-top:10px"></div>
         </section>
 
         <!-- Payment log -->
-        <section class="card-section" aria-labelledby="premiumHistoryTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Payment log</p><h2 id="premiumHistoryTitle">Pi history</h2></div>
+        <section class="pane" aria-labelledby="premiumHistoryTitle">
+          <div class="pane-head">
+            <h2 id="premiumHistoryTitle">Pi payment log</h2>
           </div>
-          <div id="premiumHistoryList" style="margin-top:12px"></div>
+          <div id="premiumHistoryList" style="margin-top:10px"></div>
         </section>
 
         <!-- Leaderboard -->
-        <section class="card-section" aria-labelledby="leaderTitle">
-          <div class="section-title">
-            <div><p class="eyebrow">Global ranking</p><h2 id="leaderTitle">Leaderboard</h2></div>
+        <section class="pane" aria-labelledby="leaderTitle">
+          <div class="pane-head">
+            <h2 id="leaderTitle">Leaderboard</h2>
             <span class="pill" id="leaderPill">Live</span>
           </div>
-          <div id="leaderboardGrid" style="margin-top:12px"></div>
+          <div id="leaderboardGrid" style="margin-top:10px"></div>
           <div class="leaderboard-row you" style="margin-top:8px">
             <span class="leaderboard-rank">—</span>
             <span class="leaderboard-name" id="yourRankLabel">You</span>
@@ -399,7 +381,7 @@
 
       </div><!-- /rewards -->
 
-      <!-- ════════════ PAGE: SETTINGS ═══════ -->
+      <!-- ════ PAGE: SETTINGS ════ -->
       <div data-page="settings" hidden>
 
         <!-- Profile card -->
@@ -414,7 +396,7 @@
 
         <!-- Preferences -->
         <section class="settings-section" aria-labelledby="prefTitle">
-          <button class="settings-toggle" data-toggle="prefBody" type="button">
+          <button class="settings-toggle" data-toggle="prefBody" type="button" aria-expanded="false">
             <span>⚙️ Preferences</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="prefBody">
@@ -468,107 +450,71 @@
         </section>
 
         <!-- Accessibility -->
-        <section class="settings-section" aria-labelledby="a11yTitle">
-          <button class="settings-toggle" data-toggle="a11yBody" type="button">
+        <section class="settings-section">
+          <button class="settings-toggle" data-toggle="a11yBody" type="button" aria-expanded="false">
             <span>♿ Accessibility</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="a11yBody">
             <div class="settings-action-row">
-              <div>
-                <strong>Larger text</strong>
-                <p>Increase font size for easier reading.</p>
-              </div>
+              <div><strong>Larger text</strong><p>Increase font size for easier reading.</p></div>
               <button class="toggle-switch" id="textSizeButton" type="button" role="switch" aria-checked="false">Off</button>
             </div>
             <div class="settings-action-row">
-              <div>
-                <strong>High contrast</strong>
-                <p>Stronger colour contrast for readability.</p>
-              </div>
+              <div><strong>High contrast</strong><p>Stronger colour contrast for readability.</p></div>
               <button class="toggle-switch" id="contrastButton" type="button" role="switch" aria-checked="false">Off</button>
             </div>
             <div class="settings-action-row">
-              <div>
-                <strong>Dark mode</strong>
-                <p>Dark Pi-navy background, easier at night.</p>
-              </div>
+              <div><strong>Dark mode</strong><p>Dark Pi-navy background, easier at night.</p></div>
               <button class="toggle-switch" id="darkModeButton" type="button" role="switch" aria-checked="false">Off</button>
             </div>
           </div>
         </section>
 
         <!-- User guide -->
-        <section class="settings-section" aria-labelledby="guideTitle">
-          <button class="settings-toggle" data-toggle="guideBody" type="button">
+        <section class="settings-section">
+          <button class="settings-toggle" data-toggle="guideBody" type="button" aria-expanded="false">
             <span>📖 User Guide</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="guideBody">
-            <div class="guide-step"><span class="guide-num">1</span><div><strong>Connect your Pi account</strong><p>Open Questora inside <strong>Pi Browser</strong>. Tap <em>π Connect</em> on the Home page. Your Pioneer username links to your progress.</p></div></div>
-            <div class="guide-step"><span class="guide-num">2</span><div><strong>Complete today's daily quest</strong><p>Every day a new question appears. Answer correctly to earn points and extend your streak. One quest per day — come back tomorrow for the next.</p></div></div>
-            <div class="guide-step"><span class="guide-num">3</span><div><strong>Learn through categories</strong><p>Open <strong>Learn</strong> to choose a category. Each has short lessons, a question, and a reward. Answer correctly to unlock the badge and earn points.</p></div></div>
-            <div class="guide-step"><span class="guide-num">4</span><div><strong>Explore the Pioneer Hub</strong><p>The <strong>π Pioneer</strong> tab teaches you about Pi Network — phases, mining, KYC, wallet safety, and ranks. Answer the daily Pi quiz for extra points.</p></div></div>
-            <div class="guide-step"><span class="guide-num">5</span><div><strong>Track rewards and unlock premium</strong><p>Go to <strong>🏆 Rewards</strong> to see your tier progress. When you have earned enough, optional premium packs deepen your learning with real Pi payments.</p></div></div>
-            <div class="guide-step"><span class="guide-num">6</span><div><strong>Earn achievements</strong><p>Badges unlock automatically as you learn. Reach 300 pts to become a Pioneer, 800 pts for Miner, and 3500 pts for Ambassador.</p></div></div>
+            <div class="guide-step"><span class="guide-num">1</span><div><strong>Connect your Pi account</strong><p>Open Questora in <strong>Pi Browser</strong> and tap <em>π Connect</em>. Your Pioneer username links to your progress.</p></div></div>
+            <div class="guide-step"><span class="guide-num">2</span><div><strong>Complete the daily quest</strong><p>A new question appears every day. Answer to earn points and extend your streak.</p></div></div>
+            <div class="guide-step"><span class="guide-num">3</span><div><strong>Learn through categories</strong><p>Choose a category in <strong>Learn</strong>. Each has short lessons, a question, and a reward badge.</p></div></div>
+            <div class="guide-step"><span class="guide-num">4</span><div><strong>Explore the Pioneer Hub</strong><p>Learn about Pi phases, mining, KYC, wallet safety, and your current rank.</p></div></div>
+            <div class="guide-step"><span class="guide-num">5</span><div><strong>Track rewards and premium</strong><p>Go to <strong>Rewards</strong> to see your tier progress. Optional premium packs use real Pi payments.</p></div></div>
+            <div class="guide-step"><span class="guide-num">6</span><div><strong>Earn achievements</strong><p>Badges unlock automatically. 300 pts → Pioneer. 800 pts → Miner. 3500 pts → Ambassador.</p></div></div>
           </div>
         </section>
 
         <!-- Community guidelines -->
-        <section class="settings-section" aria-labelledby="guidelinesTitle">
-          <button class="settings-toggle" data-toggle="guidelinesBody" type="button">
+        <section class="settings-section">
+          <button class="settings-toggle" data-toggle="guidelinesBody" type="button" aria-expanded="false">
             <span>📋 Community Guidelines</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="guidelinesBody">
-            <div class="guideline-card">
-              <span class="guideline-icon">🤝</span>
-              <div><strong>Respect every Pioneer</strong><p>Questora is a global app used by Pioneers of all ages. Be kind, supportive, and inclusive in referrals and interactions.</p></div>
-            </div>
-            <div class="guideline-card">
-              <span class="guideline-icon">🎓</span>
-              <div><strong>Learn honestly</strong><p>Answer questions using your own knowledge. The goal is growth — guessing through everything defeats the purpose and reduces your ranking quality.</p></div>
-            </div>
-            <div class="guideline-card">
-              <span class="guideline-icon">🔒</span>
-              <div><strong>Keep Pi safe</strong><p>Never share your Pi wallet passphrase with anyone — not even if someone claims to be a Questora admin. No legitimate app or team will ask for it.</p></div>
-            </div>
-            <div class="guideline-card">
-              <span class="guideline-icon">🌍</span>
-              <div><strong>Represent your country fairly</strong><p>Your region selection affects leaderboard and content. Select your actual country so the global Pioneer community stays accurate.</p></div>
-            </div>
+            <div class="guideline-card"><span class="guideline-icon">🤝</span><div><strong>Respect every Pioneer</strong><p>Be kind, supportive, and inclusive in referrals and interactions.</p></div></div>
+            <div class="guideline-card"><span class="guideline-icon">🎓</span><div><strong>Learn honestly</strong><p>Answer questions with your own knowledge. Growth matters more than a quick score.</p></div></div>
+            <div class="guideline-card"><span class="guideline-icon">🔒</span><div><strong>Keep Pi safe</strong><p>Never share your wallet passphrase with anyone — not even a Questora admin.</p></div></div>
+            <div class="guideline-card"><span class="guideline-icon">🌍</span><div><strong>Represent your country accurately</strong><p>Your region selection affects leaderboard and content quality globally.</p></div></div>
           </div>
         </section>
 
         <!-- Restrictions -->
-        <section class="settings-section" aria-labelledby="restrictTitle">
-          <button class="settings-toggle" data-toggle="restrictBody" type="button">
+        <section class="settings-section">
+          <button class="settings-toggle" data-toggle="restrictBody" type="button" aria-expanded="false">
             <span>🚫 Restrictions</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="restrictBody">
-            <div class="restriction-card">
-              <span class="restriction-tag">Pi Payments</span>
-              <p>Pi payments are only processed inside <strong>Pi Browser</strong>. Questora will never ask for payment outside the official Pi payment flow. Payments are voluntary and optional — all free learning remains available.</p>
-            </div>
-            <div class="restriction-card">
-              <span class="restriction-tag">Daily Limits</span>
-              <p>Each daily quest can only be completed once per day. Daily booster points reset at midnight UTC. This keeps learning streaks meaningful and prevents point farming.</p>
-            </div>
-            <div class="restriction-card">
-              <span class="restriction-tag">Reward Records</span>
-              <p>Payout review records are in-app point logs only. They are <strong>not real Pi transfers</strong>. Questora clearly separates app points from Pi blockchain transactions.</p>
-            </div>
-            <div class="restriction-card">
-              <span class="restriction-tag">Age &amp; Content</span>
-              <p>Questora is designed for all ages. Some premium packs contain adult financial and creator topics. Parents can keep the app set to the Kids or Teens age group to filter appropriately.</p>
-            </div>
-            <div class="restriction-card">
-              <span class="restriction-tag">Account Reset</span>
-              <p>Resetting your progress is permanent and cannot be undone. All points, streaks, lessons, and achievement badges will be cleared from this device.</p>
-            </div>
+            <div class="restriction-card"><span class="restriction-tag">Pi Payments</span><p>Processed only inside Pi Browser via the official Pi payment flow. Always optional.</p></div>
+            <div class="restriction-card"><span class="restriction-tag">Daily Limits</span><p>Each daily quest completes once per day. Boosters reset at midnight UTC.</p></div>
+            <div class="restriction-card"><span class="restriction-tag">Reward Records</span><p>Payout review records are in-app point logs only — not real Pi blockchain transfers.</p></div>
+            <div class="restriction-card"><span class="restriction-tag">Age &amp; Content</span><p>Some premium packs contain adult financial topics. Use Kids or Teens mode to filter.</p></div>
+            <div class="restriction-card"><span class="restriction-tag">Account Reset</span><p>Resetting progress is permanent. All points, streaks, and badges will be cleared.</p></div>
           </div>
         </section>
 
         <!-- Achievements -->
-        <section class="settings-section" aria-labelledby="profileAchieveTitle">
-          <button class="settings-toggle" data-toggle="achieveBody" type="button">
+        <section class="settings-section">
+          <button class="settings-toggle" data-toggle="achieveBody" type="button" aria-expanded="false">
             <span>🏅 Achievements</span><span class="toggle-arrow" id="achieveCount">0 / 12</span>
           </button>
           <div class="settings-body" id="achieveBody">
@@ -578,27 +524,27 @@
 
         <!-- Referral -->
         <section class="settings-section">
-          <button class="settings-toggle" data-toggle="referralBody" type="button">
+          <button class="settings-toggle" data-toggle="referralBody" type="button" aria-expanded="false">
             <span>🔗 Referral</span><span class="toggle-arrow">+50 pts per invite</span>
           </button>
           <div class="settings-body" id="referralBody">
-            <p style="color:var(--muted);font-size:.88rem;margin-bottom:12px">Share Questora with Pioneers in your Security Circle. Each friend who joins and completes their first quest earns you bonus points.</p>
+            <p style="color:var(--muted);font-size:.88rem;margin-bottom:12px">Share Questora with Pioneers in your Security Circle.</p>
             <div id="referralCard"></div>
           </div>
         </section>
 
         <!-- About -->
         <section class="settings-section">
-          <button class="settings-toggle" data-toggle="aboutBody" type="button">
+          <button class="settings-toggle" data-toggle="aboutBody" type="button" aria-expanded="false">
             <span>ℹ️ About Questora</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="aboutBody">
             <div class="about-card">
               <div class="about-logo">π</div>
               <div>
-                <strong>Questora v2.1</strong>
-                <p>A Pi Mainnet mini app for daily Pioneer quests, ecosystem learning, and premium skills.</p>
-                <p style="margin-top:6px;font-size:.8rem;color:var(--muted)">Built for the global Pi Network community · Deployed on Vercel · Powered by Pi SDK</p>
+                <strong>Questora v2.2</strong>
+                <p>Pi Mainnet mini app for daily Pioneer quests, ecosystem learning, and premium skills.</p>
+                <p style="margin-top:6px;font-size:.8rem;color:var(--muted)">Built for Pi Network · Deployed on Vercel · Powered by Pi SDK</p>
               </div>
             </div>
             <div style="display:grid;gap:8px;margin-top:12px">
@@ -609,22 +555,30 @@
         </section>
 
         <!-- Danger zone -->
-        <section class="settings-section danger" aria-labelledby="dangerTitle">
-          <button class="settings-toggle danger" data-toggle="dangerBody" type="button">
+        <section class="settings-section danger">
+          <button class="settings-toggle danger" data-toggle="dangerBody" type="button" aria-expanded="false">
             <span>⚠️ Reset &amp; Data</span><span class="toggle-arrow">›</span>
           </button>
           <div class="settings-body" id="dangerBody">
-            <p style="color:var(--muted);font-size:.85rem;margin-bottom:12px">These actions cannot be undone. All progress stored on this device will be permanently removed.</p>
+            <p style="color:var(--muted);font-size:.85rem;margin-bottom:12px">This cannot be undone. All device progress will be permanently removed.</p>
             <button id="resetButton" class="reset-btn" type="button">↺ Reset all progress</button>
           </div>
         </section>
 
-        <!-- Status line -->
-        <p id="statusText" style="margin-top:14px;padding:10px 14px;background:var(--surface-tint);border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.82rem;color:var(--muted);line-height:1.45"></p>
+        <p id="statusText" class="status-line"></p>
 
       </div><!-- /settings -->
 
     </main>
+
+    <!-- ── Bottom navigation ── -->
+    <nav class="bottom-nav" aria-label="App navigation">
+      <button class="nav-tab active" data-page-target="home"     type="button"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-tab"        data-page-target="learn"    type="button"><span class="nav-icon">📚</span><span class="nav-label">Learn</span></button>
+      <button class="nav-tab"        data-page-target="pioneer"  type="button"><span class="nav-icon">π</span><span class="nav-label">Pioneer</span></button>
+      <button class="nav-tab"        data-page-target="rewards"  type="button"><span class="nav-icon">🏆</span><span class="nav-label">Rewards</span></button>
+      <button class="nav-tab"        data-page-target="settings" type="button"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+    </nav>
 
     <script src="app.js"></script>
   </body>
