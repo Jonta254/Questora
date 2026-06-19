@@ -340,7 +340,68 @@ const rewards = [
 // ── Premium packs ──────────────────────────────────────────────────
 const premiumPacks = [
   {
+    key:"pi-market-scanner", title:"Pi Market Scanner", amount:0.30, price:"0.30 Pi",
+    category:"pi", tag:"Pi Tools",
+    audience:"For Pioneers who want to spot fair deals, compare marketplace offers, and avoid red flags.",
+    body:"A premium Pi Marketplace intelligence pack — price comparison frameworks, red-flag checklists, and a step-by-step offer evaluation guide.",
+    includes:["12 premium pages on Pi Marketplace offer analysis, price signals, and seller trust indicators.","Red-flag pattern list for fake scarcity, pressure tactics, and unfair exchange rates.","Offer comparison worksheet you can apply before any Pi transaction."],
+    outcomes:["Evaluate Pi Marketplace listings with confidence.","Spot overpriced or suspicious offers faster.","Make better Pi spending decisions."],
+    lessons:[
+      { title:"Did you know most marketplace mistakes happen in the first 10 seconds?", hint:"Impulse decisions skip the checks that protect you.", action:"Always read the full listing, check seller history, compare prices, and verify the payment route before committing." },
+      { title:"This is how to compare Pi offers fairly", hint:"Price is only one variable — value, trust, and terms matter equally.", action:"Score offers on price fairness, seller signals, clear terms, and safe payment flow before deciding." },
+    ],
+  },
+  {
+    key:"quiz-pro", title:"Daily Quiz Pro", amount:0.15, price:"0.15 Pi",
+    category:"learning", tag:"Learning",
+    audience:"For learners who want harder daily challenges, a point multiplier, and bonus quiz streaks.",
+    body:"Upgrade your daily question experience — harder questions, a 1.5× point multiplier for correct answers, and an exclusive streak bonus track.",
+    includes:["10 premium quiz pages with advanced Pi, money, STEM, and safety questions.","1.5× point multiplier applied automatically to daily answers while unlocked.","Streak bonus calendar that adds extra pts on days 3, 7, and 14 of a continuous streak."],
+    outcomes:["Earn more points per daily answer.","Challenge yourself beyond the standard question set.","Build a faster path to higher Pioneer ranks."],
+    lessons:[
+      { title:"Did you know harder questions improve retention faster?", hint:"Difficulty creates memorable learning moments.", action:"After each advanced question, note one key insight and try to explain it in a single sentence." },
+      { title:"This is how the multiplier works", hint:"A 1.5× multiplier on 50 pts earns 75 pts for the same effort.", action:"Answer correctly and consistently — the multiplier compounds fastest when your streak is active." },
+    ],
+  },
+  {
+    key:"pioneer-coaching", title:"Pioneer Coaching", amount:0.50, price:"0.50 Pi",
+    category:"pi", tag:"Coaching",
+    audience:"For Pioneers ready to build a clear, personalised 7-day learning roadmap.",
+    body:"A premium structured coaching pack with a 7-day personalised learning plan, daily accountability prompts, and a rank progression strategy guide.",
+    includes:["20 premium coaching pages covering goal setting, rank ladders, daily habits, and weekly review templates.","A 7-day step-by-step learning plan personalised to your current rank and points.","Accountability prompts that appear each day to keep the plan on track."],
+    outcomes:["Turn scattered daily taps into a focused learning strategy.","Build a clear path from Explorer toward Ambassador rank.","Understand exactly which actions give the most points per day."],
+    lessons:[
+      { title:"Did you know most Pioneers plateau without a plan?", hint:"Random learning gives random results — a structure gives compound progress.", action:"Write down your current rank, your target rank, and exactly one daily action that advances it." },
+      { title:"This is how a 7-day plan prevents burnout", hint:"Short sprints with clear targets are easier to keep than open-ended goals.", action:"Break your weekly Pi learning goal into one focused task per day, then review progress every Sunday." },
+    ],
+  },
+  {
+    key:"pi-business", title:"Pi Business Blueprint", amount:0.45, price:"0.45 Pi",
+    category:"money", tag:"Business",
+    audience:"For Pioneers who want to accept Pi payments, start a Pi-powered service, or build a merchant presence.",
+    body:"A premium business pack with a Pi merchant setup guide, payment flow explainer, product pricing templates, and customer trust playbook.",
+    includes:["18 premium pages on setting up Pi payment acceptance, pricing in Pi, and merchant credibility.","Step-by-step merchant onboarding checklist covering Pi Browser integration, product listing, and pricing strategy.","Customer trust playbook with payment transparency templates and dispute-avoidance practices."],
+    outcomes:["Understand how to accept Pi for goods or services.","Build a simple, clear Pi-powered product or service offer.","Set fair Pi prices and communicate value clearly to buyers."],
+    lessons:[
+      { title:"Did you know Pi merchants often undercharge in early transactions?", hint:"Without a pricing anchor, sellers default to the lowest number out of uncertainty.", action:"Research 3 comparable offerings, set a value-based Pi price, and write a one-line justification for the amount." },
+      { title:"This is how to build trust as a new Pi merchant", hint:"Trust is built through transparency — clear terms, honest descriptions, and a safe payment path.", action:"Write your refund stance, describe your product accurately, and route payments through the official Pi payment flow." },
+    ],
+  },
+  {
+    key:"advanced-mining", title:"Advanced Mining Guide", amount:0.25, price:"0.25 Pi",
+    category:"pi", tag:"Mining",
+    audience:"For Pioneers who want to optimise their Security Circle, understand mining rate factors, and maximise their Pi balance growth.",
+    body:"A premium mining intelligence pack — Security Circle audit tools, mining rate analytics explainer, and a referral strategy guide.",
+    includes:["14 premium pages on mining rate variables, Security Circle health scoring, and referral quality factors.","Security Circle audit checklist to identify inactive members and suggest trusted replacements.","Mining rate optimisation guide covering team activity, KYC status, and app-level boosts."],
+    outcomes:["Understand exactly what affects your daily Pi mining rate.","Audit and strengthen your Security Circle.","Grow your Pi balance faster through informed habit changes."],
+    lessons:[
+      { title:"Did you know an inactive Security Circle member lowers your mining rate?", hint:"Pi rewards active human trust — inactive members reduce the trust signal.", action:"Review your circle this week. Remove anyone who has stopped tapping and replace them with an active Pioneer." },
+      { title:"This is how to compound your mining rate over time", hint:"Mining rate is a function of team activity, referral depth, and consistent daily engagement.", action:"Tap daily, complete KYC, keep your circle active, and log your rate each week to spot improvements." },
+    ],
+  },
+  {
     key:"trust-review", title:"Pioneer Trust Review", amount:0.2, price:"0.20 Pi",
+    category:"safety", tag:"Safety",
     audience:"Best for users who want safer Pi decisions before spending time or Pi.",
     body:"A premium safety service with deeper scam spotting, marketplace trust checks, and a step-by-step account protection playbook.",
     includes:["12 short premium safety pages with clear examples and safer next actions.","Red-flag review for links, promises, app wording, and privacy terms.","A repeatable trust checklist the user can use before future Pi actions."],
@@ -352,6 +413,7 @@ const premiumPacks = [
   },
   {
     key:"money-blueprint", title:"Money Blueprint Pro", amount:0.25, price:"0.25 Pi",
+    category:"money", tag:"Money",
     audience:"Best for learners who want stronger saving, planning, and value decisions.",
     body:"A premium money service with guided weekly planning, spending filters, and practical decision tools.",
     includes:["15 premium pages on saving, value checks, goal planning, and spending pressure.","Small-budget decision templates for students, workers, and families.","Simple weekly review prompts that keep the user returning with purpose."],
@@ -363,6 +425,7 @@ const premiumPacks = [
   },
   {
     key:"stem-builder", title:"STEM Builder Vault", amount:0.3, price:"0.30 Pi",
+    category:"stem", tag:"STEM",
     audience:"Best for curious learners who want premium STEM tasks and electrical engineering content.",
     body:"A premium STEM service with deeper science labs, electrical engineering explainers, builder logic, and structured observation tasks.",
     includes:["18 premium STEM pages spanning circuits, signals, safe testing, energy flow, and design loops.","Electrical engineering prompts covering current, switches, loads, sensors, and safe troubleshooting.","Project cards that turn theory into observe-test-record-improve learning."],
@@ -374,6 +437,7 @@ const premiumPacks = [
   },
   {
     key:"pi-ecosystem-master", title:"Pi Ecosystem Master", amount:0.35, price:"0.35 Pi",
+    category:"pi", tag:"Pi Tools",
     audience:"Best for Pioneers who want deep Pi Network knowledge, mining optimisation, and ecosystem literacy.",
     body:"A premium Pioneer service with 20 pages covering Pi phases, wallet security, Security Circle strategy, ecosystem apps, and Mainnet readiness.",
     includes:["20 premium pages on Pi history, phases, KYC, Mainnet migration, wallet safety, and ecosystem apps.","Security Circle strategy guide with trust-graph explainers and rate optimisation tips.","A Mainnet readiness checklist covering KYC, passphrase backup, and first transactions."],
@@ -385,6 +449,7 @@ const premiumPacks = [
   },
   {
     key:"family-circle", title:"Family Learning Circle", amount:0.2, price:"0.20 Pi",
+    category:"family", tag:"Family",
     audience:"Best for homes that want family-safe routines, pet care guidance, and shared learning moments.",
     body:"A premium family service with guided conversation prompts, pet care routines, health follow-ups, and home learning activities for all ages.",
     includes:["14 premium pages on family device rules, kindness routines, pet ownership, and shared goals.","Daily check-in ideas that keep younger and older users learning together.","A house-pet care bundle with feeding, mood, hygiene, and safe petting reminders."],
@@ -1345,6 +1410,103 @@ function render() {
   }
 
   // ═══════════════════════════════════════════════════════════
+  // STORE
+  // ═══════════════════════════════════════════════════════════
+
+  // Quick tile sub-label
+  const qss = document.getElementById("quickStoreSub");
+  const ownedCount = premiumPacks.filter(p => state.premiumUnlocks[p.key]).length;
+  if (qss) qss.textContent = `${ownedCount} pack${ownedCount !== 1 ? "s" : ""} owned`;
+
+  // Store notice
+  const storeNotice = document.getElementById("storeNotice");
+  if (storeNotice) {
+    if (state.user) {
+      storeNotice.innerHTML = `<span>🟢</span><p>Connected as @${state.userName}. Pi payments are ready.</p>`;
+    }
+  }
+
+  // Owned packs pane
+  const ownedPane = document.getElementById("ownedPacksPane");
+  const ownedGrid = document.getElementById("ownedPacksGrid");
+  const ownedPill = document.getElementById("ownedPill");
+  if (ownedPane && ownedGrid) {
+    const ownedPacks = premiumPacks.filter(p => state.premiumUnlocks[p.key]);
+    ownedPane.style.display = ownedPacks.length ? "" : "none";
+    if (ownedPill) ownedPill.textContent = `${ownedPacks.length} active`;
+    ownedGrid.innerHTML = ownedPacks.map(p =>
+      `<article class="store-pack-card owned">
+        <div class="spc-head"><span class="spc-tag green">${p.tag}</span><span class="spc-price">✅ Owned</span></div>
+        <strong>${p.title}</strong><p>${p.audience}</p>
+        <button class="spc-btn outline" data-premium="${p.key}" type="button">View details</button>
+      </article>`
+    ).join("");
+  }
+
+  // Featured pack card
+  const featuredPackCard = document.getElementById("featuredPackCard");
+  const featuredBanner   = document.getElementById("featuredPackBanner");
+  const featuredPack     = premiumPacks.find(p => !state.premiumUnlocks[p.key]) || premiumPacks[0];
+  const fpOwned          = !!state.premiumUnlocks[featuredPack.key];
+  const fpHtml = `
+    <div class="featured-pack-inner">
+      <div class="featured-pack-left">
+        <span class="spc-tag gold">${featuredPack.tag}</span>
+        <h3>${featuredPack.title}</h3>
+        <p>${featuredPack.audience}</p>
+        <div class="featured-pack-pills">
+          <span class="pill">${featuredPack.lessons.length} guided pages</span>
+          <span class="pill gold">${featuredPack.price}</span>
+          ${fpOwned ? '<span class="pill green">Owned</span>' : ""}
+        </div>
+      </div>
+      <div class="featured-pack-cta">
+        <button class="spc-btn${fpOwned?" outline":""}" data-pay-pack="${featuredPack.key}" type="button">${fpOwned ? "View" : `Pay ${featuredPack.price}`}</button>
+      </div>
+    </div>`;
+  if (featuredPackCard) featuredPackCard.innerHTML = fpHtml;
+  if (featuredBanner) {
+    featuredBanner.innerHTML = `<div class="fpb-inner"><span class="fpb-icon">✨</span><div><strong>${featuredPack.title}</strong><p>${featuredPack.price} · ${featuredPack.tag}</p></div><button class="spc-btn" data-page-target="store" type="button">Shop</button></div>`;
+  }
+
+  // All packs grid with filter
+  const storeFilter   = document.getElementById("storeFilter");
+  const allPacksGrid  = document.getElementById("allPacksGrid");
+  const allPacksPill  = document.getElementById("allPacksPill");
+  const storeFilterKey = state._storeFilter || "all";
+  const tags = ["all", ...new Set(premiumPacks.map(p => p.tag))];
+  if (storeFilter) {
+    storeFilter.innerHTML = tags.map(t =>
+      `<button class="store-filter-btn${storeFilterKey === t ? " active" : ""}" data-store-filter="${t}" type="button">${t === "all" ? "All" : t}</button>`
+    ).join("");
+  }
+  if (allPacksGrid) {
+    const filtered = storeFilterKey === "all" ? premiumPacks : premiumPacks.filter(p => p.tag === storeFilterKey);
+    if (allPacksPill) allPacksPill.textContent = `${filtered.length} packs`;
+    allPacksGrid.innerHTML = filtered.map(p => {
+      const owned = !!state.premiumUnlocks[p.key];
+      return `<article class="store-pack-card${owned ? " owned" : ""}">
+        <div class="spc-head">
+          <span class="spc-tag">${p.tag}</span>
+          <span class="spc-price${owned ? " green" : ""}">${owned ? "✅ Owned" : p.price}</span>
+        </div>
+        <strong>${p.title}</strong>
+        <p>${p.audience}</p>
+        <ul class="spc-outcomes">${p.outcomes.slice(0,2).map(o => `<li>${o}</li>`).join("")}</ul>
+        <button class="spc-btn${owned ? " outline" : ""}" data-pay-pack="${p.key}" type="button">${owned ? "View pack" : `Pay ${p.price} with Pi`}</button>
+      </article>`;
+    }).join("");
+  }
+
+  // Store payment log (reuse premiumHistoryList if in store context)
+  const storeHistoryList = document.getElementById("premiumHistoryList");
+  if (storeHistoryList && state.currentPage === "store") {
+    storeHistoryList.innerHTML = state.premiumHistory.length
+      ? state.premiumHistory.map(e => `<article class="claim-history-card"><strong>${e.service}</strong><p>${e.status} — ${e.amount} on ${e.date}</p><span>${e.note}</span></article>`).join("")
+      : `<article class="claim-history-card empty"><strong>No payment activity yet</strong><p>When you purchase a pack with Pi, the record appears here.</p></article>`;
+  }
+
+  // ═══════════════════════════════════════════════════════════
   // PROFILE
   // ═══════════════════════════════════════════════════════════
   if (profileGrid) profileGrid.innerHTML = [
@@ -1664,7 +1826,27 @@ document.addEventListener("click", e => {
     return;
   }
 
-  // premium pay button
+  // store filter tabs
+  const sf = e.target.closest("[data-store-filter]");
+  if (sf) {
+    state._storeFilter = sf.dataset.storeFilter;
+    renderInPlace();
+    return;
+  }
+
+  // pay pack (store cards + featured)
+  const ppk = e.target.closest("[data-pay-pack]");
+  if (ppk) {
+    const pack = premiumPacks.find(p => p.key === ppk.dataset.payPack);
+    if (pack) {
+      state.selectedPremium = pack.key;
+      saveState();
+      requestPremiumPayment(pack);
+    }
+    return;
+  }
+
+  // premium pay button (rewards page detail)
   if (e.target.closest("#premiumAccessButton")) {
     const pack = premiumPacks.find(p => p.key === state.selectedPremium) || premiumPacks[0];
     requestPremiumPayment(pack);
