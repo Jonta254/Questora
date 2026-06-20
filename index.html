@@ -10,6 +10,7 @@
     <link rel="manifest" href="/manifest.json" />
     <title>Questora</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="store.css" />
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   </head>
   <body>
@@ -292,57 +293,46 @@
       <!-- ════════════════ STORE ════════════════ -->
       <div data-page="store" hidden>
 
-        <!-- Store hero -->
-        <div class="store-hero">
-          <div class="store-hero-left">
-            <p class="eyebrow">Pi-powered</p>
-            <h2>Premium Store</h2>
-            <p class="store-hero-sub">Pay with Pi · Learn more · Earn more</p>
+        <!-- Store header -->
+        <div class="store-masthead">
+          <div class="store-masthead-text">
+            <p class="store-eyebrow">Pi-Powered Learning</p>
+            <h2 class="store-title">Premium Services</h2>
+            <p class="store-subtitle">Specialist packs · Pay with Pi · Instant access</p>
           </div>
-          <div class="store-hero-pi">π</div>
+          <div class="store-masthead-count" id="storeOwnedBadge"></div>
         </div>
 
-        <!-- Pi balance reminder -->
-        <div class="store-notice" id="storeNotice">
-          <span>💡</span>
-          <p>All purchases use real Pi on Mainnet via Pi Browser. Free content always stays free.</p>
+        <!-- Pi / connection status -->
+        <div class="store-status" id="storeStatusBar">
+          <span class="store-status-dot" id="storeStatusIcon">⚪</span>
+          <span id="storeStatusText">Open in Pi Browser to purchase</span>
         </div>
 
-        <!-- Owned packs -->
-        <section class="pane" id="ownedPacksPane" style="display:none" aria-labelledby="ownedTitle">
-          <div class="pane-head">
-            <h2 id="ownedTitle">Your packs</h2>
-            <span class="pill green" id="ownedPill">0 active</span>
+        <!-- Owned library — shown only when user owns ≥1 pack -->
+        <section class="store-block" id="ownedPacksPane" style="display:none" aria-labelledby="ownedTitle">
+          <div class="store-block-head">
+            <h3 id="ownedTitle">Your Library</h3>
+            <span class="pill green" id="ownedPill">0 owned</span>
           </div>
-          <div id="ownedPacksGrid" style="display:grid;gap:8px;margin-top:10px"></div>
+          <div id="ownedPacksGrid" class="owned-grid"></div>
         </section>
 
-        <!-- Featured pack -->
-        <section class="pane" aria-labelledby="featuredTitle">
-          <div class="pane-head">
-            <h2 id="featuredTitle">Featured</h2>
-            <span class="pill gold">Best value</span>
-          </div>
-          <div id="featuredPackCard"></div>
-        </section>
+        <!-- Category filter tabs -->
+        <div class="store-tabs-wrap">
+          <div class="store-tabs" id="storeFilter" role="tablist" aria-label="Filter services by category"></div>
+        </div>
 
-        <!-- All packs grid -->
-        <section class="pane" aria-labelledby="allPacksTitle">
-          <div class="pane-head">
-            <h2 id="allPacksTitle">All packs</h2>
-            <span class="pill" id="allPacksPill">10 available</span>
-          </div>
-          <!-- Category filter tabs -->
-          <div class="store-filter" id="storeFilter" role="group" aria-label="Filter packs"></div>
-          <div id="allPacksGrid" class="store-packs-grid"></div>
-        </section>
+        <!-- All services catalog -->
+        <div id="allPacksGrid" class="catalog-grid"></div>
 
-        <!-- Payment log -->
-        <section class="pane" aria-labelledby="premiumHistoryTitle">
-          <div class="pane-head">
-            <h2 id="premiumHistoryTitle">Payment log</h2>
+        <!-- Payment history -->
+        <section class="store-block" aria-labelledby="storeHistoryTitle">
+          <div class="store-block-head">
+            <h3 id="storeHistoryTitle">Payment History</h3>
+            <span class="pill" id="storeHistoryPill">0 records</span>
           </div>
-          <div id="premiumHistoryList" style="margin-top:10px"></div>
+          <div id="premiumHistoryList" class="history-list"></div>
         </section>
 
       </div><!-- /store -->
@@ -588,6 +578,6 @@
       <button class="nav-tab"        data-page-target="settings" type="button"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
     </nav>
 
-    <script src="app.js"></script>
+    <script src="app-v2.js"></script>
   </body>
 </html>
