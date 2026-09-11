@@ -1,0 +1,3 @@
+# Threat model
+
+Protected identity must come from Pi `/v2/me`, never client profile fields. Sessions use HMAC-SHA256, expiry, timing-safe comparison, HTTP-only cookies, and a 32-byte minimum secret. Accepted-answer mutations verify question ownership on the server and constrain the database update by owner UID. Remaining work: CSRF tokens for mutations, distributed rate limiting, CSP/nonces, database row-level authorization, vote concurrency tests, audit logs, dependency scanning, abuse automation, and incident drills. Payments are removed because their previous endpoints lacked transaction binding and idempotency.

@@ -1,10 +1,10 @@
 // Questora Service Worker — offline support and caching
-const CACHE_NAME = "questora-v2";
+const CACHE_NAME = "questora-v18";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
-  "/styles.css",
-  "/app.js",
+  "/styles.css?v=18",
+  "/app.js?v=18",
   "/manifest.json",
 ];
 
@@ -39,17 +39,14 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // Cache-first for static assets
+  // Network-first keeps returning users on the current release while retaining an offline fallback.
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
+    fetch(event.request).then(response => {
         if (response.ok) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
         return response;
-      });
-    })
+      }).catch(() => caches.match(event.request))
   );
 });

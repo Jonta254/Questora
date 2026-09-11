@@ -1,0 +1,3 @@
+# Data model
+
+The foundation migration defines Pi-UID users, controlled topics, immutable question and answer UUIDs, one helpful vote/follow/save per user and target, accepted solutions, activity read state, blocks, and reports. Server handlers derive ownership from the signed Pi session. Choosing a solution verifies that the signed-in user owns the question and that the visible answer belongs to it. Reports validate target existence, prohibit self-reporting, constrain reasons and detail length, and allow only one open report per reporter and target. Row-level policies, edit history, moderator review tooling, automated moderation enforcement, and retention jobs are not implemented.

@@ -1,52 +1,29 @@
 # Questora
 
-Questora is a global, family-friendly Pi Mainnet app concept for Pioneers. It gives users daily quests, Pi safety lessons, streaks, badges, leaderboards, referrals, and useful rewards.
+Questora is a mobile-first Pi Mini App foundation for asking practical questions, sharing lived experience, and finding useful community answers.
 
-## Development URL
+## Shipped state
 
-Run the app locally and use this URL in Pi Developer Portal:
+Implemented: independent Questora interface; Home, Ask, Activity, and Profile navigation; public browsing; clearly labeled editorial prompts; search, topic, and transparent feed sorting; actionable duplicate-question suggestions; live question-readiness guidance; structured answer guidance; question preview; draft-only local storage with a return-to-draft prompt; offline notice; Pi SDK loading; server verification through Pi `/v2/me`; signed HTTP-only sessions; sign-out; reliable deep retrieval from Activity and Profile; useful saved, followed, and authored question collections; owner-verified accepted solutions and resolved threads; private server-validated content reporting; responsive safe areas; PostgreSQL migration; and environment-gated durable APIs for questions, answers, follows, saves, helpful votes, reports, activity, and contribution history.
 
-```text
-http://localhost:3314
-```
+Disabled: payments, promotion, rewards, points, streaks, referrals, and leaderboards. Moderation review UI, export, deletion, and notification delivery remain unavailable.
 
-## Run Locally
+Requires configuration: values in `.env.example`, Pi Developer Portal URLs, and execution of `migrations/001_questora_foundation.sql` in Supabase PostgreSQL. The service-role key is server-only.
+
+Not verified: physical Pi Browser testing, real Pi authentication, production database migration, concurrent database mutations, Mainnet, payments, and production support contacts.
+
+## Local development
 
 ```powershell
 python -m http.server 3314
 ```
 
-Open:
+Static API routes run on Vercel, not Python’s file server. Use `vercel dev` when testing authentication locally.
 
-```text
-http://localhost:3314
+## Verification
+
+```powershell
+node --check app.js
+Get-ChildItem api/*.js | ForEach-Object { node --check $_.FullName }
+npm test
 ```
-
-## Pi Browser Notes
-
-- Open the Development URL through the Pi Browser sandbox.
-- Keep the Pi API key private and only use it on a backend server.
-- The current version is a frontend starter. Backend verification and payments should be added before real Mainnet payment features.
-- See `PI_BACKEND_FLOW.md` for the Pi authentication and payment pairing flow.
-
-## First Features
-
-- Pi login button
-- Daily quest
-- Points, streaks, and badges
-- Age and goal onboarding
-- Pi safety quiz
-- Accessibility controls for bigger text and high contrast
-- Daily point boosters
-- Category learning paths with styled lessons and questions
-- STEM Lab category with science, coding, math, and engineering lessons
-- Pet Care category with house pet ownership and daily care guidance
-- Daily learning task that can only be rewarded once per day
-- Image-based look and learn tasks
-- Responsible AI reflection ratings
-- Local user record with daily completion history
-- Different reward styles and unlock progress
-- Pioneer toolkit with claimable points
-- All-age learning tabs
-- Starter mission list
-- Leaderboard preview

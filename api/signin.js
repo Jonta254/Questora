@@ -1,14 +1,15 @@
 const { allowPostOnly, piRequest, readJsonBody, sendJson } = require("./_pi");
+const { createSession, setSession } = require("./_session");
 
 module.exports = async function handler(req, res) {
   if (!allowPostOnly(req, res)) return;
 
   try {
     const body = await readJsonBody(req);
-    const accessToken = body?.authResult?.accessToken;
+    const accessToken = body?.accessToken;
 
     if (!accessToken) {
-      sendJson(res, 400, { ok: false, error: "Missing authResult.accessToken." });
+      sendJson(res, 400, { ok: false, error: "A valid Pi access token is required." });
       return;
     }
 
@@ -27,15 +28,19 @@ module.exports = async function handler(req, res) {
       return;
     }
 
+    const user={uid:verification.data?.uid,username:verification.data?.username||"Pioneer"};
+    if(typeof user.uid!=="string"||!user.uid){sendJson(res,502,{ok:false,error:"Pi returned an unexpected identity response."});return}
+    const session=createSession(user);
+    if(!session){sendJson(res,503,{ok:false,error:"Questora sign-in is not configured."});return}
+    setSession(res,session);
     sendJson(res, 200, {
       ok: true,
-      user: verification.data,
+      user,
     });
   } catch (error) {
-    sendJson(res, 500, {
+    sendJson(res, 502, {
       ok: false,
-      error: "Questora could not verify the Pi user.",
-      details: error.message,
+      error: "Pi sign-in is temporarily unavailable. Try again safely.",
     });
   }
 };

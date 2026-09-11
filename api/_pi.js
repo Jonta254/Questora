@@ -25,24 +25,10 @@ function allowPostOnly(req, res) {
   return false;
 }
 
-function ensureApiKey(res) {
-  if (process.env.PI_API_KEY) return true;
-  sendJson(res, 503, {
-    ok: false,
-    error: "PI_API_KEY is not configured on the server.",
-  });
-  return false;
-}
-
 async function piRequest(pathname, options = {}) {
-  const { method = "GET", body, auth = "app", token } = options;
+  const { method = "GET", body, token } = options;
   const headers = { "Content-Type": "application/json" };
-
-  if (auth === "app") {
-    headers.Authorization = `Key ${process.env.PI_API_KEY}`;
-  } else if (auth === "user") {
-    headers.Authorization = `Bearer ${token}`;
-  }
+  headers.Authorization = `Bearer ${token}`;
 
   const response = await fetch(`${PI_API_BASE}${pathname}`, {
     method,
@@ -65,20 +51,8 @@ async function piRequest(pathname, options = {}) {
   };
 }
 
-function getPaymentId(payload) {
-  return (
-    payload?.paymentId ||
-    payload?.payment?.identifier ||
-    payload?.payment?.paymentId ||
-    payload?.payment?.id ||
-    ""
-  );
-}
-
 module.exports = {
   allowPostOnly,
-  ensureApiKey,
-  getPaymentId,
   piRequest,
   readJsonBody,
   sendJson,
