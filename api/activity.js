@@ -1,2 +1,2 @@
-const { db,fail,sendJson }=require("./_db");const {readSession}=require("./_session");
+const { db,fail,sendJson }=require("../lib/db");const {readSession}=require("../lib/session");
 module.exports=async function handler(req,res){if(req.method!=="GET"){sendJson(res,405,{ok:false,error:"Method not allowed. Use GET."});return}const user=readSession(req);if(!user){sendJson(res,401,{ok:false,error:"Sign in with Pi to view activity."});return}try{const rows=await db(`activity?select=id,kind,question_id,answer_id,created_at,read_at&recipient_uid=eq.${encodeURIComponent(user.uid)}&order=created_at.desc&limit=50`);sendJson(res,200,{ok:true,activity:rows})}catch(error){fail(res,error)}};

@@ -1,6 +1,6 @@
 const crypto=require("node:crypto");
-const { db,fail,sendJson }=require("./_db");
-const { readJsonBody }=require("./_pi");
+const { db,fail,sendJson }=require("../lib/db");
+const { readJsonBody }=require("../lib/pi");
 function authorized(req){const expected=process.env.QUESTORA_MODERATOR_TOKEN||"",supplied=String(req.headers.authorization||"").replace(/^Bearer\s+/i,"");if(expected.length<32||supplied.length!==expected.length)return false;return crypto.timingSafeEqual(Buffer.from(supplied),Buffer.from(expected))}
 module.exports=async function handler(req,res){
   if(!authorized(req)){sendJson(res,401,{ok:false,error:"Moderator authorization required."});return}

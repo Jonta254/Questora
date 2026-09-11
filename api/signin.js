@@ -1,5 +1,5 @@
-const { allowPostOnly, piRequest, readJsonBody, sendJson } = require("./_pi");
-const { createSession, setSession } = require("./_session");
+const { allowPostOnly, piRequest, readJsonBody, sendJson } = require("../lib/pi");
+const { createSession, setSession } = require("../lib/session");
 
 module.exports = async function handler(req, res) {
   if (!allowPostOnly(req, res)) return;
