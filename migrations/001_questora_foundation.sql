@@ -16,3 +16,16 @@ create index questions_feed on questions(moderation_status,status,created_at des
 create index answers_thread on answers(question_id,created_at) where deleted_at is null;
 create index activity_unread on activity(recipient_uid,created_at desc) where read_at is null;
 insert into topics(slug,label) values('technology','Technology'),('work-business','Work and business'),('education','Education'),('daily-life','Daily life'),('health-wellbeing','Health and wellbeing'),('money-basics','Money basics'),('relationships','Relationships'),('pi-ecosystem','Pi ecosystem'),('other','Other') on conflict do nothing;
+create or replace function delete_questora_account(target_uid text) returns void language plpgsql security definer set search_path=public as $$
+begin
+  update questions set moderation_status='removed',deleted_at=now(),updated_at=now() where author_uid=target_uid and deleted_at is null;
+  update answers set moderation_status='removed',deleted_at=now(),updated_at=now() where author_uid=target_uid and deleted_at is null;
+  delete from helpful_votes where user_uid=target_uid;
+  delete from follows where user_uid=target_uid;
+  delete from saves where user_uid=target_uid;
+  delete from blocks where blocker_uid=target_uid or blocked_uid=target_uid;
+  update users set username='Deleted Pioneer',deleted_at=now(),updated_at=now() where uid=target_uid;
+end;
+$$;
+revoke all on function delete_questora_account(text) from public, anon, authenticated;
+grant execute on function delete_questora_account(text) to service_role;
