@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
     const body = await readJsonBody(req);
     const accessToken = body?.accessToken;
 
-    if (!accessToken) {
+    if (typeof accessToken!=="string"||accessToken.length<20||accessToken.length>4096) {
       sendJson(res, 400, { ok: false, error: "A valid Pi access token is required." });
       return;
     }
@@ -23,7 +23,6 @@ module.exports = async function handler(req, res) {
       sendJson(res, verification.status || 502, {
         ok: false,
         error: "Pi user verification failed.",
-        details: verification.data,
       });
       return;
     }
@@ -38,9 +37,10 @@ module.exports = async function handler(req, res) {
       user,
     });
   } catch (error) {
-    sendJson(res, 502, {
+    const status=Number(error?.status);
+    sendJson(res, [413,415].includes(status)?status:502, {
       ok: false,
-      error: "Pi sign-in is temporarily unavailable. Try again safely.",
+      error: status===413?"Request body is too large.":status===415?"Send this request as JSON.":"Pi sign-in is temporarily unavailable. Try again safely.",
     });
   }
 };
